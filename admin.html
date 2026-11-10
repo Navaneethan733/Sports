@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel | STACKLY</title>
+  <meta name="description" content="STACKLY admin dashboard — manage products, orders, customers and analytics.">
+
+  <link rel="icon" type="image/webp" href="Assets/stackly-logo-clean.webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg-dark:#0a0b0d;--bg-card:#131417;--bg-card-surface:#18191d;--bg-elevated:#1e2025;
+      --volt:#d2fd04;--volt-hover:#bce402;--volt-glow:rgba(210,253,4,0.28);--volt-dim:rgba(210,253,4,0.12);
+      --cyan:#00f2fe;--success:#22c55e;--warning:#f59e0b;--danger:#ef4444;--purple:#a855f7;
+      --text-white:#ffffff;--text-muted:#8e95a2;--text-dim:#5c626e;
+      --border-subtle:rgba(255,255,255,0.08);--border-medium:rgba(255,255,255,0.15);
+      --font-heading:'Barlow Condensed','Oswald',sans-serif;--font-body:'Plus Jakarta Sans',system-ui,sans-serif;
+      --radius-sm:8px;--radius-md:14px;--radius-lg:20px;--radius-full:9999px;
+      --transition-fast:0.2s cubic-bezier(0.16,1,0.3,1);--transition-smooth:0.4s cubic-bezier(0.16,1,0.3,1);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;font-size:16px;color-scheme:dark}
+    body{background:var(--bg-dark);color:var(--text-white);font-family:var(--font-body);line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh}
+    img{max-width:100%;height:auto;display:block}
+    a{color:inherit;text-decoration:none}
+    button{font-family:inherit;border:none;background:none;cursor:pointer}
+    input,select,textarea{font-family:inherit}
+
+    /* TOPBAR */
+    .admin-topbar{position:fixed;top:0;left:0;right:0;height:64px;z-index:999;display:flex;align-items:center;justify-content:space-between;padding:0 24px;background:rgba(10,11,13,0.96);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--border-subtle)}
+    .topbar-left{display:flex;align-items:center;gap:16px}
+    .topbar-brand{display:flex;align-items:center;gap:10px}
+    .topbar-brand img{height:26px;width:auto}
+    .admin-chip{font-size:10.5px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:#000;background:var(--volt);padding:4px 10px;border-radius:var(--radius-full)}
+    .topbar-search{display:flex;align-items:center;gap:8px;background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:var(--radius-full);padding:8px 16px;width:320px;transition:border-color var(--transition-fast)}
+    .topbar-search:focus-within{border-color:var(--volt)}
+    .topbar-search svg{width:15px;height:15px;color:var(--text-muted);flex-shrink:0}
+    .topbar-search input{background:none;border:none;outline:none;color:var(--text-white);font-size:13px;width:100%}
+    .topbar-search input::placeholder{color:var(--text-dim)}
+    .topbar-right{display:flex;align-items:center;gap:12px}
+    .icon-btn{width:38px;height:38px;border-radius:50%;border:1px solid var(--border-subtle);background:rgba(255,255,255,0.03);display:flex;align-items:center;justify-content:center;color:#c9ccd4;transition:all var(--transition-fast);position:relative}
+    .icon-btn:hover{border-color:var(--volt);color:var(--volt)}
+    .icon-btn svg{width:17px;height:17px}
+    .icon-btn .dot{position:absolute;top:7px;right:8px;width:7px;height:7px;border-radius:50%;background:var(--danger);border:2px solid var(--bg-dark)}
+    .admin-avatar{width:38px;height:38px;border-radius:50%;border:2px solid var(--volt);object-fit:cover;cursor:pointer;transition:transform var(--transition-fast)}
+    .admin-avatar:hover{transform:scale(1.06)}
+    @media (max-width:860px){.topbar-search{display:none}}
+
+    /* SHELL */
+    .admin-shell{display:flex;padding-top:64px;min-height:100vh}
+    .admin-sidebar{width:240px;flex-shrink:0;background:var(--bg-card);border-right:1px solid var(--border-subtle);padding:20px 14px;position:sticky;top:64px;height:calc(100vh - 64px);overflow-y:auto;transition:transform 0.3s ease}
+    .admin-sidebar::-webkit-scrollbar{width:6px}
+    .admin-sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:3px}
+    .side-section-label{font-size:10.5px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);padding:8px 14px 8px;margin-top:12px}
+    .side-section-label:first-child{margin-top:0}
+    .side-nav{list-style:none;display:flex;flex-direction:column;gap:2px}
+    .side-link{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:var(--radius-sm);font-size:13.5px;font-weight:600;color:#a4abb8;transition:all var(--transition-fast);position:relative;width:100%;text-align:left}
+    .side-link svg{width:17px;height:17px;flex-shrink:0}
+    .side-link:hover{background:rgba(255,255,255,0.05);color:var(--text-white)}
+    .side-link.active{background:var(--volt-dim);color:var(--volt)}
+    .side-link.active::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:18px;background:var(--volt);border-radius:0 3px 3px 0}
+    .side-link .count{margin-left:auto;font-size:10.5px;font-weight:800;background:rgba(255,255,255,0.1);color:#c9ccd4;padding:2px 7px;border-radius:var(--radius-full)}
+    .side-link.active .count{background:var(--volt);color:#000}
+
+    /* MAIN */
+    .admin-main{flex:1;min-width:0;padding:28px 28px 60px}
+    .page-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:26px;gap:16px;flex-wrap:wrap}
+    .page-eyebrow{font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--volt);margin-bottom:6px;display:block}
+    .page-title{font-family:var(--font-heading);font-size:clamp(28px,3.5vw,40px);font-weight:900;text-transform:uppercase;line-height:1;letter-spacing:-0.01em}
+    .page-subtitle{font-size:13.5px;color:var(--text-muted);margin-top:6px}
+    .page-actions{display:flex;gap:10px;flex-wrap:wrap}
+
+    /* VIEWS */
+    .admin-view{display:none;animation:fadeUp 0.35s cubic-bezier(0.16,1,0.3,1)}
+    .admin-view.active{display:block}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+    /* KPI */
+    .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+    .kpi-card{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);padding:18px;position:relative;overflow:hidden;transition:border-color var(--transition-fast),transform var(--transition-fast)}
+    .kpi-card:hover{border-color:var(--border-medium);transform:translateY(-2px)}
+    .kpi-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+    .kpi-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center}
+    .kpi-icon svg{width:18px;height:18px}
+    .kpi-icon.volt{background:var(--volt-dim);color:var(--volt)}
+    .kpi-icon.cyan{background:rgba(0,242,254,0.12);color:var(--cyan)}
+    .kpi-icon.purple{background:rgba(168,85,247,0.12);color:var(--purple)}
+    .kpi-icon.warn{background:rgba(245,158,11,0.12);color:var(--warning)}
+    .kpi-trend{font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:var(--radius-full);display:inline-flex;align-items:center;gap:3px}
+    .kpi-trend.up{background:rgba(34,197,94,0.14);color:#4ade80}
+    .kpi-trend.down{background:rgba(239,68,68,0.14);color:#f87171}
+    .kpi-value{font-family:var(--font-heading);font-size:32px;font-weight:900;line-height:1;margin-bottom:4px}
+    .kpi-label{font-size:12px;color:var(--text-muted);font-weight:500}
+
+    /* PANELS */
+    .panel{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:var(--radius-lg);padding:22px;margin-bottom:22px}
+    .panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;gap:12px;flex-wrap:wrap}
+    .panel-title{font-family:var(--font-heading);font-size:19px;font-weight:800;text-transform:uppercase;letter-spacing:0.02em}
+    .panel-link{font-size:12.5px;font-weight:600;color:var(--volt);display:inline-flex;align-items:center;gap:5px;transition:gap var(--transition-fast)}
+    .panel-link:hover{gap:9px}
+    .panel-link svg{width:12px;height:12px}
+    .admin-grid-2{display:grid;grid-template-columns:1.6fr 1fr;gap:22px}
+
+    /* CHART */
+    .chart-wrap{height:220px;display:flex;align-items:flex-end;gap:10px;padding:10px 4px 0;border-bottom:1px solid var(--border-subtle);margin-bottom:10px}
+    .chart-bar-group{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end}
+    .chart-bar-stack{width:100%;max-width:36px;display:flex;flex-direction:column;justify-content:flex-end;height:100%;gap:3px}
+    .chart-bar{width:100%;border-radius:4px 4px 0 0;transition:opacity var(--transition-fast)}
+    .chart-bar.volt{background:linear-gradient(180deg,var(--volt),#9fbf00)}
+    .chart-bar.dim{background:rgba(210,253,4,0.18)}
+    .chart-bar-group:hover .chart-bar{opacity:0.75}
+    .chart-bar-group:hover .chart-bar.volt{opacity:1}
+    .chart-label{font-size:10.5px;color:var(--text-dim);font-weight:600;text-transform:uppercase;letter-spacing:0.04em}
+    .chart-legend{display:flex;align-items:center;gap:18px;font-size:11.5px;color:var(--text-muted);font-weight:600;padding-top:4px}
+    .legend-item{display:flex;align-items:center;gap:6px}
+    .legend-dot{width:9px;height:9px;border-radius:3px}
+    .legend-dot.volt{background:var(--volt)}
+    .legend-dot.dim{background:rgba(210,253,4,0.3)}
+
+    /* TABLE */
+    .table-wrap{overflow-x:auto}
+    table.admin-table{width:100%;border-collapse:collapse;font-size:13px}
+    .admin-table thead th{text-align:left;font-size:10.5px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-dim);padding:10px 12px;border-bottom:1px solid var(--border-subtle);white-space:nowrap}
+    .admin-table tbody td{padding:13px 12px;border-bottom:1px solid rgba(255,255,255,0.04);vertical-align:middle;color:#c9ccd4}
+    .admin-table tbody tr:last-child td{border-bottom:none}
+    .admin-table tbody tr{transition:background var(--transition-fast)}
+    .admin-table tbody tr:hover{background:rgba(255,255,255,0.025)}
+    .table-product{display:flex;align-items:center;gap:10px;min-width:200px}
+    .table-thumb{width:38px;height:38px;border-radius:var(--radius-sm);background:var(--bg-card-surface);object-fit:cover;flex-shrink:0}
+    .table-product-name{font-weight:700;color:var(--text-white);font-size:13px}
+    .table-product-sub{font-size:11px;color:var(--text-muted)}
+    .badge{display:inline-block;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:0.04em;padding:4px 10px;border-radius:var(--radius-full);white-space:nowrap}
+    .badge-instock{background:rgba(34,197,94,0.14);color:#4ade80}
+    .badge-low{background:rgba(245,158,11,0.14);color:#fbbf24}
+    .badge-out{background:rgba(239,68,68,0.14);color:#f87171}
+    .badge-delivered{background:rgba(34,197,94,0.14);color:#4ade80}
+    .badge-shipped{background:rgba(0,242,254,0.12);color:var(--cyan)}
+    .badge-processing{background:rgba(245,158,11,0.14);color:#fbbf24}
+    .badge-pending{background:rgba(168,85,247,0.14);color:#c084fc}
+    .table-actions{display:flex;gap:6px}
+    .tbl-btn{width:30px;height:30px;border-radius:7px;border:1px solid var(--border-subtle);background:rgba(255,255,255,0.03);display:flex;align-items:center;justify-content:center;color:var(--text-muted);transition:all var(--transition-fast)}
+    .tbl-btn svg{width:14px;height:14px}
+    .tbl-btn:hover{border-color:var(--volt);color:var(--volt);background:var(--volt-dim)}
+    .tbl-btn.danger:hover{border-color:var(--danger);color:var(--danger);background:rgba(239,68,68,0.1)}
+
+    /* LISTS */
+    .list-row{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid rgba(255,255,255,0.04)}
+    .list-row:last-child{border-bottom:none}
+    .list-rank{width:26px;height:26px;border-radius:7px;background:var(--bg-card-surface);display:flex;align-items:center;justify-content:center;font-family:var(--font-heading);font-size:13px;font-weight:900;color:var(--text-muted);flex-shrink:0}
+    .list-rank.top{background:var(--volt);color:#000}
+    .list-info{flex:1;min-width:0}
+    .list-name{font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .list-sub{font-size:11px;color:var(--text-muted)}
+    .list-value{font-family:var(--font-heading);font-size:15px;font-weight:800;color:var(--volt);white-space:nowrap}
+
+    /* ACTIVITY */
+    .activity-item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.04)}
+    .activity-item:last-child{border-bottom:none}
+    .activity-dot-wrap{display:flex;flex-direction:column;align-items:center;padding-top:3px}
+    .activity-dot{width:9px;height:9px;border-radius:50%;background:var(--volt);flex-shrink:0;box-shadow:0 0 0 3px var(--volt-dim)}
+    .activity-dot.cyan{background:var(--cyan);box-shadow:0 0 0 3px rgba(0,242,254,0.12)}
+    .activity-dot.warn{background:var(--warning);box-shadow:0 0 0 3px rgba(245,158,11,0.12)}
+    .activity-body{flex:1;min-width:0}
+    .activity-text{font-size:12.5px;color:#c9ccd4;line-height:1.45}
+    .activity-text strong{color:var(--text-white);font-weight:700}
+    .activity-time{font-size:11px;color:var(--text-dim);margin-top:3px}
+
+    /* BUTTONS */
+    .btn-volt{background:var(--volt);color:#000;font-size:13px;font-weight:700;padding:11px 22px;border-radius:var(--radius-full);display:inline-flex;align-items:center;justify-content:center;gap:7px;transition:all var(--transition-fast);box-shadow:0 4px 16px rgba(0,0,0,0.4);white-space:nowrap}
+    .btn-volt:hover{background:var(--volt-hover);transform:translateY(-2px);box-shadow:0 8px 20px -4px var(--volt-glow)}
+    .btn-ghost{background:rgba(255,255,255,0.03);color:var(--text-white);font-size:13px;font-weight:600;padding:11px 20px;border-radius:var(--radius-full);border:1px solid rgba(255,255,255,0.18);display:inline-flex;align-items:center;gap:7px;transition:all var(--transition-fast);white-space:nowrap}
+    .btn-ghost:hover{border-color:rgba(255,255,255,0.5);background:rgba(255,255,255,0.07)}
+
+    /* FORMS */
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .form-field{display:flex;flex-direction:column;gap:6px}
+    .form-field.full{grid-column:1/-1}
+    .form-label{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted)}
+    .form-input,.form-select,.form-textarea{background:var(--bg-card-surface);border:1px solid var(--border-subtle);border-radius:var(--radius-sm);color:var(--text-white);font-size:13.5px;padding:11px 14px;outline:none;transition:border-color var(--transition-fast);width:100%}
+    .form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--volt)}
+    .form-textarea{resize:vertical;min-height:80px}
+    .form-actions{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+
+    /* SETTINGS */
+    .setting-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 0;border-bottom:1px solid var(--border-subtle)}
+    .setting-row:last-child{border-bottom:none}
+    .setting-info{flex:1}
+    .setting-title{font-size:13.5px;font-weight:700;margin-bottom:3px}
+    .setting-desc{font-size:12px;color:var(--text-muted)}
+    .toggle{position:relative;width:46px;height:26px;flex-shrink:0}
+    .toggle input{opacity:0;width:0;height:0}
+    .toggle-slider{position:absolute;inset:0;background:rgba(255,255,255,0.12);border-radius:var(--radius-full);cursor:pointer;transition:background var(--transition-fast)}
+    .toggle-slider::before{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform var(--transition-fast)}
+    .toggle input:checked + .toggle-slider{background:var(--volt)}
+    .toggle input:checked + .toggle-slider::before{transform:translateX(20px);background:#000}
+
+    /* CUSTOMER CARD */
+    .customer-card{display:flex;align-items:center;gap:12px;padding:14px;border:1px solid var(--border-subtle);border-radius:var(--radius-md);margin-bottom:10px;transition:border-color var(--transition-fast)}
+    .customer-card:hover{border-color:var(--border-medium)}
+    .customer-avatar{width:42px;height:42px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid var(--border-subtle)}
+    .customer-info{flex:1;min-width:0}
+    .customer-name{font-size:13.5px;font-weight:700}
+    .customer-email{font-size:11.5px;color:var(--text-muted)}
+    .customer-spent{font-family:var(--font-heading);font-size:16px;font-weight:800;color:var(--volt)}
+
+    /* TOAST */
+    .toast-notice{position:fixed;bottom:26px;right:26px;background:rgba(18,19,23,0.96);backdrop-filter:blur(12px);border:1px solid var(--volt);color:#fff;padding:13px 20px;border-radius:var(--radius-md);display:flex;align-items:center;gap:10px;box-shadow:0 15px 35px rgba(0,0,0,0.7),0 0 20px var(--volt-glow);z-index:10000;transform:translateY(100px);opacity:0;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);pointer-events:none;font-size:13px;font-weight:500}
+    .toast-notice.show{transform:translateY(0);opacity:1;pointer-events:auto}
+    .toast-icon{width:22px;height:22px;border-radius:50%;background:var(--volt);color:#000;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;flex-shrink:0}
+
+    /* RESPONSIVE */
+    @media (max-width:1200px){.kpi-grid{grid-template-columns:repeat(2,1fr)}.admin-grid-2{grid-template-columns:1fr}}
+    @media (max-width:900px){
+      .admin-sidebar{position:fixed;left:0;top:64px;bottom:0;z-index:900;transform:translateX(-100%);height:calc(100vh - 64px)}
+      .admin-sidebar.open{transform:translateX(0)}
+      .admin-main{padding:20px 16px 50px}
+    }
+    @media (max-width:560px){
+      .kpi-grid{grid-template-columns:1fr}
+      .admin-topbar{padding:0 16px}
+      .page-actions{width:100%}
+      .page-actions .btn-volt,.page-actions .btn-ghost{flex:1;justify-content:center}
+      .form-grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <header class="admin-topbar">
+    <div class="topbar-left">
+      <button class="icon-btn" id="sidebarToggle" aria-label="Toggle sidebar" style="display:none;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <a href="#" class="topbar-brand" aria-label="STACKLY Admin"><img src="Assets/stackly-logo-clean.webp" alt="STACKLY"></a>
+      <span class="admin-chip">Admin</span>
+    </div>
+    <div class="topbar-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" placeholder="Search products, orders, customers...">
+    </div>
+    <div class="topbar-right">
+      <button class="icon-btn" aria-label="Notifications" onclick="showToast('3 unread notifications')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <span class="dot"></span>
+      </button>
+      <div class="admin-profile-pill" style="display:flex;align-items:center;gap:10px;padding:3px 10px 3px 12px;background:rgba(255,255,255,0.04);border:1px solid var(--border-subtle);border-radius:9999px;cursor:pointer;" onclick="switchView('settings')" title="Admin settings">
+        <span class="admin-profile-name" style="font-size:13px;font-weight:700;color:var(--text-white);">Admin</span>
+        <img src="Assets/Ellipse 77.webp" alt="Admin" class="admin-avatar" style="width:32px;height:32px;border-radius:50%;border:2px solid var(--volt);" onerror="this.src='Assets/avatar-admin.webp'">
+      </div>
+    </div>
+  </header>
+
+  <!-- SHELL -->
+  <div class="admin-shell">
+
+    <!-- SIDEBAR -->
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="sidebar-profile" style="display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--border-subtle);margin-bottom:12px;">
+        <img src="Assets/Ellipse 77.webp" alt="Admin" class="sidebar-avatar" style="width:40px;height:40px;border-radius:50%;border:2px solid var(--volt);object-fit:cover;" onerror="this.src='Assets/avatar-admin.webp'">
+        <div style="min-width:0;">
+          <div class="admin-profile-name" style="font-size:14px;font-weight:700;color:var(--text-white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Admin</div>
+          <div class="admin-profile-email" style="font-size:11.5px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">admin@stackly.com</div>
+        </div>
+      </div>
+      <div class="side-section-label">Main</div>
+      <ul class="side-nav">
+        <li><button class="side-link active" data-view="dashboard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Dashboard
+        </button></li>
+        <li><button class="side-link" data-view="orders">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          Orders <span class="count">24</span>
+        </button></li>
+        <li><button class="side-link" data-view="products">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7h-9M14 17H5M19 13v6M5 3v6"/><circle cx="17" cy="5" r="2"/><circle cx="7" cy="19" r="2"/></svg>
+          Products
+        </button></li>
+        <li><button class="side-link" data-view="customers">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Customers
+        </button></li>
+      </ul>
+
+      <div class="side-section-label">Manage</div>
+      <ul class="side-nav">
+        <li><button class="side-link" data-view="analytics">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          Analytics
+        </button></li>
+        <li><button class="side-link" data-view="inventory">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+          Inventory <span class="count" style="background:rgba(245,158,11,0.2);color:#fbbf24;">3</span>
+        </button></li>
+        <li><button class="side-link" data-view="marketing">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Marketing
+        </button></li>
+        <li><button class="side-link" data-view="settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          Settings
+        </button></li>
+        <li><button class="side-link" data-view="logout">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Log out
+        </button></li>
+      </ul>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="admin-main">
+
+      <!-- ============ VIEW: DASHBOARD ============ -->
+      <div class="admin-view active" id="view-dashboard">
+        <div class="page-head">
+          <div>
+            <span class="page-eyebrow">Admin Panel · <span class="admin-profile-name">Admin</span></span>
+            <h1 class="page-title">Welcome back, <span class="admin-profile-name" style="color:var(--volt)">Admin</span></h1>
+            <p class="page-subtitle">Store performance, orders and inventory at a glance.</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn-ghost" onclick="showToast('Exporting report...')">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Export
+            </button>
+            <button class="btn-volt" onclick="showToast('Opening new product form...')">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              New product
+            </button>
+          </div>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-top"><div class="kpi-icon volt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><span class="kpi-trend up">+18.2%</span></div>
+            <div class="kpi-value">₹48,290</div><div class="kpi-label">Total Revenue</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-top"><div class="kpi-icon cyan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div><span class="kpi-trend up">+7.4%</span></div>
+            <div class="kpi-value">1,284</div><div class="kpi-label">Total Orders</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-top"><div class="kpi-icon purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><span class="kpi-trend up">+12.1%</span></div>
+            <div class="kpi-value">3,920</div><div class="kpi-label">Customers</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-top"><div class="kpi-icon warn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><span class="kpi-trend down">-2.3%</span></div>
+            <div class="kpi-value">3</div><div class="kpi-label">Low Stock Alerts</div>
+          </div>
+        </div>
+
+        <div class="admin-grid-2">
+          <section class="panel">
+            <div class="panel-head">
+              <h2 class="panel-title">Revenue — Last 7 Days</h2>
+              <button class="panel-link" onclick="switchView('analytics')">Analytics <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+            </div>
+            <div class="chart-wrap">
+              <div class="chart-bar-group"><div class="chart-bar-stack"><div class="chart-bar dim" style="height:40%"></div><div class="chart-bar volt" style="height:60%"></div></div><span class="chart-label">Mon</span></div>
+              <div class="chart-bar-group"><div class="chart-bar-stack"><div class="chart-bar dim" style="height:30%"></div><div class="chart-bar volt" style="height:75%"></div></div><span class="chart-label">Tue</span></div>
+              <div class="chart-bar-group"><div class="chart-bar-stack"><div class="chart-bar dim" style="height:50%"></div><div class="chart-bar volt" style="height:55%"></div></div><span class="chart-label">Wed</span></div>
+              <div class="chart-bar-group"><div class="chart-bar-stack"><div class="chart-bar dim" style="height:35%"></div><div class="chart-bar volt" style="height:88%"></div></div><span class="chart-label">Thu</span></div>
+              <div class="chart-bar-group"><div class="chart-bar-stack"><div class="chart-bar dim" style="height:45%"></div><div class="chart-bar volt" style="height:70%"></div></div><span class="chart-label">Fri</span></div>
+              <div class="chart-bar-group"><div class="chart-bar-stack"><div class="chart-bar dim" style="height:25%"></div><div class="chart-bar volt" style="height:95%"></div></div><span class="chart-label">Sat</span></div>
+              <div class="chart-bar-group"><div class="chart-bar-stack"><div class="chart-bar dim" style="height:20%"></div><div class="chart-bar volt" style="height:65%"></div></div><span class="chart-label">Sun</span></div>
+            </div>
+            <div class="chart-legend"><span class="legend-item"><span class="legend-dot volt"></span> This week</span><span class="legend-item"><span class="legend-dot dim"></span> Last week</span></div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head">
+              <h2 class="panel-title">Top Products</h2>
+              <button class="panel-link" onclick="switchView('products')">All <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+            </div>
+            <div class="list-row"><span class="list-rank top">1</span><div class="list-info"><div class="list-name">Stride Pro Runner</div><div class="list-sub">142 sold</div></div><span class="list-value">₹23.9k</span></div>
+            <div class="list-row"><span class="list-rank top">2</span><div class="list-info"><div class="list-name">Adjustable Dumbbell</div><div class="list-sub">98 sold</div></div><span class="list-value">₹24.5k</span></div>
+            <div class="list-row"><span class="list-rank">3</span><div class="list-info"><div class="list-name">Volt Compression Tee</div><div class="list-sub">210 sold</div></div><span class="list-value">₹10.1k</span></div>
+            <div class="list-row"><span class="list-rank">4</span><div class="list-info"><div class="list-name">Tempo Daily Trainer</div><div class="list-sub">87 sold</div></div><span class="list-value">₹11.2k</span></div>
+            <div class="list-row"><span class="list-rank">5</span><div class="list-info"><div class="list-name">Halo Quarter-Zip</div><div class="list-sub">64 sold</div></div><span class="list-value">₹5.4k</span></div>
+          </section>
+        </div>
+
+        <section class="panel">
+          <div class="panel-head">
+            <h2 class="panel-title">Recent Orders</h2>
+            <button class="panel-link" onclick="switchView('orders')">View all orders <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+          </div>
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead><tr><th>Order</th><th>Product</th><th>Customer</th><th>Amount</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td style="font-weight:700;color:var(--text-white)">#STK-8821</td><td><div class="table-product"><img src="Assets/Frame 5080.webp" alt="" class="table-thumb" onerror="this.style.background='#18191d'"><div><div class="table-product-name">Stride Pro Runner</div><div class="table-product-sub">Size 10</div></div></div></td><td>Alex Morgan</td><td style="font-weight:700;color:var(--text-white)">₹169.00</td><td><span class="badge badge-delivered">Delivered</span></td></tr>
+                <tr><td style="font-weight:700;color:var(--text-white)">#STK-8820</td><td><div class="table-product"><img src="Assets/product-dumbbell.webp" alt="" class="table-thumb" onerror="this.style.background='#18191d'"><div><div class="table-product-name">Adjustable Dumbbell</div><div class="table-product-sub">50 lb pair</div></div></div></td><td>Maya Rivera</td><td style="font-weight:700;color:var(--text-white)">₹250.00</td><td><span class="badge badge-shipped">Shipped</span></td></tr>
+                <tr><td style="font-weight:700;color:var(--text-white)">#STK-8819</td><td><div class="table-product"><img src="Assets/Frame 5080 (1).webp" alt="" class="table-thumb" onerror="this.style.background='#18191d'"><div><div class="table-product-name">Volt Compression Tee</div><div class="table-product-sub">Size M</div></div></div></td><td>Dev Sharma</td><td style="font-weight:700;color:var(--text-white)">₹48.00</td><td><span class="badge badge-processing">Processing</span></td></tr>
+                <tr><td style="font-weight:700;color:var(--text-white)">#STK-8818</td><td><div class="table-product"><img src="Assets/product-tempo.webp" alt="" class="table-thumb" onerror="this.style.background='#18191d'"><div><div class="table-product-name">Tempo Daily Trainer</div><div class="table-product-sub">Size 9</div></div></div></td><td>Priya Nair</td><td style="font-weight:700;color:var(--text-white)">₹129.00</td><td><span class="badge badge-pending">Pending</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <div class="admin-grid-2">
+          <section class="panel">
+            <div class="panel-head"><h2 class="panel-title">Inventory Status</h2><button class="panel-link" onclick="switchView('inventory')">Manage <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button></div>
+            <div class="table-wrap">
+              <table class="admin-table">
+                <thead><tr><th>Product</th><th>SKU</th><th>Stock</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr><td style="color:var(--text-white);font-weight:700">Stride Pro Runner</td><td>STK-SPR-10</td><td>142</td><td><span class="badge badge-instock">In Stock</span></td></tr>
+                  <tr><td style="color:var(--text-white);font-weight:700">Adjustable Dumbbell</td><td>STK-ADB-50</td><td>28</td><td><span class="badge badge-instock">In Stock</span></td></tr>
+                  <tr><td style="color:var(--text-white);font-weight:700">Volt Compression Tee</td><td>STK-VCT-M</td><td>9</td><td><span class="badge badge-low">Low Stock</span></td></tr>
+                  <tr><td style="color:var(--text-white);font-weight:700">Tempo Daily Trainer</td><td>STK-TDT-09</td><td>0</td><td><span class="badge badge-out">Out of Stock</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head"><h2 class="panel-title">Recent Activity</h2><button class="panel-link" onclick="showToast('Opening activity log...')">All <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button></div>
+            <div class="activity-item"><div class="activity-dot-wrap"><span class="activity-dot"></span></div><div class="activity-body"><div class="activity-text">New order <strong>#STK-8821</strong> placed by <strong>Alex Morgan</strong></div><div class="activity-time">2 minutes ago</div></div></div>
+            <div class="activity-item"><div class="activity-dot-wrap"><span class="activity-dot cyan"></span></div><div class="activity-body"><div class="activity-text">Inventory updated for <strong>Volt Compression Tee</strong> — 9 units left</div><div class="activity-time">18 minutes ago</div></div></div>
+            <div class="activity-item"><div class="activity-dot-wrap"><span class="activity-dot"></span></div><div class="activity-body"><div class="activity-text"><strong>Maya Rivera</strong> left a 5-star review</div><div class="activity-time">1 hour ago</div></div></div>
+            <div class="activity-item"><div class="activity-dot-wrap"><span class="activity-dot warn"></span></div><div class="activity-body"><div class="activity-text"><strong>Tempo Daily Trainer</strong> is now out of stock</div><div class="activity-time">3 hours ago</div></div></div>
+          </section>
+        </div>
+      </div>
+
+      <!-- ============ VIEW: ORDERS ============ -->
+      <div class="admin-view" id="view-orders">
+        <div class="page-head">
+          <div>
+            <span class="page-eyebrow">Sales</span>
+            <h1 class="page-title">All Orders</h1>
+            <p class="page-subtitle">Manage, track and update every order in one place.</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn-ghost" onclick="showToast('Exporting orders CSV...')">Export CSV</button>
+            <button class="btn-volt" onclick="showToast('Opening manual order form...')">Create order</button>
+          </div>
+        </div>
+
+        <section class="panel">
+          <div class="panel-head">
+            <h2 class="panel-title">Orders (24)</h2>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button class="btn-ghost" style="padding:7px 14px;font-size:12px" onclick="showToast('Filter: All')">All</button>
+              <button class="btn-ghost" style="padding:7px 14px;font-size:12px" onclick="showToast('Filter: Pending')">Pending</button>
+              <button class="btn-ghost" style="padding:7px 14px;font-size:12px" onclick="showToast('Filter: Shipped')">Shipped</button>
+              <button class="btn-ghost" style="padding:7px 14px;font-size:12px" onclick="showToast('Filter: Delivered')">Delivered</button>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead><tr><th>Order</th><th>Product</th><th>Customer</th><th>Amount</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody>
+                <tr><td style="font-weight:700;color:var(--text-white)">#STK-8821</td><td><div class="table-product"><img src="Assets/Frame 5080.webp" alt="" class="table-thumb" onerror="this.style.background='#18191d'"><div><div class="table-product-name">Stride Pro Runner</div><div class="table-product-sub">Size 10</div></div></div></td><td>Alex Morgan</td><td style="font-weight:700;color:var(--text-white)">₹169.00</td><td><span class="badge badge-delivered">Delivered</span></td><td><div class="table-actions"><button class="tbl-btn" onclick="showToast('Viewing #STK-8821')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button><button class="tbl-btn danger" onclick="showToast('Order deleted')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button></div></td></tr>
+                <tr><td style="font-weight:700;color:var(--text-white)">#STK-8820</td><td><div class="table-product"><img src="Assets/product-dumbbell.webp" alt="" class="table-thumb" onerror="this.style.background='#18191d'"><div><div class="table-product-name">Adjustable Dumbbell</div><div class="table-product-sub">50 lb pair</div></div></div></td><td>Maya Rivera</td><td style="font-weight:700;color:var(--text-white)">₹250.00</td><td><span class="badge badge-shipped">Shipped</span></td><td><div class="table-actions"><button class="tbl-btn" onclick="showToast('Viewing #STK-8820')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button><button class="tbl-btn danger" onclick="showToast('Order deleted')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button></div></td></tr>
+                <tr><td style="font-weight:700;color:var(--text-white)">#STK-8819</td><td><div class="table-product"><img src="Assets/Frame 5080 (1).webp" alt="" class="table-thumb" onerror="this.style.background='#18191d'"><div><div class="table-product-name">Volt Compression Tee</div><div class="table-product-sub">Size M</div></div></div></td><td>Dev Sharma</td><td style="font-weight:700;color:var(--text-white)">₹48.00</td><td><span class="badge badge-processing">Processing</span></td><td><div class="table-actions"><button class="tbl-btn" onclick="showToast('Viewing #STK-8819')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button><button class="tbl-btn danger" onclick="showToast('Order deleted')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button></div></td></tr>
+                <tr><td style="font-weight:700;color:var(--text-white)">#STK-8818</td><td><div class="table-product"><img src="Assets/product-tempo.webp" alt="" class="table-thumb" onerror="this.style.background='#18191d'"><div><div class="table-product-name">Tempo Daily Trainer</div><div class="table-product-sub">Size 9</div></div></div></td><td>Priya Nair</td><td style="font-weight:700;color:var(--text-white)">₹129.00</td><td><span class="badge badge-pending">Pending</span></td><td><div class="table-actions"><button class="tbl-btn" onclick="showToast('Viewing #STK-8818')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button><button class="tbl-btn danger" onclick="showToast('Order deleted')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button></div></td></tr>
+                <tr><td style="font-weight:700;color:var(--text-white)">#STK-8817</td><td><div class="table-product"><img src="Assets/product-straps.webp" alt="" class="table-thumb" onerror="this.style.background='#18191d'"><div><div class="table-product-name">Grip Lifting Straps</div><div class="table-product-sub">Cotton blend</div></div></div></td><td>Arjun Kapoor</td><td style="font-weight:700;color:var(--text-white)">₹22.00</td><td><span class="badge badge-delivered">Delivered</span></td><td><div class="table-actions"><button class="tbl-btn" onclick="showToast('Viewing #STK-8817')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button><button class="tbl-btn danger" onclick="showToast('Order deleted')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <!-- ============ VIEW: PRODUCTS ============ -->
+      <div class="admin-view" id="view-products">
+        <div class="page-head">
+          <div>
+            <span class="page-eyebrow">Catalog</span>
+            <h1 class="page-title">Products</h1>
+            <p class="page-subtitle">Add, edit and organize your product catalog.</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn-ghost" onclick="showToast('Importing products...')">Import</button>
+            <button class="btn-volt" onclick="showToast('Opening new product form...')">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              New product
+            </button>
+          </div>
+        </div>
+
+        <section class="panel">
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead><tr><th>Product</th><th>SKU</th><th>Category</th><th>Price</th><th>Stock</th><th>Actions</th></tr></thead>
+              <tbody>
+                <tr><td><div class="table-product"><img src="Assets/Frame 5080.webp" alt="" class="table-thumb" onerror="this.style.background='#18191d'"><div><div class="table-product-name">Stride Pro Runner</div><div class="table-product-sub">Carbon plate</div></div></div></td><td>STK-SPR-10</td><td>Running</td><td style="font-weight:700;color:var(--text-white)">₹169</td><td><span class="badge badge-instock">142 in stock</span></td><td><div class="table-actions"><button class="tbl-btn" onclick="showToast('Editing Stride Pro Runner')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="tbl-btn danger" onclick="showToast('Product deleted')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button></div></td></tr>
+                <tr><td><div class="table-product"><img src="Assets/product-dumbbell.webp" alt="" class="table-thumb" onerror="this.style.background='#18191d'"><div><div class="table-product-name">Adjustable Dumbbell</div><div class="table-product-sub">5–50 lb</div></div></div></td><td>STK-ADB-50</td><td>Gym</td><td style="font-weight:700;color:var(--text-white)">₹250</td><td><span class="badge badge-instock">28 in stock</span></td><td><div class="table-actions"><button class="tbl-btn" onclick="showToast('Editing Adjustable Dumbbell')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="tbl-btn danger" onclick="showToast('Product deleted')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button></div></td></tr>
+                <tr><td><div class="table-product"><img src="Assets/Frame 5080 (1).webp" alt="" class="table-thumb" onerror="this.style.background='#18191d'"><div><div class="table-product-name">Volt Compression Tee</div><div class="table-product-sub">Sweat-mapped</div></div></div></td><td>STK-VCT-M</td><td>Sportswear</td><td style="font-weight:700;color:var(--text-white)">₹48</td><td><span class="badge badge-low">9 in stock</span></td><td><div class="table-actions"><button class="tbl-btn" onclick="showToast('Editing Volt Compression Tee')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="tbl-btn danger" onclick="showToast('Product deleted')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button></div></td></tr>
+                <tr><td><div class="table-product"><img src="Assets/product-tempo.webp" alt="" class="table-thumb" onerror="this.style.background='#18191d'"><div><div class="table-product-name">Tempo Daily Trainer</div><div class="table-product-sub">Cushioned</div></div></div></td><td>STK-TDT-09</td><td>Running</td><td style="font-weight:700;color:var(--text-white)">₹129</td><td><span class="badge badge-out">Out of stock</span></td><td><div class="table-actions"><button class="tbl-btn" onclick="showToast('Editing Tempo Daily Trainer')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="tbl-btn danger" onclick="showToast('Product deleted')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button></div></td></tr>
+                <tr><td><div class="table-product"><img src="Assets/product-halo.webp" alt="" class="table-thumb" onerror="this.style.background='#18191d'"><div><div class="table-product-name">Halo Quarter-Zip</div><div class="table-product-sub">Thermal</div></div></div></td><td>STK-HQZ-L</td><td>Sportswear</td><td style="font-weight:700;color:var(--text-white)">₹84</td><td><span class="badge badge-instock">64 in stock</span></td><td><div class="table-actions"><button class="tbl-btn" onclick="showToast('Editing Halo Quarter-Zip')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="tbl-btn danger" onclick="showToast('Product deleted')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <!-- ============ VIEW: CUSTOMERS ============ -->
+      <div class="admin-view" id="view-customers">
+        <div class="page-head">
+          <div>
+            <span class="page-eyebrow">People</span>
+            <h1 class="page-title">Customers</h1>
+            <p class="page-subtitle">View customer profiles, spend and order history.</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn-ghost" onclick="showToast('Exporting customer list...')">Export</button>
+          </div>
+        </div>
+
+        <div class="admin-grid-2">
+          <section class="panel">
+            <div class="panel-head"><h2 class="panel-title">All Customers (3,920)</h2></div>
+            <div class="customer-card">
+              <img src="Assets/Ellipse 77.webp" alt="" class="customer-avatar" onerror="this.src='Assets/avatar-alex-p.webp'">
+              <div class="customer-info"><div class="customer-name">Alex Morgan</div><div class="customer-email">alex@stackly.com · 14 orders</div></div>
+              <span class="customer-spent">₹2,840</span>
+            </div>
+            <div class="customer-card">
+              <img src="Assets/Ellipse 77.webp" alt="" class="customer-avatar" onerror="this.src='Assets/avatar-maya-r.webp'">
+              <div class="customer-info"><div class="customer-name">Maya Rivera</div><div class="customer-email">maya@example.com · 9 orders</div></div>
+              <span class="customer-spent">₹1,920</span>
+            </div>
+            <div class="customer-card">
+              <img src="Assets/Ellipse 77.webp" alt="" class="customer-avatar" onerror="this.src='Assets/avatar-dev-s.webp'">
+              <div class="customer-info"><div class="customer-name">Dev Sharma</div><div class="customer-email">dev@example.com · 6 orders</div></div>
+              <span class="customer-spent">₹780</span>
+            </div>
+            <div class="customer-card">
+              <img src="Assets/avatar-priya-n.webp" alt="" class="customer-avatar" onerror="this.src='Assets/avatar-priya-n.webp'">
+              <div class="customer-info"><div class="customer-name">Priya Nair</div><div class="customer-email">priya@example.com · 3 orders</div></div>
+              <span class="customer-spent">₹410</span>
+            </div>
+            <div class="customer-card">
+              <img src="Assets/avatar-arjun-k.webp" alt="" class="customer-avatar" onerror="this.src='Assets/avatar-arjun-k.webp'">
+              <div class="customer-info"><div class="customer-name">Arjun Kapoor</div><div class="customer-email">arjun@example.com · 11 orders</div></div>
+              <span class="customer-spent">₹1,540</span>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head"><h2 class="panel-title">Top Customers</h2></div>
+            <div class="list-row"><span class="list-rank top">1</span><div class="list-info"><div class="list-name">Alex Morgan</div><div class="list-sub">14 orders</div></div><span class="list-value">₹2.8k</span></div>
+            <div class="list-row"><span class="list-rank top">2</span><div class="list-info"><div class="list-name">Maya Rivera</div><div class="list-sub">9 orders</div></div><span class="list-value">₹1.9k</span></div>
+            <div class="list-row"><span class="list-rank">3</span><div class="list-info"><div class="list-name">Arjun Kapoor</div><div class="list-sub">11 orders</div></div><span class="list-value">₹1.5k</span></div>
+            <div class="list-row"><span class="list-rank">4</span><div class="list-info"><div class="list-name">Dev Sharma</div><div class="list-sub">6 orders</div></div><span class="list-value">₹780</span></div>
+            <div class="list-row"><span class="list-rank">5</span><div class="list-info"><div class="list-name">Priya Nair</div><div class="list-sub">3 orders</div></div><span class="list-value">₹410</span></div>
+          </section>
+        </div>
+      </div>
+
+      <!-- ============ VIEW: ANALYTICS ============ -->
+      <div class="admin-view" id="view-analytics">
+        <div class="page-head">
+          <div>
+            <span class="page-eyebrow">Insights</span>
+            <h1 class="page-title">Analytics</h1>
+            <p class="page-subtitle">Revenue trends, conversion and channel performance.</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn-ghost" onclick="showToast('Date range: Last 30 days')">Last 30 days</button>
+            <button class="btn-volt" onclick="showToast('Exporting analytics report...')">Export report</button>
+          </div>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-top"><div class="kpi-icon volt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div><span class="kpi-trend up">+24.8%</span></div>
+            <div class="kpi-value">4.82%</div><div class="kpi-label">Conversion Rate</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-top"><div class="kpi-icon cyan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div><span class="kpi-trend up">+8.1%</span></div>
+            <div class="kpi-value">2m 34s</div><div class="kpi-label">Avg. Session</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-top"><div class="kpi-icon purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><span class="kpi-trend up">+12.1%</span></div>
+            <div class="kpi-value">38,420</div><div class="kpi-label">Monthly Visitors</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-top"><div class="kpi-icon warn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><span class="kpi-trend up">+3.2%</span></div>
+            <div class="kpi-value">₹186</div><div class="kpi-label">Avg. Order Value</div>
+          </div>
+        </div>
+
+        <div class="admin-grid-2">
+          <section class="panel">
+            <div class="panel-head"><h2 class="panel-title">Revenue Trend</h2></div>
+            <div class="chart-wrap">
+              <div class="chart-bar-group"><div class="chart-bar-stack"><div class="chart-bar volt" style="height:45%"></div></div><span class="chart-label">W1</span></div>
+              <div class="chart-bar-group"><div class="chart-bar-stack"><div class="chart-bar volt" style="height:62%"></div></div><span class="chart-label">W2</span></div>
+              <div class="chart-bar-group"><div class="chart-bar-stack"><div class="chart-bar volt" style="height:55%"></div></div><span class="chart-label">W3</span></div>
+              <div class="chart-bar-group"><div class="chart-bar-stack"><div class="chart-bar volt" style="height:78%"></div></div><span class="chart-label">W4</span></div>
+              <div class="chart-bar-group"><div class="chart-bar-stack"><div class="chart-bar volt" style="height:88%"></div></div><span class="chart-label">W5</span></div>
+              <div class="chart-bar-group"><div class="chart-bar-stack"><div class="chart-bar volt" style="height:70%"></div></div><span class="chart-label">W6</span></div>
+              <div class="chart-bar-group"><div class="chart-bar-stack"><div class="chart-bar volt" style="height:95%"></div></div><span class="chart-label">W7</span></div>
+              <div class="chart-bar-group"><div class="chart-bar-stack"><div class="chart-bar volt" style="height:82%"></div></div><span class="chart-label">W8</span></div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head"><h2 class="panel-title">Traffic Sources</h2></div>
+            <div class="list-row"><span class="list-rank top" style="background:var(--volt);color:#000">1</span><div class="list-info"><div class="list-name">Organic Search</div><div class="list-sub">18,420 visits</div></div><span class="list-value">48%</span></div>
+            <div class="list-row"><span class="list-rank">2</span><div class="list-info"><div class="list-name">Instagram</div><div class="list-sub">9,210 visits</div></div><span class="list-value">24%</span></div>
+            <div class="list-row"><span class="list-rank">3</span><div class="list-info"><div class="list-name">Direct</div><div class="list-sub">6,120 visits</div></div><span class="list-value">16%</span></div>
+            <div class="list-row"><span class="list-rank">4</span><div class="list-info"><div class="list-name">Email</div><div class="list-sub">3,050 visits</div></div><span class="list-value">8%</span></div>
+            <div class="list-row"><span class="list-rank">5</span><div class="list-info"><div class="list-name">Referral</div><div class="list-sub">1,620 visits</div></div><span class="list-value">4%</span></div>
+          </section>
+        </div>
+      </div>
+
+      <!-- ============ VIEW: INVENTORY ============ -->
+      <div class="admin-view" id="view-inventory">
+        <div class="page-head">
+          <div>
+            <span class="page-eyebrow">Stock</span>
+            <h1 class="page-title">Inventory</h1>
+            <p class="page-subtitle">Track stock levels and restock alerts.</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn-ghost" onclick="showToast('Syncing inventory...')">Sync</button>
+            <button class="btn-volt" onclick="showToast('Opening restock form...')">Restock</button>
+          </div>
+        </div>
+
+        <section class="panel">
+          <div class="panel-head"><h2 class="panel-title">Stock Levels</h2></div>
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead><tr><th>Product</th><th>SKU</th><th>Category</th><th>Stock</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody>
+                <tr><td style="color:var(--text-white);font-weight:700">Stride Pro Runner</td><td>STK-SPR-10</td><td>Running</td><td>142</td><td><span class="badge badge-instock">In Stock</span></td><td><button class="tbl-btn" onclick="showToast('Restocking Stride Pro Runner')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button></td></tr>
+                <tr><td style="color:var(--text-white);font-weight:700">Adjustable Dumbbell</td><td>STK-ADB-50</td><td>Gym</td><td>28</td><td><span class="badge badge-instock">In Stock</span></td><td><button class="tbl-btn" onclick="showToast('Restocking Adjustable Dumbbell')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button></td></tr>
+                <tr><td style="color:var(--text-white);font-weight:700">Volt Compression Tee</td><td>STK-VCT-M</td><td>Sportswear</td><td>9</td><td><span class="badge badge-low">Low Stock</span></td><td><button class="tbl-btn" onclick="showToast('Restocking Volt Compression Tee')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button></td></tr>
+                <tr><td style="color:var(--text-white);font-weight:700">Tempo Daily Trainer</td><td>STK-TDT-09</td><td>Running</td><td>0</td><td><span class="badge badge-out">Out of Stock</span></td><td><button class="tbl-btn" onclick="showToast('Restocking Tempo Daily Trainer')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button></td></tr>
+                <tr><td style="color:var(--text-white);font-weight:700">Halo Quarter-Zip</td><td>STK-HQZ-L</td><td>Sportswear</td><td>64</td><td><span class="badge badge-instock">In Stock</span></td><td><button class="tbl-btn" onclick="showToast('Restocking Halo Quarter-Zip')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button></td></tr>
+                <tr><td style="color:var(--text-white);font-weight:700">Grip Lifting Straps</td><td>STK-GLS-01</td><td>Accessories</td><td>210</td><td><span class="badge badge-instock">In Stock</span></td><td><button class="tbl-btn" onclick="showToast('Restocking Grip Lifting Straps')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <!-- ============ VIEW: MARKETING ============ -->
+      <div class="admin-view" id="view-marketing">
+        <div class="page-head">
+          <div>
+            <span class="page-eyebrow">Growth</span>
+            <h1 class="page-title">Marketing</h1>
+            <p class="page-subtitle">Campaigns, discounts and email performance.</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn-volt" onclick="showToast('Opening campaign builder...')">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              New campaign
+            </button>
+          </div>
+        </div>
+
+        <div class="admin-grid-2">
+          <section class="panel">
+            <div class="panel-head"><h2 class="panel-title">Active Campaigns</h2></div>
+            <div class="list-row"><span class="list-rank top">1</span><div class="list-info"><div class="list-name">Volt Series 2026 Launch</div><div class="list-sub">Email · 12,480 sent</div></div><span class="list-value">62%</span></div>
+            <div class="list-row"><span class="list-rank">2</span><div class="list-info"><div class="list-name">Spring Training Sale</div><div class="list-sub">Instagram · 24.1k reach</div></div><span class="list-value">48%</span></div>
+            <div class="list-row"><span class="list-rank">3</span><div class="list-info"><div class="list-name">Loyalty Double Points</div><div class="list-sub">Email · 8,920 sent</div></div><span class="list-value">71%</span></div>
+            <div class="list-row"><span class="list-rank">4</span><div class="list-info"><div class="list-name">Abandoned Cart Flow</div><div class="list-sub">Automated · 2,340 sent</div></div><span class="list-value">38%</span></div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head"><h2 class="panel-title">Discount Codes</h2><button class="btn-volt" style="padding:8px 16px;font-size:12px" onclick="showToast('Opening discount form...')">Create</button></div>
+            <div class="list-row"><div class="list-info"><div class="list-name" style="font-family:var(--font-heading);letter-spacing:0.05em;">VOLT20</div><div class="list-sub">20% off · 340 uses</div></div><span class="badge badge-instock">Active</span></div>
+            <div class="list-row"><div class="list-info"><div class="list-name" style="font-family:var(--font-heading);letter-spacing:0.05em;">PULSE10</div><div class="list-sub">10% off · 128 uses</div></div><span class="badge badge-instock">Active</span></div>
+            <div class="list-row"><div class="list-info"><div class="list-name" style="font-family:var(--font-heading);letter-spacing:0.05em;">STRIDE15</div><div class="list-sub">15% off · 89 uses</div></div><span class="badge badge-low">Ending soon</span></div>
+            <div class="list-row"><div class="list-info"><div class="list-name" style="font-family:var(--font-heading);letter-spacing:0.05em;">WELCOME</div><div class="list-sub">10% off · 512 uses</div></div><span class="badge badge-instock">Active</span></div>
+          </section>
+        </div>
+      </div>
+
+      <!-- ============ VIEW: SETTINGS ============ -->
+      <div class="admin-view" id="view-settings">
+        <div class="page-head">
+          <div>
+            <span class="page-eyebrow">Configuration</span>
+            <h1 class="page-title">Settings</h1>
+            <p class="page-subtitle">Store preferences, notifications and security.</p>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h2 class="panel-title">Store Settings</h2></div>
+          <form onsubmit="event.preventDefault(); showToast('Store settings saved!');">
+            <div class="form-grid">
+              <div class="form-field"><label class="form-label">Store name</label><input class="form-input" type="text" value="STACKLY"></div>
+              <div class="form-field"><label class="form-label">Support email</label><input class="form-input" type="email" value="info@stackly.com"></div>
+              <div class="form-field"><label class="form-label">Currency</label><select class="form-select"><option>USD ($)</option><option selected>INR (₹)</option><option>EUR (€)</option><option>GBP (£)</option></select></div>
+              <div class="form-field"><label class="form-label">Timezone</label><select class="form-select"><option>Asia/Kolkata (IST)</option><option selected>America/New_York (EST)</option><option>Europe/London (GMT)</option></select></div>
+              <div class="form-field full"><label class="form-label">Store address</label><textarea class="form-textarea">Evolve Studio, 4th Floor, Khata No 18, Begur - Koppa Rd, Bengaluru, Karnataka - 560068</textarea></div>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn-volt">Save settings</button>
+              <button type="button" class="btn-ghost" onclick="showToast('Changes discarded')">Cancel</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h2 class="panel-title">Notifications</h2></div>
+          <div class="setting-row"><div class="setting-info"><div class="setting-title">New order alerts</div><div class="setting-desc">Get notified for every new order placed.</div></div><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+          <div class="setting-row"><div class="setting-info"><div class="setting-title">Low stock alerts</div><div class="setting-desc">Notify when products drop below 10 units.</div></div><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+          <div class="setting-row"><div class="setting-info"><div class="setting-title">Weekly summary</div><div class="setting-desc">Get a weekly performance digest every Monday.</div></div><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+          <div class="setting-row"><div class="setting-info"><div class="setting-title">Customer reviews</div><div class="setting-desc">Notify when a new review is submitted.</div></div><label class="toggle"><input type="checkbox"><span class="toggle-slider"></span></label></div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h2 class="panel-title">Security</h2></div>
+          <div class="setting-row"><div class="setting-info"><div class="setting-title">Change admin password</div><div class="setting-desc">Last updated 45 days ago.</div></div><button class="btn-ghost" onclick="showToast('Password reset link sent')">Update</button></div>
+          <div class="setting-row"><div class="setting-info"><div class="setting-title">Two-factor authentication</div><div class="setting-desc">Require 2FA for all admin logins.</div></div><button class="btn-ghost" onclick="showToast('2FA setup opened')">Enable</button></div>
+          <div class="setting-row"><div class="setting-info"><div class="setting-title">API access keys</div><div class="setting-desc">Manage integration keys for third-party tools.</div></div><button class="btn-ghost" onclick="showToast('Opening API keys...')">Manage</button></div>
+        </div>
+      </div>
+
+      <!-- ============ VIEW: LOGOUT ============ -->
+      <div class="admin-view" id="view-logout">
+        <div class="panel" style="text-align:center;padding:60px 30px;max-width:520px;margin:0 auto;">
+          <div style="width:64px;height:64px;border-radius:50%;background:rgba(239,68,68,0.12);color:#f87171;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          </div>
+          <h2 class="panel-title" style="font-size:24px;margin-bottom:10px;">Log out of Admin?</h2>
+          <p style="font-size:13.5px;color:var(--text-muted);margin-bottom:24px;">You'll need to sign back in with admin credentials to access the dashboard.</p>
+          <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+            <button class="btn-volt" onclick="handleAdminLogout()">Yes, log out</button>
+            <button class="btn-ghost" onclick="switchView('dashboard')">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <script>
+    function showToast(msg){
+      let t=document.querySelector('.toast-notice');
+      if(!t){t=document.createElement('div');t.className='toast-notice';t.innerHTML='<span class="toast-icon">✓</span><span class="toast-text"></span>';document.body.appendChild(t);}
+      t.querySelector('.toast-text').textContent=msg;
+      t.classList.add('show');
+      clearTimeout(window._tt);window._tt=setTimeout(()=>t.classList.remove('show'),2600);
+    }
+
+    function switchView(name){
+      document.querySelectorAll('.admin-view').forEach(v=>v.classList.remove('active'));
+      const target=document.getElementById('view-'+name);
+      if(target) target.classList.add('active');
+      document.querySelectorAll('.side-link').forEach(l=>l.classList.remove('active'));
+      const link=document.querySelector(`.side-link[data-view="${name}"]`);
+      if(link) link.classList.add('active');
+      if(window.matchMedia('(max-width:900px)').matches){
+        document.getElementById('adminSidebar').classList.remove('open');
+      }
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
+
+    document.querySelectorAll('.side-link').forEach(btn=>{
+      btn.addEventListener('click',()=>switchView(btn.dataset.view));
+    });
+
+    // Mobile sidebar
+    const sidebarToggle=document.getElementById('sidebarToggle');
+    const adminSidebar=document.getElementById('adminSidebar');
+    const mq=window.matchMedia('(max-width:900px)');
+    function handleMq(){sidebarToggle.style.display=mq.matches?'flex':'none';if(!mq.matches)adminSidebar.classList.remove('open');}
+    mq.addEventListener('change',handleMq);handleMq();
+    sidebarToggle.addEventListener('click',()=>adminSidebar.classList.toggle('open'));
+    document.addEventListener('click',(e)=>{
+      if(mq.matches&&adminSidebar.classList.contains('open')&&!adminSidebar.contains(e.target)&&!sidebarToggle.contains(e.target)){
+        adminSidebar.classList.remove('open');
+      }
+    });
+
+    // Admin Profile Sync & Persistence
+    function syncAdminProfile() {
+      const storedName = localStorage.getItem('stackly_profile_name');
+      const storedId = localStorage.getItem('stackly_user_id');
+      const storedEmail = localStorage.getItem('stackly_user_email');
+      
+      const name = storedName || (storedId ? storedId : 'Admin');
+      const email = storedEmail || (storedId && storedId.includes('@') ? storedId : (storedId ? storedId.toLowerCase().replace(/\s+/g,'') + '@stackly.com' : 'admin@stackly.com'));
+
+      document.querySelectorAll('.admin-profile-name').forEach(el => el.textContent = name);
+      document.querySelectorAll('.admin-profile-email').forEach(el => el.textContent = email);
+      document.querySelectorAll('.admin-avatar, .sidebar-avatar').forEach(el => el.setAttribute('alt', name));
+    }
+
+    function handleAdminLogout() {
+      showToast('Signing out of admin...');
+      localStorage.removeItem('stackly_user_id');
+      localStorage.removeItem('stackly_profile_name');
+      localStorage.removeItem('stackly_user_email');
+      localStorage.removeItem('stackly_role');
+      setTimeout(() => { window.location.href = 'login.html'; }, 500);
+    }
+
+    document.addEventListener('DOMContentLoaded', syncAdminProfile);
+  </script>
+</body>
+</html>

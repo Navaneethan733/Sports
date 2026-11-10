@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Bag | STACKLY — Built to Push Limits</title>
+  <meta name="description" content="Review your STACKLY bag and check out. Free shipping over ₹100.">
+
+  <link rel="icon" type="image/webp" href="Assets/stackly-logo-clean.webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg-dark:#0a0b0d;--bg-card:#131417;--bg-card-surface:#18191d;--bg-elevated:#1e2025;
+      --volt:#d2fd04;--volt-hover:#bce402;--volt-glow:rgba(210,253,4,0.28);--volt-dim:rgba(210,253,4,0.12);
+      --cyan:#00f2fe;--success:#22c55e;--warning:#f59e0b;--danger:#ef4444;--purple:#a855f7;
+      --text-white:#ffffff;--text-muted:#8e95a2;--text-dim:#5c626e;
+      --border-subtle:rgba(255,255,255,0.08);--border-medium:rgba(255,255,255,0.15);
+      --font-heading:'Barlow Condensed','Oswald',sans-serif;--font-body:'Plus Jakarta Sans',system-ui,sans-serif;
+      --radius-sm:8px;--radius-md:14px;--radius-lg:20px;--radius-xl:28px;--radius-full:9999px;
+      --transition-fast:0.2s cubic-bezier(0.16,1,0.3,1);--transition-smooth:0.4s cubic-bezier(0.16,1,0.3,1);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;font-size:16px;color-scheme:dark}
+    body{background:var(--bg-dark);color:var(--text-white);font-family:var(--font-body);line-height:1.5;overflow-x:hidden;-webkit-font-smoothing:antialiased;min-height:100vh}
+    img{max-width:100%;height:auto;display:block}
+    a{color:inherit;text-decoration:none}
+    button{font-family:inherit;border:none;background:none;cursor:pointer}
+    input,select,textarea{font-family:inherit}
+    .container{width:100%;max-width:1320px;margin:0 auto;padding:0 24px}
+
+    /* ============================= HEADER ============================= */
+    .site-header{position:fixed;top:0;left:0;right:0;z-index:999;padding:16px 0;transition:background-color 0.3s ease,padding 0.3s ease,border-color 0.3s ease,backdrop-filter 0.3s ease;background-color:transparent}
+    .site-header.scrolled{background-color:rgba(10,11,13,0.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);padding:12px 0;border-bottom:1px solid var(--border-subtle);box-shadow:0 8px 30px rgba(0,0,0,0.5)}
+    .nav-container{display:flex;align-items:center;justify-content:space-between;gap:20px}
+    .nav-brand{display:flex;align-items:center;gap:10px;flex-shrink:0}
+    .brand-logo-img{height:28px;width:auto;object-fit:contain}
+    .nav-links{display:flex;align-items:center;gap:32px;list-style:none;margin:0 auto}
+    .nav-link{font-size:14px;font-weight:500;color:#c9ccd4;position:relative;padding:6px 0;transition:color var(--transition-fast)}
+    .nav-link:hover,.nav-link.active{color:var(--text-white)}
+    .nav-link::after{content:'';position:absolute;bottom:0;left:0;width:0%;height:2px;background-color:var(--volt);transition:width var(--transition-fast)}
+    .nav-link:hover::after,.nav-link.active::after{width:100%}
+    .nav-actions{display:flex;align-items:center;gap:10px;flex-shrink:0}
+    .nav-icon-btn{width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,0.16);background:rgba(255,255,255,0.03);color:var(--text-white);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--transition-fast);position:relative;flex-shrink:0}
+    .nav-icon-btn:hover{border-color:var(--volt);color:var(--volt);background:rgba(30,32,38,0.95)}
+    .nav-icon-btn svg{width:17px;height:17px}
+    .nav-badge{position:absolute;top:-3px;right:-3px;min-width:17px;height:17px;padding:0 4px;border-radius:var(--radius-full);background:var(--volt);color:#000;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;border:2px solid var(--bg-dark);line-height:1}
+    .user-avatar-btn{width:38px;height:38px;border-radius:50%;overflow:hidden;border:2px solid var(--volt);cursor:pointer;padding:0;transition:transform var(--transition-fast);flex-shrink:0}
+    .user-avatar-btn:hover{transform:scale(1.06)}
+    .user-avatar-btn img{width:100%;height:100%;object-fit:cover}
+    .mobile-toggle{display:none;flex-direction:column;justify-content:center;align-items:center;gap:4px;width:38px;height:38px;border-radius:var(--radius-sm);background:rgba(255,255,255,0.05);border:1px solid var(--border-subtle);cursor:pointer;z-index:1001;transition:background var(--transition-fast),border-color var(--transition-fast)}
+    .mobile-toggle:hover{border-color:var(--volt)}
+    .mobile-toggle span{display:block;width:18px;height:2px;background-color:var(--text-white);border-radius:2px;transition:all 0.3s ease}
+    .mobile-toggle.active span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+    .mobile-toggle.active span:nth-child(2){opacity:0}
+    .mobile-toggle.active span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+    .mobile-drawer{position:fixed;top:0;right:-100%;width:82%;max-width:360px;height:100vh;background:#111215;box-shadow:-15px 0 40px rgba(0,0,0,0.8);border-left:1px solid var(--border-subtle);z-index:1000;padding:85px 28px 40px;display:flex;flex-direction:column;justify-content:space-between;transition:right 0.4s cubic-bezier(0.16,1,0.3,1)}
+    .mobile-drawer.open{right:0}
+    .mobile-drawer-backdrop{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);z-index:999;opacity:0;pointer-events:none;transition:opacity 0.3s ease}
+    .mobile-drawer-backdrop.active{opacity:1;pointer-events:auto}
+    .mobile-nav-links{list-style:none;display:flex;flex-direction:column;gap:20px}
+    .mobile-nav-links .nav-link{font-size:20px;font-family:var(--font-heading);letter-spacing:0.04em;display:block}
+    @media (max-width:840px){.nav-links{display:none}.mobile-toggle{display:flex}}
+
+    /* ============================= CART HERO ============================= */
+    .cart-hero{padding:130px 0 40px;position:relative;overflow:hidden;background-color:#0d0e10;background-image:radial-gradient(circle at 72% 45%,rgba(95,120,40,0.35) 0%,rgba(65,85,30,0.18) 34%,rgba(30,36,22,0.06) 58%,#0d0e10 78%)}
+    .cart-hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.022) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.022) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(circle at 50% 45%,black 0%,transparent 72%);-webkit-mask-image:radial-gradient(circle at 50% 45%,black 0%,transparent 72%);pointer-events:none}
+    .cart-hero-inner{position:relative;z-index:2}
+    .cart-breadcrumb{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-muted);font-weight:600;margin-bottom:16px}
+    .cart-breadcrumb a{transition:color var(--transition-fast)}
+    .cart-breadcrumb a:hover{color:var(--volt)}
+    .cart-breadcrumb svg{width:12px;height:12px;color:var(--text-dim)}
+    .cart-title{font-family:var(--font-heading);font-size:clamp(42px,6vw,72px);font-weight:900;line-height:0.92;text-transform:uppercase;letter-spacing:-0.02em}
+    .cart-title .text-volt{color:var(--volt)}
+    .cart-subtitle{font-size:14px;color:#9da4b2;font-weight:500;margin-top:12px}
+    .cart-subtitle strong{color:var(--volt);font-weight:800}
+
+    /* ============================= CART LAYOUT ============================= */
+    .cart-section{padding:20px 0 90px}
+    .cart-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:28px;align-items:flex-start}
+    @media (max-width:900px){.cart-grid{grid-template-columns:1fr}}
+
+    /* ITEMS PANEL */
+    .cart-items-panel{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:var(--radius-xl);overflow:hidden}
+    .cart-items-head{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--border-subtle);flex-wrap:wrap;gap:12px}
+    .cart-items-head-title{font-family:var(--font-heading);font-size:18px;font-weight:800;text-transform:uppercase;letter-spacing:0.02em;display:flex;align-items:center;gap:10px}
+    .cart-items-count{background:var(--volt);color:#000;font-size:11px;font-weight:800;padding:2px 9px;border-radius:var(--radius-full);min-width:22px;text-align:center}
+    .cart-clear-btn{font-size:12px;font-weight:700;color:var(--text-muted);display:inline-flex;align-items:center;gap:6px;transition:color var(--transition-fast);padding:6px 10px;border-radius:var(--radius-sm)}
+    .cart-clear-btn:hover{color:var(--danger);background:rgba(239,68,68,0.08)}
+    .cart-clear-btn svg{width:13px;height:13px}
+
+    /* CART ITEM */
+    .cart-item{display:grid;grid-template-columns:auto 1fr auto;gap:18px;padding:22px 24px;border-bottom:1px solid rgba(255,255,255,0.04);transition:background var(--transition-fast),opacity 0.3s ease,transform 0.3s ease}
+    .cart-item:last-child{border-bottom:none}
+    .cart-item:hover{background:rgba(255,255,255,0.015)}
+    .cart-item.removing{opacity:0;transform:translateX(-20px)}
+    @media (max-width:600px){.cart-item{grid-template-columns:auto 1fr;gap:14px;padding:18px}}
+
+    .cart-item-img{width:100px;height:120px;border-radius:var(--radius-md);overflow:hidden;background:var(--bg-card-surface);flex-shrink:0}
+    .cart-item-img img{width:100%;height:100%;object-fit:cover;transition:transform var(--transition-smooth)}
+    .cart-item:hover .cart-item-img img{transform:scale(1.05)}
+    @media (max-width:600px){.cart-item-img{width:80px;height:96px}}
+
+    .cart-item-info{display:flex;flex-direction:column;justify-content:space-between;min-width:0}
+    .cart-item-cat{font-size:10.5px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:var(--volt);margin-bottom:4px}
+    .cart-item-name{font-family:var(--font-heading);font-size:19px;font-weight:800;text-transform:uppercase;letter-spacing:0.02em;line-height:1.15;margin-bottom:4px}
+    .cart-item-variant{font-size:12px;color:var(--text-muted);font-weight:500;margin-bottom:12px}
+    .cart-item-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+    .qty-stepper{display:inline-flex;align-items:center;background:var(--bg-card-surface);border:1px solid var(--border-subtle);border-radius:var(--radius-full);overflow:hidden;transition:border-color var(--transition-fast)}
+    .qty-stepper:focus-within{border-color:var(--volt)}
+    .qty-btn{width:30px;height:30px;display:flex;align-items:center;justify-content:center;color:#c9ccd4;transition:all var(--transition-fast)}
+    .qty-btn:hover{color:var(--volt);background:rgba(255,255,255,0.04)}
+    .qty-btn:disabled{opacity:0.3;cursor:not-allowed}
+    .qty-btn:disabled:hover{color:#c9ccd4;background:none}
+    .qty-btn svg{width:13px;height:13px}
+    .qty-value{min-width:32px;text-align:center;font-size:13.5px;font-weight:800;color:var(--text-white);user-select:none}
+    .cart-item-remove{font-size:12px;font-weight:600;color:var(--text-muted);display:inline-flex;align-items:center;gap:5px;transition:color var(--transition-fast);padding:6px 8px;border-radius:var(--radius-sm)}
+    .cart-item-remove:hover{color:var(--danger);background:rgba(239,68,68,0.08)}
+    .cart-item-remove svg{width:13px;height:13px}
+
+    .cart-item-price-col{display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between;gap:8px;text-align:right}
+    .cart-item-price{font-family:var(--font-heading);font-size:22px;font-weight:900;color:var(--text-white);line-height:1;white-space:nowrap}
+    .cart-item-unit{font-size:11px;color:var(--text-dim);font-weight:600;white-space:nowrap}
+    @media (max-width:600px){
+      .cart-item-price-col{grid-column:1/-1;flex-direction:row;align-items:center;justify-content:space-between;border-top:1px dashed var(--border-subtle);padding-top:12px;margin-top:2px}
+    }
+
+    /* EMPTY STATE */
+    .cart-empty{padding:70px 30px;text-align:center;display:none}
+    .cart-empty.show{display:block;animation:fadeUp 0.5s cubic-bezier(0.16,1,0.3,1)}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+    .cart-empty-icon{width:88px;height:88px;border-radius:50%;background:var(--bg-card-surface);border:1px solid var(--border-subtle);display:flex;align-items:center;justify-content:center;margin:0 auto 24px;color:var(--text-dim)}
+    .cart-empty-icon svg{width:38px;height:38px}
+    .cart-empty-title{font-family:var(--font-heading);font-size:28px;font-weight:900;text-transform:uppercase;letter-spacing:-0.01em;margin-bottom:10px}
+    .cart-empty-desc{font-size:14px;color:var(--text-muted);font-weight:500;max-width:380px;margin:0 auto 28px;line-height:1.6}
+
+    /* FREE SHIPPING BAR */
+    .free-ship-bar{padding:18px 24px;background:rgba(210,253,4,0.04);border-bottom:1px solid rgba(210,253,4,0.15)}
+    .free-ship-text{font-size:12.5px;font-weight:600;color:#c9ccd4;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+    .free-ship-text svg{width:15px;height:15px;color:var(--volt);flex-shrink:0}
+    .free-ship-text strong{color:var(--volt);font-weight:800}
+    .free-ship-track{height:6px;background:rgba(255,255,255,0.08);border-radius:var(--radius-full);overflow:hidden}
+    .free-ship-fill{height:100%;background:linear-gradient(90deg,var(--volt),#a8cc00);border-radius:var(--radius-full);width:0%;transition:width 0.6s cubic-bezier(0.16,1,0.3,1);box-shadow:0 0 10px var(--volt-glow)}
+
+    /* SUMMARY PANEL */
+    .cart-summary-panel{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:var(--radius-xl);padding:26px 24px;position:sticky;top:90px}
+    .summary-title{font-family:var(--font-heading);font-size:20px;font-weight:800;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:20px;display:flex;align-items:center;gap:10px}
+    .summary-title svg{width:18px;height:18px;color:var(--volt)}
+
+    /* Promo */
+    .promo-form{display:flex;gap:8px;margin-bottom:20px}
+    .promo-input{flex:1;background:var(--bg-card-surface);border:1px solid var(--border-subtle);border-radius:var(--radius-full);color:var(--text-white);font-size:12.5px;font-weight:600;padding:11px 16px;outline:none;transition:border-color var(--transition-fast);text-transform:uppercase;letter-spacing:0.04em}
+    .promo-input::placeholder{color:var(--text-dim);text-transform:none;letter-spacing:0;font-weight:500}
+    .promo-input:focus{border-color:var(--volt)}
+    .promo-btn{background:rgba(255,255,255,0.06);border:1px solid var(--border-subtle);color:var(--text-white);font-size:12.5px;font-weight:700;padding:11px 18px;border-radius:var(--radius-full);transition:all var(--transition-fast);white-space:nowrap}
+    .promo-btn:hover{background:var(--volt);border-color:var(--volt);color:#000}
+    .promo-applied{display:none;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.25);border-radius:var(--radius-sm);margin-bottom:20px;font-size:12.5px;font-weight:600}
+    .promo-applied.show{display:flex}
+    .promo-applied-code{color:#4ade80;font-weight:800;letter-spacing:0.04em;display:inline-flex;align-items:center;gap:6px}
+    .promo-applied-code svg{width:14px;height:14px}
+    .promo-remove{color:var(--text-muted);font-size:11.5px;font-weight:600;transition:color var(--transition-fast)}
+    .promo-remove:hover{color:var(--danger)}
+
+    /* Summary rows */
+    .summary-rows{display:flex;flex-direction:column;gap:13px;padding:18px 0;border-top:1px solid var(--border-subtle);border-bottom:1px solid var(--border-subtle);margin-bottom:18px}
+    .summary-row{display:flex;align-items:center;justify-content:space-between;font-size:13.5px;font-weight:500;color:#c9ccd4}
+    .summary-row span:last-child{font-weight:700;color:var(--text-white);font-variant-numeric:tabular-nums}
+    .summary-row .free-tag{color:#4ade80;font-weight:800;font-size:11.5px;letter-spacing:0.04em;text-transform:uppercase}
+    .summary-row .discount-value{color:#4ade80}
+    .summary-total-row{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:8px;padding-top:4px}
+    .summary-total-label{font-family:var(--font-heading);font-size:17px;font-weight:800;text-transform:uppercase;letter-spacing:0.02em}
+    .summary-total-value{font-family:var(--font-heading);font-size:32px;font-weight:900;color:var(--text-white);line-height:1;letter-spacing:-0.01em}
+    .summary-tax-note{font-size:11px;color:var(--text-dim);font-weight:500;margin-bottom:20px}
+
+    /* Checkout button */
+    .checkout-btn{width:100%;background:var(--volt);color:#000;font-size:14.5px;font-weight:800;padding:16px 24px;border-radius:var(--radius-full);display:flex;align-items:center;justify-content:center;gap:10px;transition:all var(--transition-fast);box-shadow:0 6px 22px rgba(0,0,0,0.4);letter-spacing:0.01em;margin-bottom:12px}
+    .checkout-btn:hover{background:var(--volt-hover);transform:translateY(-2px);box-shadow:0 12px 28px -4px var(--volt-glow)}
+    .checkout-btn:active{transform:translateY(0)}
+    .checkout-btn svg{width:16px;height:16px;transition:transform var(--transition-fast)}
+    .checkout-btn:hover svg{transform:translateX(3px)}
+    .continue-link{display:flex;align-items:center;justify-content:center;gap:7px;font-size:12.5px;font-weight:600;color:var(--text-muted);transition:color var(--transition-fast);padding:8px}
+    .continue-link:hover{color:var(--volt)}
+    .continue-link svg{width:13px;height:13px}
+
+    /* Trust badges */
+    .trust-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:22px;padding-top:20px;border-top:1px solid var(--border-subtle)}
+    .trust-item{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;font-size:10px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:var(--text-muted);line-height:1.3}
+    .trust-item svg{width:18px;height:18px;color:var(--volt)}
+
+    /* Recommended */
+    .recommended-section{padding:0 0 90px}
+    .section-head-row{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px;gap:16px;flex-wrap:wrap}
+    .section-head-title{font-family:var(--font-heading);font-size:clamp(28px,3.5vw,40px);font-weight:900;text-transform:uppercase;line-height:1;letter-spacing:-0.01em}
+    .section-head-title .text-volt{color:var(--volt)}
+    .reco-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+    @media (max-width:900px){.reco-grid{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:480px){.reco-grid{grid-template-columns:1fr}}
+
+    .product-card{display:flex;flex-direction:column;position:relative;transition:transform var(--transition-smooth)}
+    .product-card:hover{transform:translateY(-6px)}
+    .product-thumb-wrap{position:relative;width:100%;aspect-ratio:1/1.16;border-radius:var(--radius-lg);overflow:hidden;background:var(--bg-card);margin-bottom:14px}
+    .product-img{width:100%;height:100%;object-fit:cover;transition:transform 0.6s cubic-bezier(0.16,1,0.3,1)}
+    .product-card:hover .product-img{transform:scale(1.06)}
+    .product-title{font-family:var(--font-heading);font-size:18px;font-weight:800;color:var(--text-white);line-height:1.15;margin-bottom:4px;letter-spacing:0.02em;text-transform:uppercase}
+    .product-subtitle{font-size:12px;color:var(--text-muted);margin-bottom:12px;font-weight:500}
+    .product-footer-row{display:flex;align-items:center;justify-content:space-between;margin-top:auto}
+    .product-price{font-family:var(--font-heading);font-size:20px;font-weight:800;color:var(--text-white)}
+    .product-add-btn{width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,0.22);background:rgba(255,255,255,0.03);color:#b5bac5;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--transition-fast)}
+    .product-add-btn svg{width:16px;height:16px;stroke-width:2.4}
+    .product-add-btn:hover{background:var(--volt);border-color:var(--volt);color:#000;transform:scale(1.12)}
+
+    /* ============================= FOOTER ============================= */
+    
+    /* ========== NEW MEGA FOOTER ========== */
+    .site-footer {
+      background: #0a0b0d;
+      border-top: 1px solid rgba(255,255,255,0.07);
+      position: relative; overflow: hidden;
+    }
+
+    /* Trust Strip */
+    .footer-trust-strip {
+      background: rgba(255,255,255,0.03);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 24px 0;
+    }
+    .footer-trust-row {
+      display: flex; align-items: center; justify-content: center;
+      gap: 48px; flex-wrap: wrap;
+    }
+    .trust-item {
+      display: flex; align-items: center; gap: 12px;
+      flex-shrink: 0;
+    }
+    .trust-icon-wrap {
+      width: 42px; height: 42px; border-radius: 50%;
+      background: rgba(210,253,4,0.1);
+      border: 1px solid rgba(210,253,4,0.25);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .trust-icon-wrap svg { width: 20px; height: 20px; stroke: #d2fd04; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .trust-label { font-size: 13px; font-weight: 700; color: var(--text-white, #fff); letter-spacing: 0.03em; }
+    .trust-sub { font-size: 11px; color: #6c7380; margin-top: 2px; }
+
+    /* Divider line between trust items */
+    .trust-divider { width: 1px; height: 36px; background: rgba(255,255,255,0.08); flex-shrink: 0; }
+
+    /* Newsletter Banner */
+    .footer-newsletter {
+      padding: 56px 0 52px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      display: flex; align-items: center; justify-content: space-between; gap: 40px;
+      flex-wrap: wrap;
+    }
+    .footer-nl-text h2 {
+      font-family: var(--font-heading, 'Barlow Condensed', sans-serif);
+      font-size: 32px; font-weight: 900; color: var(--text-white, #fff);
+      text-transform: uppercase; letter-spacing: 0.03em; line-height: 1.1;
+      margin-bottom: 6px;
+    }
+    .footer-nl-text h2 span { color: #d2fd04; }
+    .footer-nl-text p { font-size: 13px; color: #6c7380; }
+    .footer-nl-form { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .footer-nl-input {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #fff; font-size: 13.5px;
+      padding: 13px 20px; border-radius: 9999px;
+      outline: none; width: 300px; max-width: 100%;
+      transition: border-color 0.2s;
+    }
+    .footer-nl-input::placeholder { color: #4c5162; }
+    .footer-nl-input:focus { border-color: #d2fd04; }
+    .footer-nl-btn {
+      background: #d2fd04; color: #000;
+      font-size: 13px; font-weight: 800; letter-spacing: 0.04em;
+      padding: 13px 28px; border-radius: 9999px;
+      cursor: pointer; white-space: nowrap;
+      transition: all 0.2s; text-transform: uppercase;
+    }
+    .footer-nl-btn:hover { background: #bce402; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(210,253,4,0.35); }
+
+    /* Main Grid */
+    .footer-main-grid {
+      display: grid;
+      grid-template-columns: 1.8fr 1fr 1fr 1fr 1.2fr;
+      gap: 48px; padding: 56px 0 48px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .footer-brand-col .footer-logo { height: 28px; width: auto; margin-bottom: 18px; display: block; }
+    .footer-brand-tagline { font-size: 13px; color: #6c7380; line-height: 1.65; margin-bottom: 24px; max-width: 240px; }
+    .footer-social-row { display: flex; gap: 10px; }
+    .footer-social-btn {
+      width: 38px; height: 38px; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.03);
+      display: flex; align-items: center; justify-content: center;
+      color: #9da3af;
+      transition: all 0.2s;
+    }
+    .footer-social-btn svg { width: 16px; height: 16px; fill: currentColor; }
+    .footer-social-btn:hover { background: #d2fd04; border-color: #d2fd04; color: #000; transform: translateY(-2px); }
+
+    .footer-col-heading {
+      font-size: 11px; font-weight: 800; letter-spacing: 0.12em;
+      color: #d2fd04; text-transform: uppercase; margin-bottom: 20px;
+    }
+    .footer-col-links { list-style: none; display: flex; flex-direction: column; gap: 11px; }
+    .footer-col-links a {
+      font-size: 13.5px; color: #9da3af;
+      transition: color 0.2s, transform 0.2s;
+      display: inline-block;
+    }
+    .footer-col-links a:hover { color: #fff; transform: translateX(4px); }
+
+    .footer-contact-col .contact-line {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 12.5px; color: #9da3af; line-height: 1.6; margin-bottom: 14px;
+    }
+    .footer-contact-col .contact-line svg { width: 15px; height: 15px; stroke: #d2fd04; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; margin-top: 3px; }
+    .footer-contact-col a { color: #9da3af; transition: color 0.2s; }
+    .footer-contact-col a:hover { color: #d2fd04; }
+
+    /* Payment badges */
+    .footer-pay-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+    .pay-badge {
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 6px; padding: 4px 10px;
+      font-size: 10px; font-weight: 700; color: #9da3af; letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* Bottom bar */
+    .footer-bottom {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 0 24px; gap: 20px; flex-wrap: wrap;
+    }
+    .footer-bottom-copy { font-size: 12px; color: #4c5162; }
+    .footer-bottom-links { display: flex; gap: 24px; }
+    .footer-bottom-links a { font-size: 12px; color: #4c5162; transition: color 0.2s; }
+    .footer-bottom-links a:hover { color: #9da3af; }
+
+    @media (max-width: 1100px) {
+      .footer-main-grid { grid-template-columns: 1fr 1fr 1fr; }
+      .footer-brand-col { grid-column: 1 / -1; }
+    }
+    @media (max-width: 700px) {
+      .footer-main-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+      .footer-trust-row { gap: 20px; }
+      .trust-divider { display: none; }
+      .footer-newsletter { flex-direction: column; gap: 24px; }
+      .footer-nl-text h2 { font-size: 24px; }
+      .footer-nl-input { width: 100%; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; gap: 12px; }
+    }
+    @media (max-width: 480px) {
+      .footer-main-grid { grid-template-columns: 1fr; }
+    }
+
+
+    </style>
+</head>
+<body>
+
+  <!-- ============================ HEADER ============================ -->
+  <header class="site-header">
+    <div class="container nav-container">
+      <a href="index.html" class="nav-brand" aria-label="STACKLY Home">
+        <img src="Assets/stackly-logo-clean.webp" alt="STACKLY" class="brand-logo-img">
+      </a>
+      <nav aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="shop.html" class="nav-link">Shop</a></li>
+          <li><a href="blog.html" class="nav-link">Blog</a></li>
+          <li><a href="about.html" class="nav-link">About</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="nav-actions">
+        <a href="login.html" class="nav-icon-btn" aria-label="Login">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </a>
+        <a href="cart.html" class="nav-icon-btn" aria-label="Shopping bag">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="nav-badge" id="navBadge">0</span>
+        </a>
+        <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-drawer-backdrop"></div>
+  <!-- Mobile Backdrop & Drawer -->
+  <div class="mobile-drawer-backdrop"></div>
+  <aside class="mobile-drawer" aria-label="Mobile navigation">
+    <div class="mobile-drawer-top">
+      <div class="mobile-drawer-header">
+        <a href="index.html" class="nav-brand" aria-label="STACKLY Home">
+          <img src="Assets/stackly-logo-clean.webp" alt="STACKLY" class="brand-logo-img">
+        </a>
+        <button class="mobile-close-btn" aria-label="Close navigation menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <ul class="mobile-nav-links">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="shop.html" class="nav-link">Shop</a></li>
+        <li><a href="blog.html" class="nav-link">Blog</a></li>
+        <li><a href="about.html" class="nav-link">About</a></li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+      </ul>
+    </div>
+    <div class="mobile-drawer-bottom">
+      <a href="cart.html" class="btn-volt" style="width: 100%; justify-content: center; display: flex; align-items: center; gap: 8px;">
+        View Bag (<span id="drawerBadge">0</span>)
+      </a>
+    </div>
+  </aside>
+
+  <main>
+
+    <!-- ============================ HERO ============================ -->
+    <section class="cart-hero">
+      <div class="container cart-hero-inner">
+        <div class="cart-breadcrumb reveal">
+          <a href="index.html">Home</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          <a href="shop.html">Shop</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          <span style="color:var(--volt);">Bag</span>
+        </div>
+        <h1 class="cart-title reveal delay-1">YOUR <span class="text-volt">BAG</span></h1>
+        <p class="cart-subtitle reveal delay-2" id="cartSubtitle">Loading your bag...</p>
+      </div>
+    </section>
+
+    <!-- ============================ CART ============================ -->
+    <section class="cart-section">
+      <div class="container">
+        <div class="cart-grid">
+
+          <!-- ===== ITEMS PANEL ===== -->
+          <div class="cart-items-panel reveal">
+
+            <!-- Free shipping bar -->
+            <div class="free-ship-bar" id="freeShipBar">
+              <div class="free-ship-text">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                <span id="freeShipText">Add <strong>₹100.00</strong> more for free shipping</span>
+              </div>
+              <div class="free-ship-track"><div class="free-ship-fill" id="freeShipFill"></div></div>
+            </div>
+
+            <!-- Items head -->
+            <div class="cart-items-head">
+              <div class="cart-items-head-title">
+                Cart Items
+                <span class="cart-items-count" id="itemsCount">0</span>
+              </div>
+              <button class="cart-clear-btn" id="clearCartBtn" aria-label="Clear cart">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                Clear cart
+              </button>
+            </div>
+
+            <!-- Items list -->
+            <div id="cartItemsList"></div>
+
+            <!-- Empty state -->
+            <div class="cart-empty" id="cartEmpty">
+              <div class="cart-empty-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+              </div>
+              <h3 class="cart-empty-title">Your bag is empty</h3>
+              <p class="cart-empty-desc">Looks like you haven't added any gear yet. Explore bestsellers and push your limits.</p>
+              <a href="shop.html" class="checkout-btn" style="max-width:260px;margin:0 auto 0;display:flex;">
+                Explore bestsellers
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </a>
+            </div>
+
+          </div>
+
+          <!-- ===== SUMMARY PANEL ===== -->
+          <aside class="cart-summary-panel reveal delay-1" id="summaryPanel">
+
+            <h2 class="summary-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+              Order Summary
+            </h2>
+
+            <!-- Promo -->
+            <form class="promo-form" id="promoForm">
+              <input type="text" class="promo-input" id="promoInput" placeholder="Promo code" autocomplete="off">
+              <button type="submit" class="promo-btn">Apply</button>
+            </form>
+            <div class="promo-applied" id="promoApplied">
+              <span class="promo-applied-code">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                <span id="promoAppliedCode">VOLT20</span> applied
+              </span>
+              <button class="promo-remove" id="promoRemove">Remove</button>
+            </div>
+
+            <!-- Rows -->
+            <div class="summary-rows">
+              <div class="summary-row">
+                <span>Subtotal</span>
+                <span id="subtotalVal">₹0.00</span>
+              </div>
+              <div class="summary-row" id="discountRow" style="display:none;">
+                <span>Discount <span id="discountPct" style="color:var(--text-dim);font-weight:600;"></span></span>
+                <span class="discount-value" id="discountVal">−₹0.00</span>
+              </div>
+              <div class="summary-row">
+                <span>Shipping</span>
+                <span id="shippingVal">—</span>
+              </div>
+              <div class="summary-row">
+                <span>Estimated tax</span>
+                <span id="taxVal">₹0.00</span>
+              </div>
+            </div>
+
+            <!-- Total -->
+            <div class="summary-total-row">
+              <span class="summary-total-label">Total</span>
+              <span class="summary-total-value" id="totalVal">₹0.00</span>
+            </div>
+            <p class="summary-tax-note">Tax and shipping calculated at checkout</p>
+
+            <button class="checkout-btn" id="checkoutBtn">
+              Proceed to checkout
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>
+            <a href="shop.html" class="continue-link">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+              Continue shopping
+            </a>
+
+            <!-- Trust -->
+            <div class="trust-row">
+              <div class="trust-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                Free<br>Shipping
+              </div>
+              <div class="trust-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Secure<br>Payment
+              </div>
+              <div class="trust-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+                30-Day<br>Returns
+              </div>
+            </div>
+          </aside>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ RECOMMENDED ============================ -->
+    <section class="recommended-section">
+      <div class="container">
+        <div class="section-head-row reveal">
+          <div>
+            <h2 class="section-head-title">PAIR IT <span class="text-volt">WITH</span></h2>
+            <p style="font-size:13px;color:var(--text-muted);margin-top:6px;font-weight:500;">Complete the kit — trusted by 48K+ athletes</p>
+          </div>
+          <a href="shop.html" class="continue-link" style="color:var(--volt);font-weight:700;">
+            Shop all
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+
+        <div class="reco-grid">
+          <div class="product-card reveal delay-1" data-id="p1" data-name="Stride Pro Runner" data-price="169" data-cat="Running" data-img="Assets/Frame 5080.webp" data-variant="Size 10 · Carbon plate">
+            <div class="product-thumb-wrap">
+              <img src="Assets/Frame 5080.webp" alt="Stride Pro Runner" class="product-img" onerror="this.style.background='#18191d'">
+            </div>
+            <h3 class="product-title">Stride Pro Runner</h3>
+            <p class="product-subtitle">Running · Carbon plate</p>
+            <div class="product-footer-row">
+              <span class="product-price">₹169</span>
+              <button class="product-add-btn" aria-label="Add to bag" data-add>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="product-card reveal delay-2" data-id="p2" data-name="Volt Compression Tee" data-price="48" data-cat="Sportswear" data-img="Assets/Frame 5080 (1).webp" data-variant="Size M · Sweat-mapped">
+            <div class="product-thumb-wrap">
+              <img src="Assets/Frame 5080 (1).webp" alt="Volt Compression Tee" class="product-img" onerror="this.style.background='#18191d'">
+            </div>
+            <h3 class="product-title">Volt Compression Tee</h3>
+            <p class="product-subtitle">Sportswear · Sweat-mapped</p>
+            <div class="product-footer-row">
+              <span class="product-price">₹48</span>
+              <button class="product-add-btn" aria-label="Add to bag" data-add>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="product-card reveal delay-3" data-id="p3" data-name="Grip Lifting Straps" data-price="22" data-cat="Accessories" data-img="Assets/product-straps.webp" data-variant="Cotton blend">
+            <div class="product-thumb-wrap">
+              <img src="Assets/product-straps.webp" alt="Grip Lifting Straps" class="product-img" onerror="this.style.background='#18191d'">
+            </div>
+            <h3 class="product-title">Grip Lifting Straps</h3>
+            <p class="product-subtitle">Accessories · Cotton blend</p>
+            <div class="product-footer-row">
+              <span class="product-price">₹22</span>
+              <button class="product-add-btn" aria-label="Add to bag" data-add>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="product-card reveal delay-3" data-id="p4" data-name="Halo Quarter-Zip" data-price="84" data-cat="Sportswear" data-img="Assets/product-halo.webp" data-variant="Size L · Thermal">
+            <div class="product-thumb-wrap">
+              <img src="Assets/product-halo.webp" alt="Halo Quarter-Zip" class="product-img" onerror="this.style.background='#18191d'">
+            </div>
+            <h3 class="product-title">Halo Quarter-Zip</h3>
+            <p class="product-subtitle">Sportswear · Thermal</p>
+            <div class="product-footer-row">
+              <span class="product-price">₹84</span>
+              <button class="product-add-btn" aria-label="Add to bag" data-add>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================ FOOTER ============================ -->
+    <footer  class="site-footer">
+
+    <!-- Trust Strip -->
+    <div class="footer-trust-strip">
+      <div class="container">
+        <div class="footer-trust-row">
+          <div class="trust-item">
+            <div class="trust-icon-wrap">
+              <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+            <div>
+              <div class="trust-label">Free Shipping</div>
+              <div class="trust-sub">On orders above ₹999</div>
+            </div>
+          </div>
+          <div class="trust-divider"></div>
+          <div class="trust-item">
+            <div class="trust-icon-wrap">
+              <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </div>
+            <div>
+              <div class="trust-label">Easy Returns</div>
+              <div class="trust-sub">30-day hassle-free returns</div>
+            </div>
+          </div>
+          <div class="trust-divider"></div>
+          <div class="trust-item">
+            <div class="trust-icon-wrap">
+              <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.63 3.47 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 6 6l.96-.96a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 15.92"/></svg>
+            </div>
+            <div>
+              <div class="trust-label">24/7 Support</div>
+              <div class="trust-sub">We're always here for you</div>
+            </div>
+          </div>
+          <div class="trust-divider"></div>
+          <div class="trust-item">
+            <div class="trust-icon-wrap">
+              <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+            <div>
+              <div class="trust-label">Secure Payments</div>
+              <div class="trust-sub">SSL encrypted checkout</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Newsletter -->
+    <div class="container">
+      <div class="footer-newsletter">
+        <div class="footer-nl-text">
+          <h2>Join the <span>VOLT</span> Club</h2>
+          <p>Exclusive drops, training notes & member-only pricing. No spam.</p>
+        </div>
+        <form class="footer-nl-form" onsubmit="return false;">
+          <input type="email" class="footer-nl-input" placeholder="Enter your email address" required>
+          <button type="submit" class="footer-nl-btn">Subscribe</button>
+        </form>
+      </div>
+
+      <!-- Main Grid -->
+      <div class="footer-main-grid">
+
+        <!-- Brand Column -->
+        <div class="footer-brand-col reveal">
+          <a href="index.html">
+            <img src="Assets/stackly-logo-clean.webp" alt="STACKLY" class="footer-logo">
+          </a>
+          <p class="footer-brand-tagline">Built for athletes who don't settle. High-performance gear, tested to the final rep.</p>
+          <div class="footer-social-row">
+            <a href="#" class="footer-social-btn" aria-label="Instagram">
+              <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+            <a href="#" class="footer-social-btn" aria-label="X (Twitter)">
+              <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+            <a href="#" class="footer-social-btn" aria-label="YouTube">
+              <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Shop Column -->
+        <div class="reveal delay-1">
+          <div class="footer-col-heading">Shop</div>
+          <ul class="footer-col-links">
+            <li><a href="shop.html">All Products</a></li>
+            <li><a href="shop.html">Running Gear</a></li>
+            <li><a href="shop.html">Strength Training</a></li>
+            <li><a href="shop.html">Sportswear</a></li>
+            <li><a href="shop.html">Accessories</a></li>
+            <li><a href="cart.html">My Bag</a></li>
+          </ul>
+        </div>
+
+        <!-- Company Column -->
+        <div class="reveal delay-2">
+          <div class="footer-col-heading">Company</div>
+          <ul class="footer-col-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="login.html">Login</a></li>
+          </ul>
+        </div>
+
+        <!-- Support Column -->
+        <div class="reveal delay-3">
+          <div class="footer-col-heading">Support</div>
+          <ul class="footer-col-links">
+            <li><a href="contact.html">Help Centre</a></li>
+            <li><a href="contact.html">Shipping Info</a></li>
+            <li><a href="contact.html">Returns & Exchanges</a></li>
+            <li><a href="contact.html">Track My Order</a></li>
+            <li><a href="contact.html">Size Guide</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact Column -->
+        <div class="footer-contact-col reveal delay-4">
+          <div class="footer-col-heading">Studio</div>
+          <div class="contact-line">
+            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span>Evolve Studio, 4th Floor, Khata No 18, Begur - Koppa Rd, Bengaluru 560068</span>
+          </div>
+          <div class="contact-line">
+            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.63 3.47 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 6 6l.96-.96a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 15.92"/></svg>
+            <a href="tel:+919876543210">+91 98765 43210</a>
+          </div>
+          <div class="contact-line">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <a href="mailto:info@stackly.com">info@stackly.com</a>
+          </div>
+          <div class="footer-col-heading" style="margin-top:20px;">We Accept</div>
+          <div class="footer-pay-row">
+            <span class="pay-badge">UPI</span>
+            <span class="pay-badge">Visa</span>
+            <span class="pay-badge">Mastercard</span>
+            <span class="pay-badge">RuPay</span>
+            <span class="pay-badge">COD</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="footer-bottom">
+        <span class="footer-bottom-copy">&copy; 2026 STACKLY Inc. All rights reserved. Built for high performance athletes.</span>
+        <div class="footer-bottom-links">
+          <a href="contact.html">Privacy Policy</a>
+          <a href="contact.html">Terms of Service</a>
+          <a href="contact.html">Cookie Policy</a>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <script>
+    // ==========================================================================
+    // TOAST
+    // ==========================================================================
+    function showToast(msg, isError) {
+      let t = document.querySelector('.toast-notice');
+      if (!t) {
+        t = document.createElement('div');
+        t.className = 'toast-notice';
+        t.innerHTML = '<span class="toast-icon">✓</span><span class="toast-text"></span>';
+        document.body.appendChild(t);
+      }
+      t.classList.toggle('error', !!isError);
+      t.querySelector('.toast-icon').textContent = isError ? '!' : '✓';
+      t.querySelector('.toast-text').textContent = msg;
+      t.classList.add('show');
+      clearTimeout(window._tt);
+      window._tt = setTimeout(() => t.classList.remove('show'), 2800);
+    }
+
+    // ==========================================================================
+    // CART STATE
+    // ==========================================================================
+    const STORAGE_KEY = 'stackly_cart_v1';
+    const PROMO_KEY = 'stackly_promo_v1';
+
+    // Sample preloaded items (remove or keep empty for fresh start)
+    const DEFAULT_ITEMS = [
+      { id: 'p1', name: 'Stride Pro Runner', price: 169, qty: 1, cat: 'Running', img: 'Assets/Frame 5080.webp', variant: 'Size 10 · Carbon plate' },
+      { id: 'p2', name: 'Volt Compression Tee', price: 48, qty: 2, cat: 'Sportswear', img: 'Assets/Frame 5080 (1).webp', variant: 'Size M · Sweat-mapped' },
+      { id: 'p3', name: 'Grip Lifting Straps', price: 22, qty: 1, cat: 'Accessories', img: 'Assets/product-straps.webp', variant: 'Cotton blend' }
+    ];
+
+    // Promo codes: { code: { pct, label } }
+    const PROMOS = {
+      'VOLT20': { pct: 20, label: '20% off' },
+      'PULSE10': { pct: 10, label: '10% off' },
+      'STRIDE15': { pct: 15, label: '15% off' },
+      'WELCOME': { pct: 10, label: 'Welcome — 10% off' }
+    };
+
+    const FREE_SHIPPING_THRESHOLD = 100;
+    const SHIPPING_COST = 12;
+    const TAX_RATE = 0.08; // 8%
+
+    let cart = [];
+    let activePromo = null;
+
+    // ----- Load / Save -----
+    function loadCart() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        cart = raw ? JSON.parse(raw) : JSON.parse(JSON.stringify(DEFAULT_ITEMS));
+      } catch (e) {
+        cart = JSON.parse(JSON.stringify(DEFAULT_ITEMS));
+      }
+    }
+    function saveCart() {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(cart)); } catch(e) {}
+    }
+
+    function loadPromo() {
+      try {
+        const code = localStorage.getItem(PROMO_KEY);
+        if (code && PROMOS[code]) activePromo = { code, ...PROMOS[code] };
+      } catch(e) {}
+    }
+    function savePromo() {
+      try {
+        if (activePromo) localStorage.setItem(PROMO_KEY, activePromo.code);
+        else localStorage.removeItem(PROMO_KEY);
+      } catch(e) {}
+    }
+
+    // ----- Helpers -----
+    const fmt = (n) => '₹' + n.toFixed(2);
+
+    function getSubtotal() {
+      return cart.reduce((s, it) => s + it.price * it.qty, 0);
+    }
+    function getDiscount() {
+      if (!activePromo) return 0;
+      return getSubtotal() * (activePromo.pct / 100);
+    }
+    function getShipping() {
+      if (cart.length === 0) return 0;
+      return getSubtotal() >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
+    }
+    function getTax() {
+      const base = getSubtotal() - getDiscount();
+      return base * TAX_RATE;
+    }
+    function getTotal() {
+      return Math.max(0, getSubtotal() - getDiscount()) + getShipping() + getTax();
+    }
+
+    // ==========================================================================
+    // RENDER
+    // ==========================================================================
+    const cartItemsList = document.getElementById('cartItemsList');
+    const cartEmpty = document.getElementById('cartEmpty');
+    const itemsCountEl = document.getElementById('itemsCount');
+    const navBadge = document.getElementById('navBadge');
+    const drawerBadge = document.getElementById('drawerBadge');
+    const cartSubtitle = document.getElementById('cartSubtitle');
+    const freeShipBar = document.getElementById('freeShipBar');
+    const freeShipText = document.getElementById('freeShipText');
+    const freeShipFill = document.getElementById('freeShipFill');
+    const summaryPanel = document.getElementById('summaryPanel');
+    const checkoutBtn = document.getElementById('checkoutBtn');
+    const clearBtn = document.getElementById('clearCartBtn');
+
+    function renderCart() {
+      const totalQty = cart.reduce((s, it) => s + it.qty, 0);
+      itemsCountEl.textContent = totalQty;
+      navBadge.textContent = totalQty;
+      drawerBadge.textContent = totalQty;
+
+      if (cart.length === 0) {
+        cartItemsList.innerHTML = '';
+        cartEmpty.classList.add('show');
+        summaryPanel.style.opacity = '0.5';
+        summaryPanel.style.pointerEvents = 'none';
+        checkoutBtn.disabled = true;
+        cartSubtitle.innerHTML = 'Your bag is <strong>empty</strong>. Let\'s fix that.';
+        freeShipBar.style.display = 'none';
+      } else {
+        cartEmpty.classList.remove('show');
+        summaryPanel.style.opacity = '1';
+        summaryPanel.style.pointerEvents = 'auto';
+        checkoutBtn.disabled = false;
+        cartSubtitle.innerHTML = `You have <strong>${totalQty} item${totalQty > 1 ? 's' : ''}</strong> in your bag.`;
+        freeShipBar.style.display = 'block';
+
+        cartItemsList.innerHTML = cart.map(item => `
+          <div class="cart-item" data-id="${item.id}">
+            <div class="cart-item-img">
+              <img src="${item.img}" alt="${item.name}" onerror="this.style.background='#18191d'">
+            </div>
+            <div class="cart-item-info">
+              <div>
+                <div class="cart-item-cat">${item.cat}</div>
+                <div class="cart-item-name">${item.name}</div>
+                <div class="cart-item-variant">${item.variant || ''}</div>
+              </div>
+              <div class="cart-item-actions">
+                <div class="qty-stepper">
+                  <button class="qty-btn" data-dec aria-label="Decrease quantity" ${item.qty <= 1 ? 'disabled' : ''}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  </button>
+                  <span class="qty-value">${item.qty}</span>
+                  <button class="qty-btn" data-inc aria-label="Increase quantity">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  </button>
+                </div>
+                <button class="cart-item-remove" data-remove aria-label="Remove item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                  Remove
+                </button>
+              </div>
+            </div>
+            <div class="cart-item-price-col">
+              <span class="cart-item-price">${fmt(item.price * item.qty)}</span>
+              <span class="cart-item-unit">${fmt(item.price)} each</span>
+            </div>
+          </div>
+        `).join('');
+
+        // Wire up per-item events
+        cartItemsList.querySelectorAll('.cart-item').forEach(row => {
+          const id = row.dataset.id;
+          row.querySelector('[data-inc]').addEventListener('click', () => updateQty(id, +1));
+          row.querySelector('[data-dec]').addEventListener('click', () => updateQty(id, -1));
+          row.querySelector('[data-remove]').addEventListener('click', () => removeItem(id, row));
+        });
+      }
+
+      renderSummary();
+      renderFreeShipping();
+      renderPromo();
+    }
+
+    function renderSummary() {
+      const subtotal = getSubtotal();
+      const discount = getDiscount();
+      const shipping = getShipping();
+      const tax = getTax();
+      const total = getTotal();
+
+      document.getElementById('subtotalVal').textContent = fmt(subtotal);
+
+      const discountRow = document.getElementById('discountRow');
+      if (discount > 0) {
+        discountRow.style.display = 'flex';
+        document.getElementById('discountPct').textContent = `(${activePromo.pct}% · ${activePromo.code})`;
+        document.getElementById('discountVal').textContent = '−' + fmt(discount);
+      } else {
+        discountRow.style.display = 'none';
+      }
+
+      const shippingVal = document.getElementById('shippingVal');
+      if (cart.length === 0) {
+        shippingVal.textContent = '—';
+      } else if (shipping === 0) {
+        shippingVal.innerHTML = '<span class="free-tag">Free</span>';
+      } else {
+        shippingVal.textContent = fmt(shipping);
+      }
+
+      document.getElementById('taxVal').textContent = fmt(tax);
+      document.getElementById('totalVal').textContent = fmt(total);
+    }
+
+    function renderFreeShipping() {
+      if (cart.length === 0) return;
+      const subtotal = getSubtotal();
+      const remaining = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
+      const pct = Math.min(100, (subtotal / FREE_SHIPPING_THRESHOLD) * 100);
+      freeShipFill.style.width = pct + '%';
+
+      if (remaining <= 0) {
+        freeShipText.innerHTML = '<strong>You unlocked free shipping!</strong>';
+      } else {
+        freeShipText.innerHTML = `Add <strong>${fmt(remaining)}</strong> more for free shipping`;
+      }
+    }
+
+    function renderPromo() {
+      const applied = document.getElementById('promoApplied');
+      if (activePromo) {
+        applied.classList.add('show');
+        document.getElementById('promoAppliedCode').textContent = activePromo.code;
+        document.getElementById('promoInput').value = '';
+      } else {
+        applied.classList.remove('show');
+      }
+    }
+
+    // ==========================================================================
+    // ACTIONS
+    // ==========================================================================
+    function updateQty(id, delta) {
+      const item = cart.find(i => i.id === id);
+      if (!item) return;
+      const newQty = item.qty + delta;
+      if (newQty < 1) return;
+      item.qty = newQty;
+      saveCart();
+      renderCart();
+      showToast(`Updated quantity to ${newQty}`);
+    }
+
+    function removeItem(id, row) {
+      if (row) {
+        row.classList.add('removing');
+      }
+      setTimeout(() => {
+        cart = cart.filter(i => i.id !== id);
+        saveCart();
+        renderCart();
+        showToast('Item removed from bag');
+      }, 250);
+    }
+
+    function addItem(data) {
+      const existing = cart.find(i => i.id === data.id);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        cart.push({ ...data, qty: 1 });
+      }
+      saveCart();
+      renderCart();
+      showToast(`${data.name} added to bag`);
+    }
+
+    // ==========================================================================
+    // EVENT LISTENERS
+    // ==========================================================================
+    clearBtn.addEventListener('click', () => {
+      if (cart.length === 0) return;
+      if (confirm('Remove all items from your bag?')) {
+        cart = [];
+        saveCart();
+        renderCart();
+        showToast('Cart cleared');
+      }
+    });
+
+    checkoutBtn.addEventListener('click', () => {
+      if (cart.length === 0) {
+        showToast('Your bag is empty', true);
+        return;
+      }
+      const total = getTotal();
+      showToast(`Redirecting to secure checkout — ${fmt(total)}`);
+      // In a real app: window.location.href = 'checkout.html';
+    });
+
+    // Promo
+    document.getElementById('promoForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const input = document.getElementById('promoInput');
+      const code = input.value.trim().toUpperCase();
+      if (!code) return;
+
+      if (!PROMOS[code]) {
+        showToast('Invalid promo code', true);
+        return;
+      }
+      activePromo = { code, ...PROMOS[code] };
+      savePromo();
+      renderCart();
+      showToast(`Promo applied: ${PROMOS[code].label}`);
+    });
+
+    document.getElementById('promoRemove').addEventListener('click', () => {
+      activePromo = null;
+      savePromo();
+      renderCart();
+      showToast('Promo removed');
+    });
+
+    // Recommended add buttons
+    document.querySelectorAll('.reco-grid .product-add-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const card = btn.closest('.product-card');
+        if (!card) return;
+        addItem({
+          id: card.dataset.id,
+          name: card.dataset.name,
+          price: parseFloat(card.dataset.price),
+          cat: card.dataset.cat,
+          img: card.dataset.img,
+          variant: card.dataset.variant
+        });
+      });
+    });
+
+    // ==========================================================================
+    // HEADER / MOBILE MENU
+    // ==========================================================================
+    const header = document.querySelector('.site-header');
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+
+    const mobileToggle = document.querySelector('.mobile-toggle');
+    const mobileCloseBtn = document.querySelector('.mobile-close-btn');
+    const mobileDrawer = document.querySelector('.mobile-drawer');
+    const mobileBackdrop = document.querySelector('.mobile-drawer-backdrop');
+    const mobileLinks = document.querySelectorAll('.mobile-nav-links .nav-link');
+
+    const openMobileMenu = () => {
+      if (!mobileDrawer) return;
+      mobileDrawer.classList.add('open');
+      if (mobileBackdrop) mobileBackdrop.classList.add('active');
+      if (mobileToggle) {
+        mobileToggle.classList.add('active');
+        mobileToggle.setAttribute('aria-expanded', 'true');
+      }
+      document.body.style.overflow = 'hidden';
+    };
+
+    const closeMobileMenu = () => {
+      if (!mobileDrawer) return;
+      mobileDrawer.classList.remove('open');
+      if (mobileBackdrop) mobileBackdrop.classList.remove('active');
+      if (mobileToggle) {
+        mobileToggle.classList.remove('active');
+        mobileToggle.setAttribute('aria-expanded', 'false');
+      }
+      document.body.style.overflow = '';
+    };
+
+    const toggleMobileMenu = () => {
+      if (!mobileDrawer) return;
+      const isOpen = mobileDrawer.classList.contains('open');
+      if (isOpen) {
+        closeMobileMenu();
+      } else {
+        openMobileMenu();
+      }
+    };
+
+    if (mobileToggle) mobileToggle.addEventListener('click', toggleMobileMenu);
+    if (mobileCloseBtn) mobileCloseBtn.addEventListener('click', closeMobileMenu);
+    if (mobileBackdrop) mobileBackdrop.addEventListener('click', closeMobileMenu);
+    mobileLinks.forEach(l => l.addEventListener('click', closeMobileMenu));
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && mobileDrawer && mobileDrawer.classList.contains('open')) {
+        closeMobileMenu();
+      }
+    });
+
+    // ==========================================================================
+    // SCROLL REVEAL
+    // ==========================================================================
+    const revealEls = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    revealEls.forEach(el => revealObserver.observe(el));
+
+    // ==========================================================================
+    // INIT
+    // ==========================================================================
+    loadCart();
+    loadPromo();
+    renderCart();
+  </script>
+</body>
+</html>

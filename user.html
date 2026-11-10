@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Account | STACKLY</title>
+  <meta name="description" content="Track orders, manage your wishlist and rewards on your STACKLY account.">
+
+  <link rel="icon" type="image/webp" href="Assets/stackly-logo-clean.webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg-dark:#0a0b0d;--bg-card:#131417;--bg-card-surface:#18191d;--bg-elevated:#1e2025;
+      --volt:#d2fd04;--volt-hover:#bce402;--volt-glow:rgba(210,253,4,0.28);--volt-dim:rgba(210,253,4,0.12);
+      --cyan:#00f2fe;--success:#22c55e;--warning:#f59e0b;--danger:#ef4444;--purple:#a855f7;
+      --text-white:#ffffff;--text-muted:#8e95a2;--text-dim:#5c626e;
+      --border-subtle:rgba(255,255,255,0.08);--border-medium:rgba(255,255,255,0.15);
+      --font-heading:'Barlow Condensed','Oswald',sans-serif;--font-body:'Plus Jakarta Sans',system-ui,sans-serif;
+      --radius-sm:8px;--radius-md:14px;--radius-lg:20px;--radius-full:9999px;
+      --transition-fast:0.2s cubic-bezier(0.16,1,0.3,1);--transition-smooth:0.4s cubic-bezier(0.16,1,0.3,1);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;font-size:16px;color-scheme:dark}
+    body{background:var(--bg-dark);color:var(--text-white);font-family:var(--font-body);line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh}
+    img{max-width:100%;height:auto;display:block}
+    a{color:inherit;text-decoration:none}
+    button{font-family:inherit;border:none;background:none;cursor:pointer}
+    input,select,textarea{font-family:inherit}
+
+    /* ============================= TOPBAR (admin style) ============================= */
+    .user-topbar{position:fixed;top:0;left:0;right:0;height:64px;z-index:999;display:flex;align-items:center;justify-content:space-between;padding:0 24px;background:rgba(10,11,13,0.96);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--border-subtle)}
+    .topbar-left{display:flex;align-items:center;gap:16px}
+    .topbar-brand{display:flex;align-items:center;gap:10px}
+    .topbar-brand img{height:26px;width:auto}
+    .user-chip{font-size:10.5px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:#000;background:var(--volt);padding:4px 10px;border-radius:var(--radius-full)}
+    .topbar-search{display:flex;align-items:center;gap:8px;background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:var(--radius-full);padding:8px 16px;width:320px;transition:border-color var(--transition-fast)}
+    .topbar-search:focus-within{border-color:var(--volt)}
+    .topbar-search svg{width:15px;height:15px;color:var(--text-muted);flex-shrink:0}
+    .topbar-search input{background:none;border:none;outline:none;color:var(--text-white);font-size:13px;width:100%}
+    .topbar-search input::placeholder{color:var(--text-dim)}
+    .topbar-right{display:flex;align-items:center;gap:12px}
+    .icon-btn{width:38px;height:38px;border-radius:50%;border:1px solid var(--border-subtle);background:rgba(255,255,255,0.03);display:flex;align-items:center;justify-content:center;color:#c9ccd4;transition:all var(--transition-fast);position:relative}
+    .icon-btn:hover{border-color:var(--volt);color:var(--volt)}
+    .icon-btn svg{width:17px;height:17px}
+    .icon-btn .dot{position:absolute;top:-3px;right:-3px;min-width:17px;height:17px;padding:0 4px;border-radius:var(--radius-full);background:var(--volt);color:#000;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;border:2px solid var(--bg-dark)}
+    .icon-btn .dot.red{background:var(--danger);color:#fff}
+    .user-avatar{width:38px;height:38px;border-radius:50%;border:2px solid var(--volt);object-fit:cover;cursor:pointer;transition:transform var(--transition-fast)}
+    .user-avatar:hover{transform:scale(1.06)}
+    @media (max-width:860px){.topbar-search{display:none}}
+
+    /* ============================= SHELL ============================= */
+    .user-shell{display:flex;padding-top:64px;min-height:100vh}
+
+    /* SIDEBAR */
+    .user-sidebar{width:240px;flex-shrink:0;background:var(--bg-card);border-right:1px solid var(--border-subtle);padding:20px 14px;position:sticky;top:64px;height:calc(100vh - 64px);overflow-y:auto;transition:transform 0.3s ease}
+    .user-sidebar::-webkit-scrollbar{width:6px}
+    .user-sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:3px}
+    .sidebar-profile{display:flex;align-items:center;gap:12px;padding:6px 14px 18px;border-bottom:1px solid var(--border-subtle);margin-bottom:12px}
+    .sidebar-avatar{width:44px;height:44px;border-radius:50%;border:2px solid var(--volt);object-fit:cover;flex-shrink:0}
+    .sidebar-name{font-size:13.5px;font-weight:700;line-height:1.2}
+    .sidebar-email{font-size:11px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:150px}
+    .side-section-label{font-size:10.5px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);padding:8px 14px 8px;margin-top:12px}
+    .side-section-label:first-child{margin-top:0}
+    .side-nav{list-style:none;display:flex;flex-direction:column;gap:2px}
+    .side-link{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:var(--radius-sm);font-size:13.5px;font-weight:600;color:#a4abb8;transition:all var(--transition-fast);position:relative;width:100%;text-align:left}
+    .side-link svg{width:17px;height:17px;flex-shrink:0}
+    .side-link:hover{background:rgba(255,255,255,0.05);color:var(--text-white)}
+    .side-link.active{background:var(--volt-dim);color:var(--volt)}
+    .side-link.active::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:18px;background:var(--volt);border-radius:0 3px 3px 0}
+    .side-link .count{margin-left:auto;font-size:10.5px;font-weight:800;background:rgba(255,255,255,0.1);color:#c9ccd4;padding:2px 7px;border-radius:var(--radius-full)}
+    .side-link.active .count{background:var(--volt);color:#000}
+    .side-link.logout{color:#ef4444}
+    .side-link.logout:hover{background:rgba(239,68,68,0.1);color:#ff6b6b}
+
+    /* MAIN */
+    .user-main{flex:1;min-width:0;padding:28px 28px 60px}
+    .page-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:26px;gap:16px;flex-wrap:wrap}
+    .page-eyebrow{font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--volt);margin-bottom:6px;display:block}
+    .page-title{font-family:var(--font-heading);font-size:clamp(28px,3.5vw,40px);font-weight:900;text-transform:uppercase;line-height:1;letter-spacing:-0.01em}
+    .page-subtitle{font-size:13.5px;color:var(--text-muted);margin-top:6px}
+    .page-actions{display:flex;gap:10px;flex-wrap:wrap}
+
+    /* VIEWS */
+    .user-view{display:none;animation:fadeUp 0.35s cubic-bezier(0.16,1,0.3,1)}
+    .user-view.active{display:block}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+    /* KPI */
+    .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+    .kpi-card{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);padding:18px;position:relative;overflow:hidden;transition:border-color var(--transition-fast),transform var(--transition-fast)}
+    .kpi-card:hover{border-color:var(--border-medium);transform:translateY(-2px)}
+    .kpi-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+    .kpi-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center}
+    .kpi-icon svg{width:18px;height:18px}
+    .kpi-icon.volt{background:var(--volt-dim);color:var(--volt)}
+    .kpi-icon.cyan{background:rgba(0,242,254,0.12);color:var(--cyan)}
+    .kpi-icon.purple{background:rgba(168,85,247,0.12);color:var(--purple)}
+    .kpi-icon.warn{background:rgba(245,158,11,0.12);color:var(--warning)}
+    .kpi-icon.success{background:rgba(34,197,94,0.12);color:var(--success)}
+    .kpi-trend{font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:var(--radius-full);display:inline-flex;align-items:center;gap:3px}
+    .kpi-trend.up{background:rgba(34,197,94,0.14);color:#4ade80}
+    .kpi-trend.down{background:rgba(239,68,68,0.14);color:#f87171}
+    .kpi-value{font-family:var(--font-heading);font-size:32px;font-weight:900;line-height:1;margin-bottom:4px}
+    .kpi-label{font-size:12px;color:var(--text-muted);font-weight:500}
+
+    /* PANELS */
+    .panel{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:var(--radius-lg);padding:22px;margin-bottom:22px}
+    .panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;gap:12px;flex-wrap:wrap}
+    .panel-title{font-family:var(--font-heading);font-size:19px;font-weight:800;text-transform:uppercase;letter-spacing:0.02em}
+    .panel-link{font-size:12.5px;font-weight:600;color:var(--volt);display:inline-flex;align-items:center;gap:5px;transition:gap var(--transition-fast)}
+    .panel-link:hover{gap:9px}
+    .panel-link svg{width:12px;height:12px}
+    .user-grid-2{display:grid;grid-template-columns:1.6fr 1fr;gap:22px}
+
+    /* CHART */
+    .chart-wrap{height:220px;display:flex;align-items:flex-end;gap:10px;padding:10px 4px 0;border-bottom:1px solid var(--border-subtle);margin-bottom:10px}
+    .chart-bar-group{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end}
+    .chart-bar-stack{width:100%;max-width:36px;display:flex;flex-direction:column;justify-content:flex-end;height:100%;gap:3px}
+    .chart-bar{width:100%;border-radius:4px 4px 0 0;transition:opacity var(--transition-fast)}
+    .chart-bar.volt{background:linear-gradient(180deg,var(--volt),#9fbf00)}
+    .chart-bar.dim{background:rgba(210,253,4,0.18)}
+    .chart-bar-group:hover .chart-bar{opacity:0.75}
+    .chart-bar-group:hover .chart-bar.volt{opacity:1}
+    .chart-label{font-size:10.5px;color:var(--text-dim);font-weight:600;text-transform:uppercase;letter-spacing:0.04em}
+    .chart-legend{display:flex;align-items:center;gap:18px;font-size:11.5px;color:var(--text-muted);font-weight:600;padding-top:4px}
+    .legend-item{display:flex;align-items:center;gap:6px}
+    .legend-dot{width:9px;height:9px;border-radius:3px}
+    .legend-dot.volt{background:var(--volt)}
+    .legend-dot.dim{background:rgba(210,253,4,0.3)}
+
+    /* TABLE */
+    .table-wrap{overflow-x:auto}
+    table.user-table{width:100%;border-collapse:collapse;font-size:13px}
+    .user-table thead th{text-align:left;font-size:10.5px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-dim);padding:10px 12px;border-bottom:1px solid var(--border-subtle);white-space:nowrap}
+    .user-table tbody td{padding:13px 12px;border-bottom:1px solid rgba(255,255,255,0.04);vertical-align:middle;color:#c9ccd4}
+    .user-table tbody tr:last-child td{border-bottom:none}
+    .user-table tbody tr{transition:background var(--transition-fast)}
+    .user-table tbody tr:hover{background:rgba(255,255,255,0.025)}
+    .table-product{display:flex;align-items:center;gap:10px;min-width:200px}
+    .table-thumb{width:38px;height:38px;border-radius:var(--radius-sm);background:var(--bg-card-surface);object-fit:cover;flex-shrink:0}
+    .table-product-name{font-weight:700;color:var(--text-white);font-size:13px}
+    .table-product-sub{font-size:11px;color:var(--text-muted)}
+    .badge{display:inline-block;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:0.04em;padding:4px 10px;border-radius:var(--radius-full);white-space:nowrap}
+    .badge-delivered{background:rgba(34,197,94,0.14);color:#4ade80}
+    .badge-shipped{background:rgba(0,242,254,0.12);color:var(--cyan)}
+    .badge-processing{background:rgba(245,158,11,0.14);color:#fbbf24}
+    .badge-cancelled{background:rgba(239,68,68,0.14);color:#f87171}
+    .table-actions{display:flex;gap:6px}
+    .tbl-btn{width:30px;height:30px;border-radius:7px;border:1px solid var(--border-subtle);background:rgba(255,255,255,0.03);display:flex;align-items:center;justify-content:center;color:var(--text-muted);transition:all var(--transition-fast)}
+    .tbl-btn svg{width:14px;height:14px}
+    .tbl-btn:hover{border-color:var(--volt);color:var(--volt);background:var(--volt-dim)}
+    .tbl-btn.danger:hover{border-color:var(--danger);color:var(--danger);background:rgba(239,68,68,0.1)}
+
+    /* LISTS */
+    .list-row{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid rgba(255,255,255,0.04)}
+    .list-row:last-child{border-bottom:none}
+    .list-rank{width:26px;height:26px;border-radius:7px;background:var(--bg-card-surface);display:flex;align-items:center;justify-content:center;font-family:var(--font-heading);font-size:13px;font-weight:900;color:var(--text-muted);flex-shrink:0}
+    .list-rank.top{background:var(--volt);color:#000}
+    .list-info{flex:1;min-width:0}
+    .list-name{font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .list-sub{font-size:11px;color:var(--text-muted)}
+    .list-value{font-family:var(--font-heading);font-size:15px;font-weight:800;color:var(--volt);white-space:nowrap}
+
+    /* ACTIVITY */
+    .activity-item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.04)}
+    .activity-item:last-child{border-bottom:none}
+    .activity-dot-wrap{display:flex;flex-direction:column;align-items:center;padding-top:3px}
+    .activity-dot{width:9px;height:9px;border-radius:50%;background:var(--volt);flex-shrink:0;box-shadow:0 0 0 3px var(--volt-dim)}
+    .activity-dot.cyan{background:var(--cyan);box-shadow:0 0 0 3px rgba(0,242,254,0.12)}
+    .activity-dot.warn{background:var(--warning);box-shadow:0 0 0 3px rgba(245,158,11,0.12)}
+    .activity-body{flex:1;min-width:0}
+    .activity-text{font-size:12.5px;color:#c9ccd4;line-height:1.45}
+    .activity-text strong{color:var(--text-white);font-weight:700}
+    .activity-time{font-size:11px;color:var(--text-dim);margin-top:3px}
+
+    /* REWARD PROGRESS */
+    .reward-tier{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+    .reward-badge{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--volt),#a8cc00);display:flex;align-items:center;justify-content:center;font-family:var(--font-heading);font-size:22px;font-weight:900;color:#000;flex-shrink:0}
+    .reward-tier-name{font-family:var(--font-heading);font-size:20px;font-weight:800;text-transform:uppercase}
+    .reward-tier-sub{font-size:12px;color:var(--text-muted)}
+    .progress-track{height:8px;border-radius:var(--radius-full);background:rgba(255,255,255,0.08);overflow:hidden;margin-bottom:8px}
+    .progress-fill{height:100%;border-radius:var(--radius-full);background:linear-gradient(90deg,var(--volt),#a8cc00);width:68%;transition:width 1s cubic-bezier(0.16,1,0.3,1)}
+    .progress-labels{display:flex;justify-content:space-between;font-size:11.5px;color:var(--text-muted);font-weight:600}
+
+    /* WISHLIST GRID */
+    .wishlist-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+    .wish-item{border:1px solid var(--border-subtle);border-radius:var(--radius-md);overflow:hidden;background:var(--bg-card-surface);transition:border-color var(--transition-fast),transform var(--transition-fast);cursor:pointer;position:relative}
+    .wish-item:hover{border-color:var(--volt);transform:translateY(-3px)}
+    .wish-img-wrap{aspect-ratio:1/1;background:var(--bg-dark);overflow:hidden}
+    .wish-img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform 0.5s ease}
+    .wish-item:hover .wish-img-wrap img{transform:scale(1.06)}
+    .wish-body{padding:10px 12px 12px}
+    .wish-name{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.02em;line-height:1.25;margin-bottom:4px}
+    .wish-price{font-family:var(--font-heading);font-size:16px;font-weight:800}
+    .wish-remove{position:absolute;top:8px;right:8px;width:28px;height:28px;border-radius:50%;background:rgba(18,19,23,0.85);border:1px solid var(--border-subtle);display:flex;align-items:center;justify-content:center;color:#c9ccd4;opacity:0;transition:all var(--transition-fast);z-index:2}
+    .wish-item:hover .wish-remove{opacity:1}
+    .wish-remove:hover{background:var(--danger);border-color:var(--danger);color:#fff}
+    .wish-remove svg{width:13px;height:13px}
+
+    /* BUTTONS */
+    .btn-volt{background:var(--volt);color:#000;font-size:13px;font-weight:700;padding:11px 22px;border-radius:var(--radius-full);display:inline-flex;align-items:center;justify-content:center;gap:7px;transition:all var(--transition-fast);box-shadow:0 4px 16px rgba(0,0,0,0.4);white-space:nowrap}
+    .btn-volt:hover{background:var(--volt-hover);transform:translateY(-2px);box-shadow:0 8px 20px -4px var(--volt-glow)}
+    .btn-ghost{background:rgba(255,255,255,0.03);color:var(--text-white);font-size:13px;font-weight:600;padding:11px 20px;border-radius:var(--radius-full);border:1px solid rgba(255,255,255,0.18);display:inline-flex;align-items:center;gap:7px;transition:all var(--transition-fast);white-space:nowrap}
+    .btn-ghost:hover{border-color:rgba(255,255,255,0.5);background:rgba(255,255,255,0.07)}
+    .btn-danger{background:rgba(239,68,68,0.12);color:#f87171;font-size:13px;font-weight:700;padding:11px 20px;border-radius:var(--radius-full);border:1px solid rgba(239,68,68,0.3);display:inline-flex;align-items:center;gap:7px;transition:all var(--transition-fast)}
+    .btn-danger:hover{background:rgba(239,68,68,0.22);border-color:var(--danger)}
+
+    /* FORMS */
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .form-field{display:flex;flex-direction:column;gap:6px}
+    .form-field.full{grid-column:1/-1}
+    .form-label{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted)}
+    .form-input,.form-select,.form-textarea{background:var(--bg-card-surface);border:1px solid var(--border-subtle);border-radius:var(--radius-sm);color:var(--text-white);font-size:13.5px;padding:11px 14px;outline:none;transition:border-color var(--transition-fast);width:100%}
+    .form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--volt)}
+    .form-textarea{resize:vertical;min-height:80px}
+    .form-actions{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+
+    /* SETTINGS */
+    .setting-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 0;border-bottom:1px solid var(--border-subtle)}
+    .setting-row:last-child{border-bottom:none}
+    .setting-info{flex:1}
+    .setting-title{font-size:13.5px;font-weight:700;margin-bottom:3px}
+    .setting-desc{font-size:12px;color:var(--text-muted)}
+    .toggle{position:relative;width:46px;height:26px;flex-shrink:0}
+    .toggle input{opacity:0;width:0;height:0}
+    .toggle-slider{position:absolute;inset:0;background:rgba(255,255,255,0.12);border-radius:var(--radius-full);cursor:pointer;transition:background var(--transition-fast)}
+    .toggle-slider::before{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform var(--transition-fast)}
+    .toggle input:checked + .toggle-slider{background:var(--volt)}
+    .toggle input:checked + .toggle-slider::before{transform:translateX(20px);background:#000}
+
+    /* TOAST */
+    .toast-notice{position:fixed;bottom:26px;right:26px;background:rgba(18,19,23,0.96);backdrop-filter:blur(12px);border:1px solid var(--volt);color:#fff;padding:13px 20px;border-radius:var(--radius-md);display:flex;align-items:center;gap:10px;box-shadow:0 15px 35px rgba(0,0,0,0.7),0 0 20px var(--volt-glow);z-index:10000;transform:translateY(100px);opacity:0;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);pointer-events:none;font-size:13px;font-weight:500}
+    .toast-notice.show{transform:translateY(0);opacity:1;pointer-events:auto}
+    .toast-icon{width:22px;height:22px;border-radius:50%;background:var(--volt);color:#000;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;flex-shrink:0}
+
+    /* RESPONSIVE */
+    @media (max-width:1200px){.kpi-grid{grid-template-columns:repeat(2,1fr)}.user-grid-2{grid-template-columns:1fr}.wishlist-grid{grid-template-columns:repeat(3,1fr)}}
+    @media (max-width:900px){
+      .user-sidebar{position:fixed;left:0;top:64px;bottom:0;z-index:900;transform:translateX(-100%);height:calc(100vh - 64px)}
+      .user-sidebar.open{transform:translateX(0)}
+      .user-main{padding:20px 16px 50px}
+    }
+    @media (max-width:560px){
+      .kpi-grid{grid-template-columns:1fr}
+      .user-topbar{padding:0 16px}
+      .page-actions{width:100%}
+      .page-actions .btn-volt,.page-actions .btn-ghost{flex:1;justify-content:center}
+      .form-grid{grid-template-columns:1fr}
+      .wishlist-grid{grid-template-columns:repeat(2,1fr)}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================ TOPBAR ============================ -->
+  <header class="user-topbar">
+    <div class="topbar-left">
+      <button class="icon-btn" id="sidebarToggle" aria-label="Toggle sidebar" style="display:none;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <a href="#" class="topbar-brand" aria-label="STACKLY"><img src="Assets/stackly-logo-clean.webp" alt="STACKLY"></a>
+      <span class="user-chip">My Account</span>
+    </div>
+    <div class="topbar-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" placeholder="Search orders, products...">
+    </div>
+    <div class="topbar-right">
+      <button class="icon-btn" aria-label="Wishlist" onclick="switchView('wishlist')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <span class="dot">3</span>
+      </button>
+      <button class="icon-btn" aria-label="Bag" onclick="showToast('Opening your bag (2 items)')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <span class="dot">2</span>
+      </button>
+      <div class="user-profile-pill" style="display:flex;align-items:center;gap:10px;padding:3px 10px 3px 12px;background:rgba(255,255,255,0.04);border:1px solid var(--border-subtle);border-radius:9999px;cursor:pointer;" onclick="switchView('profile')" title="View profile">
+        <span class="user-profile-name" style="font-size:13px;font-weight:700;color:var(--text-white);">Alex Morgan</span>
+        <img src="Assets/Ellipse 77.webp" alt="Alex Morgan" class="user-avatar" style="width:32px;height:32px;border-radius:50%;border:2px solid var(--volt);" onerror="this.src='Assets/avatar-alex-p.webp'">
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================ SHELL ============================ -->
+  <div class="user-shell">
+
+    <!-- SIDEBAR -->
+    <aside class="user-sidebar" id="userSidebar">
+      <div class="sidebar-profile">
+        <img src="Assets/Ellipse 77.webp" alt="Alex Morgan" class="sidebar-avatar" onerror="this.src='Assets/avatar-alex-p.webp'">
+        <div>
+          <div class="sidebar-name user-profile-name">Alex Morgan</div>
+          <div class="sidebar-email user-profile-email">alex@stackly.com</div>
+        </div>
+      </div>
+
+      <div class="side-section-label">Main</div>
+      <ul class="side-nav">
+        <li><button class="side-link active" data-view="overview">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Overview
+        </button></li>
+        <li><button class="side-link" data-view="orders">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          Orders <span class="count">14</span>
+        </button></li>
+        <li><button class="side-link" data-view="wishlist">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          Wishlist <span class="count">3</span>
+        </button></li>
+        <li><button class="side-link" data-view="rewards">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Rewards
+        </button></li>
+      </ul>
+
+      <div class="side-section-label">Manage</div>
+      <ul class="side-nav">
+        <li><button class="side-link" data-view="profile">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Profile
+        </button></li>
+        <li><button class="side-link" data-view="settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          Settings
+        </button></li>
+        <li><button class="side-link logout" data-view="logout">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Log out
+        </button></li>
+      </ul>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="user-main">
+
+      <!-- ============ VIEW: OVERVIEW ============ -->
+      <div class="user-view active" id="view-overview">
+        <div class="page-head">
+          <div>
+            <span class="page-eyebrow">My Account</span>
+            <h1 class="page-title">Welcome back, <span class="user-first-name" style="color:var(--volt)">Alex</span></h1>
+            <p class="page-subtitle">Here's what's happening with your training gear and rewards.</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn-ghost" onclick="showToast('Opening support chat...')">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              Support
+            </button>
+            <button class="btn-volt" onclick="showToast('Redirecting to shop...')">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Shop new arrivals
+            </button>
+          </div>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-top"><div class="kpi-icon volt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div><span class="kpi-trend up">+3 this month</span></div>
+            <div class="kpi-value">14</div><div class="kpi-label">Total Orders</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-top"><div class="kpi-icon cyan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span class="kpi-trend up">2 in stock</span></div>
+            <div class="kpi-value">3</div><div class="kpi-label">Wishlist Items</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-top"><div class="kpi-icon warn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><span class="kpi-trend up">Arriving Fri</span></div>
+            <div class="kpi-value">1</div><div class="kpi-label">In Transit</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-top"><div class="kpi-icon success"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><span class="kpi-trend up">+180</span></div>
+            <div class="kpi-value">1,240</div><div class="kpi-label">Reward Points</div>
+          </div>
+        </div>
+
+        <div class="user-grid-2">
+          <section class="panel">
+            <div class="panel-head">
+              <h2 class="panel-title">Recent Orders</h2>
+              <button class="panel-link" onclick="switchView('orders')">View all <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+            </div>
+            <div class="table-wrap">
+              <table class="user-table">
+                <thead><tr><th>Order</th><th>Product</th><th>Date</th><th>Total</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr><td style="font-weight:700;color:var(--text-white)">#STK-8821</td><td><div class="table-product"><img src="Assets/Frame 5080.webp" alt="" class="table-thumb" onerror="this.style.background='#18191d'"><div><div class="table-product-name">Stride Pro Runner</div><div class="table-product-sub">Size 10</div></div></div></td><td>Mar 14, 2026</td><td style="font-weight:700;color:var(--text-white)">₹169.00</td><td><span class="badge badge-delivered">Delivered</span></td></tr>
+                  <tr><td style="font-weight:700;color:var(--text-white)">#STK-8790</td><td><div class="table-product"><img src="Assets/product-dumbbell.webp" alt="" class="table-thumb" onerror="this.style.background='#18191d'"><div><div class="table-product-name">Adjustable Dumbbell</div><div class="table-product-sub">50 lb pair</div></div></div></td><td>Mar 09, 2026</td><td style="font-weight:700;color:var(--text-white)">₹250.00</td><td><span class="badge badge-shipped">Shipped</span></td></tr>
+                  <tr><td style="font-weight:700;color:var(--text-white)">#STK-8702</td><td><div class="table-product"><img src="Assets/Frame 5080 (1).webp" alt="" class="table-thumb" onerror="this.style.background='#18191d'"><div><div class="table-product-name">Volt Compression Tee</div><div class="table-product-sub">Size M</div></div></div></td><td>Mar 02, 2026</td><td style="font-weight:700;color:var(--text-white)">₹48.00</td><td><span class="badge badge-processing">Processing</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head">
+              <h2 class="panel-title">The Pulse Rewards</h2>
+              <button class="panel-link" onclick="switchView('rewards')">Redeem <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+            </div>
+            <div class="reward-tier">
+              <div class="reward-badge">G</div>
+              <div><div class="reward-tier-name">Gold Tier</div><div class="reward-tier-sub">1,240 points · 760 to Platinum</div></div>
+            </div>
+            <div class="progress-track"><div class="progress-fill"></div></div>
+            <div class="progress-labels"><span>1,240 pts</span><span>2,000 pts</span></div>
+            <div style="margin-top:18px;padding-top:16px;border-top:1px solid var(--border-subtle);">
+              <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;">Next reward</div>
+              <div style="display:flex;align-items:center;gap:10px;">
+                <div class="kpi-icon volt" style="margin:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg></div>
+                <div><div style="font-size:12.5px;font-weight:700;">Free next-day shipping</div><div style="font-size:11px;color:var(--text-muted);">at 1,500 points</div></div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <!-- ============ VIEW: ORDERS ============ -->
+      <div class="user-view" id="view-orders">
+        <div class="page-head">
+          <div>
+            <span class="page-eyebrow">Order History</span>
+            <h1 class="page-title">My Orders</h1>
+            <p class="page-subtitle">Track deliveries and reorder your favourite gear.</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn-ghost" onclick="showToast('Exporting order history...')">Export</button>
+            <button class="btn-volt" onclick="showToast('Opening shop...')">Shop again</button>
+          </div>
+        </div>
+
+        <section class="panel">
+          <div class="panel-head">
+            <h2 class="panel-title">All Orders (14)</h2>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button class="btn-ghost" style="padding:7px 14px;font-size:12px" onclick="showToast('Filter: All')">All</button>
+              <button class="btn-ghost" style="padding:7px 14px;font-size:12px" onclick="showToast('Filter: Shipped')">Shipped</button>
+              <button class="btn-ghost" style="padding:7px 14px;font-size:12px" onclick="showToast('Filter: Delivered')">Delivered</button>
+              <button class="btn-ghost" style="padding:7px 14px;font-size:12px" onclick="showToast('Filter: Cancelled')">Cancelled</button>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table class="user-table">
+              <thead><tr><th>Order</th><th>Product</th><th>Date</th><th>Total</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td style="font-weight:700;color:var(--text-white)">#STK-8821</td>
+                  <td><div class="table-product"><img src="Assets/Frame 5080.webp" alt="" class="table-thumb" onerror="this.style.background='#18191d'"><div><div class="table-product-name">Stride Pro Runner</div><div class="table-product-sub">Size 10</div></div></div></td>
+                  <td>Mar 14, 2026</td><td style="font-weight:700;color:var(--text-white)">₹169.00</td>
+                  <td><span class="badge badge-delivered">Delivered</span></td>
+                  <td><div class="table-actions"><button class="tbl-btn" onclick="showToast('Viewing order #STK-8821')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button><button class="tbl-btn" onclick="showToast('Reorder added to bag')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg></button></div></td>
+                </tr>
+                <tr>
+                  <td style="font-weight:700;color:var(--text-white)">#STK-8790</td>
+                  <td><div class="table-product"><img src="Assets/product-dumbbell.webp" alt="" class="table-thumb" onerror="this.style.background='#18191d'"><div><div class="table-product-name">Adjustable Dumbbell</div><div class="table-product-sub">50 lb pair</div></div></div></td>
+                  <td>Mar 09, 2026</td><td style="font-weight:700;color:var(--text-white)">₹250.00</td>
+                  <td><span class="badge badge-shipped">Shipped</span></td>
+                  <td><div class="table-actions"><button class="tbl-btn" onclick="showToast('Viewing order #STK-8790')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button><button class="tbl-btn" onclick="showToast('Tracking #STK-8790')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></button></div></td>
+                </tr>
+                <tr>
+                  <td style="font-weight:700;color:var(--text-white)">#STK-8702</td>
+                  <td><div class="table-product"><img src="Assets/Frame 5080 (1).webp" alt="" class="table-thumb" onerror="this.style.background='#18191d'"><div><div class="table-product-name">Volt Compression Tee</div><div class="table-product-sub">Size M</div></div></div></td>
+                  <td>Mar 02, 2026</td><td style="font-weight:700;color:var(--text-white)">₹48.00</td>
+                  <td><span class="badge badge-processing">Processing</span></td>
+                  <td><div class="table-actions"><button class="tbl-btn" onclick="showToast('Viewing order #STK-8702')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button><button class="tbl-btn danger" onclick="showToast('Cancel request sent')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div></td>
+                </tr>
+                <tr>
+                  <td style="font-weight:700;color:var(--text-white)">#STK-8655</td>
+                  <td><div class="table-product"><img src="Assets/product-straps.webp" alt="" class="table-thumb" onerror="this.style.background='#18191d'"><div><div class="table-product-name">Grip Lifting Straps</div><div class="table-product-sub">Cotton blend</div></div></div></td>
+                  <td>Feb 24, 2026</td><td style="font-weight:700;color:var(--text-white)">₹22.00</td>
+                  <td><span class="badge badge-delivered">Delivered</span></td>
+                  <td><div class="table-actions"><button class="tbl-btn" onclick="showToast('Viewing order #STK-8655')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button><button class="tbl-btn" onclick="showToast('Reorder added to bag')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg></button></div></td>
+                </tr>
+                <tr>
+                  <td style="font-weight:700;color:var(--text-white)">#STK-8610</td>
+                  <td><div class="table-product"><img src="Assets/product-tempo.webp" alt="" class="table-thumb" onerror="this.style.background='#18191d'"><div><div class="table-product-name">Tempo Daily Trainer</div><div class="table-product-sub">Size 9</div></div></div></td>
+                  <td>Feb 18, 2026</td><td style="font-weight:700;color:var(--text-white)">₹129.00</td>
+                  <td><span class="badge badge-cancelled">Cancelled</span></td>
+                  <td><div class="table-actions"><button class="tbl-btn" onclick="showToast('Viewing order #STK-8610')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <!-- ============ VIEW: WISHLIST ============ -->
+      <div class="user-view" id="view-wishlist">
+        <div class="page-head">
+          <div>
+            <span class="page-eyebrow">Saved Items</span>
+            <h1 class="page-title">My Wishlist</h1>
+            <p class="page-subtitle">Gear you're eyeing — ready when you are.</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn-volt" onclick="showToast('Moved all items to bag')">Add all to bag</button>
+          </div>
+        </div>
+
+        <section class="panel">
+          <div class="panel-head"><h2 class="panel-title">Saved Items (4)</h2></div>
+          <div class="wishlist-grid">
+            <div class="wish-item">
+              <button class="wish-remove" onclick="event.stopPropagation(); this.closest('.wish-item').remove(); showToast('Removed from wishlist')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+              <div class="wish-img-wrap"><img src="Assets/product-tempo.webp" alt="Tempo Daily Trainer" onerror="this.style.background='#18191d'"></div>
+              <div class="wish-body"><div class="wish-name">Tempo Daily Trainer</div><div class="wish-price">₹129</div></div>
+            </div>
+            <div class="wish-item">
+              <button class="wish-remove" onclick="event.stopPropagation(); this.closest('.wish-item').remove(); showToast('Removed from wishlist')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+              <div class="wish-img-wrap"><img src="Assets/product-halo.webp" alt="Halo Quarter-Zip" onerror="this.style.background='#18191d'"></div>
+              <div class="wish-body"><div class="wish-name">Halo Quarter-Zip</div><div class="wish-price">₹84</div></div>
+            </div>
+            <div class="wish-item">
+              <button class="wish-remove" onclick="event.stopPropagation(); this.closest('.wish-item').remove(); showToast('Removed from wishlist')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+              <div class="wish-img-wrap"><img src="Assets/product-straps.webp" alt="Grip Lifting Straps" onerror="this.style.background='#18191d'"></div>
+              <div class="wish-body"><div class="wish-name">Grip Lifting Straps</div><div class="wish-price">₹22</div></div>
+            </div>
+            <div class="wish-item">
+              <button class="wish-remove" onclick="event.stopPropagation(); this.closest('.wish-item').remove(); showToast('Removed from wishlist')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+              <div class="wish-img-wrap"><img src="Assets/Frame 5080.webp" alt="Stride Pro Runner" onerror="this.style.background='#18191d'"></div>
+              <div class="wish-body"><div class="wish-name">Stride Pro Runner</div><div class="wish-price">₹169</div></div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- ============ VIEW: REWARDS ============ -->
+      <div class="user-view" id="view-rewards">
+        <div class="page-head">
+          <div>
+            <span class="page-eyebrow">The Pulse</span>
+            <h1 class="page-title">Rewards</h1>
+            <p class="page-subtitle">Earn points on every order. Redeem for gear and perks.</p>
+          </div>
+        </div>
+
+        <div class="user-grid-2">
+          <section class="panel">
+            <div class="panel-head"><h2 class="panel-title">Your Tier</h2></div>
+            <div class="reward-tier">
+              <div class="reward-badge">G</div>
+              <div><div class="reward-tier-name">Gold Tier</div><div class="reward-tier-sub">1,240 points · 760 to Platinum</div></div>
+            </div>
+            <div class="progress-track"><div class="progress-fill"></div></div>
+            <div class="progress-labels"><span>1,240 pts</span><span>2,000 pts</span></div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head"><h2 class="panel-title">Recent Points</h2></div>
+            <div class="list-row"><div class="list-info"><div class="list-name">Order #STK-8821</div><div class="list-sub">Mar 14, 2026</div></div><span class="list-value" style="color:#4ade80">+169</span></div>
+            <div class="list-row"><div class="list-info"><div class="list-name">Order #STK-8790</div><div class="list-sub">Mar 09, 2026</div></div><span class="list-value" style="color:#4ade80">+250</span></div>
+            <div class="list-row"><div class="list-info"><div class="list-name">Redeemed: Free Shipping</div><div class="list-sub">Mar 05, 2026</div></div><span class="list-value" style="color:#f87171">-260</span></div>
+          </section>
+        </div>
+
+        <section class="panel">
+          <div class="panel-head"><h2 class="panel-title">Redeem Points</h2></div>
+          <div class="list-row">
+            <div class="kpi-icon volt" style="margin:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+            <div class="list-info"><div class="list-name">₹10 Off Next Order</div><div class="list-sub">500 points</div></div>
+            <button class="btn-volt" style="padding:8px 18px;font-size:12px" onclick="showToast('Redeemed ₹10 off coupon!')">Redeem</button>
+          </div>
+          <div class="list-row">
+            <div class="kpi-icon cyan" style="margin:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7h-9M14 17H5M19 13v6M5 3v6"/><circle cx="17" cy="5" r="2"/><circle cx="7" cy="19" r="2"/></svg></div>
+            <div class="list-info"><div class="list-name">Free Next-Day Shipping</div><div class="list-sub">260 points</div></div>
+            <button class="btn-volt" style="padding:8px 18px;font-size:12px" onclick="showToast('Shipping perk unlocked!')">Redeem</button>
+          </div>
+          <div class="list-row">
+            <div class="kpi-icon success" style="margin:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg></div>
+            <div class="list-info"><div class="list-name">Early Volt 2026 Drop Access</div><div class="list-sub">1,000 points</div></div>
+            <button class="btn-volt" style="padding:8px 18px;font-size:12px" onclick="showToast('Early access unlocked!')">Redeem</button>
+          </div>
+        </section>
+      </div>
+
+      <!-- ============ VIEW: PROFILE ============ -->
+      <div class="user-view" id="view-profile">
+        <div class="page-head">
+          <div>
+            <span class="page-eyebrow">Account</span>
+            <h1 class="page-title">Profile</h1>
+            <p class="page-subtitle">Keep your details up to date for the best fit.</p>
+          </div>
+        </div>
+
+        <section class="panel">
+          <div class="panel-head"><h2 class="panel-title">Personal Details</h2></div>
+          <form onsubmit="event.preventDefault(); saveProfileDetails();">
+            <div class="form-grid">
+              <div class="form-field"><label class="form-label">First name</label><input class="form-input" type="text" id="profileFirstName" value="Alex"></div>
+              <div class="form-field"><label class="form-label">Last name</label><input class="form-input" type="text" id="profileLastName" value="Morgan"></div>
+              <div class="form-field"><label class="form-label">Email / User ID</label><input class="form-input" type="text" id="profileEmail" value="alex@stackly.com"></div>
+              <div class="form-field"><label class="form-label">Phone</label><input class="form-input" type="tel" value="+91 98765 43210"></div>
+              <div class="form-field full"><label class="form-label">Delivery address</label><textarea class="form-textarea">Evolve Studio, 4th Floor, Begur - Koppa Rd, Bengaluru, Karnataka - 560068</textarea></div>
+              <div class="form-field"><label class="form-label">Shoe size (US)</label><select class="form-select"><option>8</option><option>9</option><option selected>10</option><option>11</option><option>12</option></select></div>
+              <div class="form-field"><label class="form-label">Apparel size</label><select class="form-select"><option>XS</option><option>S</option><option selected>M</option><option>L</option><option>XL</option></select></div>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn-volt">Save changes</button>
+              <button type="button" class="btn-ghost" onclick="showToast('Changes discarded')">Cancel</button>
+            </div>
+          </form>
+        </section>
+      </div>
+
+      <!-- ============ VIEW: SETTINGS ============ -->
+      <div class="user-view" id="view-settings">
+        <div class="page-head">
+          <div>
+            <span class="page-eyebrow">Preferences</span>
+            <h1 class="page-title">Settings</h1>
+            <p class="page-subtitle">Control notifications, privacy and account security.</p>
+          </div>
+        </div>
+
+        <section class="panel">
+          <div class="panel-head"><h2 class="panel-title">Notifications</h2></div>
+          <div class="setting-row">
+            <div class="setting-info"><div class="setting-title">Order updates</div><div class="setting-desc">Get notified when your order ships or arrives.</div></div>
+            <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+          </div>
+          <div class="setting-row">
+            <div class="setting-info"><div class="setting-title">New drops & offers</div><div class="setting-desc">Be first to know about new gear and member-only pricing.</div></div>
+            <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+          </div>
+          <div class="setting-row">
+            <div class="setting-info"><div class="setting-title">Training tips</div><div class="setting-desc">Weekly notes from our performance team.</div></div>
+            <label class="toggle"><input type="checkbox"><span class="toggle-slider"></span></label>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head"><h2 class="panel-title">Security</h2></div>
+          <div class="setting-row">
+            <div class="setting-info"><div class="setting-title">Change password</div><div class="setting-desc">Last updated 3 months ago.</div></div>
+            <button class="btn-ghost" onclick="showToast('Password reset link sent')">Update</button>
+          </div>
+          <div class="setting-row">
+            <div class="setting-info"><div class="setting-title">Two-factor authentication</div><div class="setting-desc">Add an extra layer of security to your account.</div></div>
+            <button class="btn-ghost" onclick="showToast('2FA setup opened')">Enable</button>
+          </div>
+          <div class="setting-row">
+            <div class="setting-info"><div class="setting-title" style="color:#f87171">Delete account</div><div class="setting-desc">Permanently remove your account and data.</div></div>
+            <button class="btn-danger" onclick="showToast('Account deletion requires confirmation')">Delete</button>
+          </div>
+        </section>
+      </div>
+
+      <!-- ============ VIEW: LOGOUT ============ -->
+      <div class="user-view" id="view-logout">
+        <div class="panel" style="text-align:center;padding:60px 30px;max-width:520px;margin:0 auto;">
+          <div style="width:64px;height:64px;border-radius:50%;background:rgba(239,68,68,0.12);color:#f87171;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          </div>
+          <h2 class="panel-title" style="font-size:24px;margin-bottom:10px;">Log out?</h2>
+          <p style="font-size:13.5px;color:var(--text-muted);margin-bottom:24px;">You'll need to sign back in to access your orders, wishlist and rewards.</p>
+          <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+            <button class="btn-volt" onclick="handleUserLogout()">Yes, log out</button>
+            <button class="btn-ghost" onclick="switchView('overview')">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <script>
+    function showToast(msg){
+      let t=document.querySelector('.toast-notice');
+      if(!t){t=document.createElement('div');t.className='toast-notice';t.innerHTML='<span class="toast-icon">✓</span><span class="toast-text"></span>';document.body.appendChild(t);}
+      t.querySelector('.toast-text').textContent=msg;
+      t.classList.add('show');
+      clearTimeout(window._tt);window._tt=setTimeout(()=>t.classList.remove('show'),2600);
+    }
+
+    function switchView(name){
+      document.querySelectorAll('.user-view').forEach(v=>v.classList.remove('active'));
+      const target=document.getElementById('view-'+name);
+      if(target) target.classList.add('active');
+      document.querySelectorAll('.side-link').forEach(l=>l.classList.remove('active'));
+      const link=document.querySelector(`.side-link[data-view="${name}"]`);
+      if(link) link.classList.add('active');
+      if(window.matchMedia('(max-width:900px)').matches){
+        document.getElementById('userSidebar').classList.remove('open');
+      }
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
+
+    document.querySelectorAll('.side-link').forEach(btn=>{
+      btn.addEventListener('click',()=>switchView(btn.dataset.view));
+    });
+
+    // Mobile sidebar
+    const sidebarToggle=document.getElementById('sidebarToggle');
+    const userSidebar=document.getElementById('userSidebar');
+    const mq=window.matchMedia('(max-width:900px)');
+    function handleMq(){sidebarToggle.style.display=mq.matches?'flex':'none';if(!mq.matches)userSidebar.classList.remove('open');}
+    mq.addEventListener('change',handleMq);handleMq();
+    sidebarToggle.addEventListener('click',()=>userSidebar.classList.toggle('open'));
+    document.addEventListener('click',(e)=>{
+      if(mq.matches&&userSidebar.classList.contains('open')&&!userSidebar.contains(e.target)&&!sidebarToggle.contains(e.target)){
+        userSidebar.classList.remove('open');
+      }
+    });
+
+    // Profile Sync & Persistence
+    function syncUserProfile() {
+      const storedName = localStorage.getItem('stackly_profile_name');
+      const storedId = localStorage.getItem('stackly_user_id');
+      const storedEmail = localStorage.getItem('stackly_user_email');
+      
+      const name = storedName || (storedId ? storedId : 'Alex Morgan');
+      const parts = name.trim().split(/\s+/);
+      const firstName = parts[0] || 'Alex';
+      const lastName = parts.slice(1).join(' ') || '';
+      const email = storedEmail || (storedId && storedId.includes('@') ? storedId : (storedId ? storedId.toLowerCase().replace(/\s+/g,'') + '@stackly.com' : 'alex@stackly.com'));
+
+      document.querySelectorAll('.user-profile-name').forEach(el => el.textContent = name);
+      document.querySelectorAll('.user-first-name').forEach(el => el.textContent = firstName);
+      document.querySelectorAll('.user-profile-email').forEach(el => el.textContent = email);
+      document.querySelectorAll('.user-avatar, .sidebar-avatar').forEach(el => el.setAttribute('alt', name));
+
+      const fnInput = document.getElementById('profileFirstName');
+      const lnInput = document.getElementById('profileLastName');
+      const emInput = document.getElementById('profileEmail');
+      if (fnInput) fnInput.value = firstName;
+      if (lnInput) lnInput.value = lastName;
+      if (emInput) emInput.value = email;
+    }
+
+    function saveProfileDetails() {
+      const fn = document.getElementById('profileFirstName').value.trim();
+      const ln = document.getElementById('profileLastName').value.trim();
+      const em = document.getElementById('profileEmail').value.trim();
+      const fullName = (fn + ' ' + ln).trim() || fn || 'User';
+      
+      localStorage.setItem('stackly_profile_name', fullName);
+      if (em) localStorage.setItem('stackly_user_email', em);
+      syncUserProfile();
+      showToast('Profile updated successfully!');
+    }
+
+    function handleUserLogout() {
+      showToast('Signing out...');
+      localStorage.removeItem('stackly_user_id');
+      localStorage.removeItem('stackly_profile_name');
+      localStorage.removeItem('stackly_user_email');
+      localStorage.removeItem('stackly_role');
+      setTimeout(() => { window.location.href = 'login.html'; }, 500);
+    }
+
+    document.addEventListener('DOMContentLoaded', syncUserProfile);
+  </script>
+</body>
+</html>

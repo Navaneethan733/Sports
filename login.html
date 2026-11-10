@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | STACKLY — Built to Push Limits</title>
+  <meta name="description" content="Sign in to your STACKLY account. Track orders, manage your wishlist and rewards.">
+
+  <link rel="icon" type="image/webp" href="Assets/stackly-logo-clean.webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg-dark:#0a0b0d;--bg-card:#131417;--bg-card-surface:#18191d;
+      --volt:#d2fd04;--volt-hover:#bce402;--volt-glow:rgba(210,253,4,0.28);--volt-dim:rgba(210,253,4,0.12);
+      --cyan:#00f2fe;--success:#22c55e;--warning:#f59e0b;--danger:#ef4444;
+      --text-white:#ffffff;--text-muted:#8e95a2;--text-dim:#5c626e;
+      --border-subtle:rgba(255,255,255,0.08);--border-medium:rgba(255,255,255,0.15);
+      --font-heading:'Barlow Condensed','Oswald',sans-serif;--font-body:'Plus Jakarta Sans',system-ui,sans-serif;
+      --radius-sm:8px;--radius-md:14px;--radius-lg:20px;--radius-full:9999px;
+      --transition-fast:0.2s cubic-bezier(0.16,1,0.3,1);--transition-smooth:0.4s cubic-bezier(0.16,1,0.3,1);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;font-size:16px;color-scheme:dark}
+    body{background:var(--bg-dark);color:var(--text-white);font-family:var(--font-body);line-height:1.5;overflow-x:hidden;-webkit-font-smoothing:antialiased;min-height:100vh}
+    img{max-width:100%;height:auto;display:block}
+    a{color:inherit;text-decoration:none}
+    button{font-family:inherit;border:none;background:none;cursor:pointer}
+    input,select,textarea{font-family:inherit}
+
+    /* ============================= SPLIT LAYOUT ============================= */
+    .auth-shell{display:grid;grid-template-columns:1.1fr 1fr;min-height:100vh}
+
+    /* LEFT VISUAL PANEL */
+    .auth-visual{position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:44px 48px;background:#0d0e10}
+    .auth-visual-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.45)}
+    .auth-visual-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(10,11,13,0.85) 0%,rgba(10,11,13,0.3) 50%,rgba(10,11,13,0.9) 100%)}
+    .auth-visual::after{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);background-size:56px 56px;mask-image:radial-gradient(circle at 50% 50%,black 0%,transparent 70%);-webkit-mask-image:radial-gradient(circle at 50% 50%,black 0%,transparent 70%);pointer-events:none}
+    .auth-visual-content{position:relative;z-index:2}
+    .auth-visual-logo{height:32px;width:auto;margin-bottom:auto}
+    .auth-visual-bottom{position:relative;z-index:2;margin-top:auto}
+    .auth-visual-tag{display:inline-flex;align-items:center;gap:10px;padding:7px 16px;border-radius:var(--radius-full);background:var(--volt-dim);border:1px solid rgba(210,253,4,0.25);color:var(--volt);font-size:11.5px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:22px}
+    .auth-visual-dot{width:6px;height:6px;border-radius:50%;background:var(--volt);box-shadow:0 0 8px var(--volt-glow);animation:pulseDot 1.8s ease-in-out infinite}
+    @keyframes pulseDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(0.8)}}
+    .auth-visual-title{font-family:var(--font-heading);font-size:clamp(42px,4.8vw,72px);font-weight:900;line-height:0.92;text-transform:uppercase;letter-spacing:-0.02em;margin-bottom:20px}
+    .auth-visual-title .text-volt{color:var(--volt)}
+    .auth-visual-desc{font-size:14px;line-height:1.7;color:#b5bac5;max-width:400px;font-weight:500}
+    .auth-visual-stats{display:flex;gap:32px;margin-top:36px;flex-wrap:wrap}
+    .auth-visual-stat-value{font-family:var(--font-heading);font-size:26px;font-weight:900;color:var(--volt);line-height:1}
+    .auth-visual-stat-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-top:4px}
+
+    /* RIGHT FORM PANEL */
+    .auth-form-side{display:flex;align-items:center;justify-content:center;padding:44px 40px;position:relative;background:var(--bg-dark)}
+    .auth-form-wrap{width:100%;max-width:420px}
+    .auth-form-header{margin-bottom:30px}
+    .auth-form-logo-mobile{display:none;height:28px;width:auto;margin-bottom:28px}
+    .auth-form-eyebrow{font-size:11.5px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--volt);margin-bottom:10px;display:block}
+    .auth-form-title{font-family:var(--font-heading);font-size:clamp(32px,4vw,44px);font-weight:900;text-transform:uppercase;line-height:1;letter-spacing:-0.01em;margin-bottom:10px}
+    .auth-form-subtitle{font-size:13.5px;color:var(--text-muted);font-weight:500}
+
+    /* FORM */
+    .auth-form{display:flex;flex-direction:column;gap:18px}
+    .auth-field{display:flex;flex-direction:column;gap:7px}
+    .auth-label-row{display:flex;align-items:center;justify-content:space-between}
+    .auth-label{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted)}
+    .auth-forgot{font-size:11.5px;font-weight:700;color:var(--volt);transition:opacity var(--transition-fast)}
+    .auth-forgot:hover{opacity:0.75}
+    .auth-input-wrap{position:relative;display:flex;align-items:center}
+    .auth-input-icon{position:absolute;left:16px;width:17px;height:17px;color:var(--text-dim);pointer-events:none;transition:color var(--transition-fast)}
+    .auth-input{width:100%;background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);color:var(--text-white);font-size:14px;padding:14px 16px 14px 46px;outline:none;transition:border-color var(--transition-fast),box-shadow var(--transition-fast),background var(--transition-fast)}
+    .auth-input::placeholder{color:var(--text-dim)}
+    .auth-input:focus{border-color:var(--volt);box-shadow:0 0 0 3px var(--volt-dim);background:var(--bg-card-surface)}
+    .auth-input-wrap:focus-within .auth-input-icon{color:var(--volt)}
+    .auth-password-toggle{position:absolute;right:14px;width:32px;height:32px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;color:var(--text-dim);transition:all var(--transition-fast)}
+    .auth-password-toggle:hover{color:var(--volt);background:rgba(255,255,255,0.04)}
+    .auth-password-toggle svg{width:17px;height:17px}
+
+    /* ============================= ROLE SELECTOR ============================= */
+    .role-selector-wrap{display:flex;flex-direction:column;gap:7px}
+    .role-selector-label{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted)}
+    .role-selector{position:relative;display:flex;align-items:center}
+    .role-icon{position:absolute;left:16px;width:17px;height:17px;color:var(--text-dim);pointer-events:none;transition:color var(--transition-fast);z-index:2}
+    .role-select{cursor:pointer;width:100%;background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);color:var(--text-white);font-size:14px;font-weight:600;padding:14px 44px 14px 46px;outline:none;appearance:none;-webkit-appearance:none;-moz-appearance:none;transition:border-color var(--transition-fast),box-shadow var(--transition-fast),background var(--transition-fast)}
+    .role-select:focus{border-color:var(--volt);box-shadow:0 0 0 3px var(--volt-dim);background:var(--bg-card-surface)}
+    .role-selector:focus-within .role-icon{color:var(--volt)}
+    .role-chevron{position:absolute;right:16px;width:16px;height:16px;color:var(--text-dim);pointer-events:none;transition:transform var(--transition-fast),color var(--transition-fast)}
+    .role-selector:focus-within .role-chevron{color:var(--volt);transform:rotate(180deg)}
+    .role-select option{background:#131417;color:#fff;padding:12px}
+
+    /* Role hint */
+    .role-hint{display:flex;align-items:center;gap:8px;font-size:11.5px;font-weight:600;color:var(--text-muted);padding:10px 14px;background:rgba(210,253,4,0.05);border:1px solid rgba(210,253,4,0.15);border-radius:var(--radius-sm);transition:all var(--transition-smooth)}
+    .role-hint svg{width:14px;height:14px;color:var(--volt);flex-shrink:0}
+    .role-hint strong{color:var(--volt);font-weight:800}
+    .role-hint.admin-mode{background:rgba(168,85,247,0.08);border-color:rgba(168,85,247,0.2)}
+    .role-hint.admin-mode svg,.role-hint.admin-mode strong{color:var(--purple, #a855f7)}
+
+    /* CHECKBOX */
+    .auth-checkbox-row{display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none}
+    .auth-checkbox-row input{position:absolute;opacity:0;width:0;height:0}
+    .auth-checkbox-box{width:19px;height:19px;border-radius:5px;border:1.5px solid var(--border-medium);background:var(--bg-card);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all var(--transition-fast)}
+    .auth-checkbox-box svg{width:11px;height:11px;stroke:#000;stroke-width:3;fill:none;opacity:0;transition:opacity var(--transition-fast)}
+    .auth-checkbox-row input:checked + .auth-checkbox-box{background:var(--volt);border-color:var(--volt)}
+    .auth-checkbox-row input:checked + .auth-checkbox-box svg{opacity:1}
+    .auth-checkbox-label{font-size:12.5px;font-weight:500;color:#c9ccd4}
+
+    /* BUTTONS */
+    .auth-submit{width:100%;background:var(--volt);color:#000;font-size:14px;font-weight:800;padding:15px 24px;border-radius:var(--radius-full);display:flex;align-items:center;justify-content:center;gap:9px;transition:all var(--transition-fast);box-shadow:0 6px 22px rgba(0,0,0,0.4);margin-top:4px;letter-spacing:0.01em}
+    .auth-submit:hover{background:var(--volt-hover);transform:translateY(-2px);box-shadow:0 12px 28px -4px var(--volt-glow)}
+    .auth-submit:active{transform:translateY(0)}
+    .auth-submit svg{width:16px;height:16px;transition:transform var(--transition-fast)}
+    .auth-submit:hover svg{transform:translateX(3px)}
+
+    /* DIVIDER */
+    .auth-divider{display:flex;align-items:center;gap:14px;margin:6px 0}
+    .auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--border-subtle)}
+    .auth-divider span{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-dim);white-space:nowrap}
+
+    /* SOCIAL */
+    .auth-social-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .auth-social-btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;border-radius:var(--radius-md);background:var(--bg-card);border:1px solid var(--border-subtle);color:#c9ccd4;font-size:12.5px;font-weight:600;transition:all var(--transition-fast)}
+    .auth-social-btn:hover{border-color:var(--border-medium);background:var(--bg-card-surface);color:var(--text-white);transform:translateY(-2px)}
+    .auth-social-btn svg{width:17px;height:17px;fill:currentColor}
+
+    /* SWITCH LINK */
+    .auth-switch{text-align:center;font-size:13px;color:var(--text-muted);font-weight:500;margin-top:28px}
+    .auth-switch a{color:var(--volt);font-weight:700;margin-left:4px;transition:opacity var(--transition-fast)}
+    .auth-switch a:hover{opacity:0.75}
+
+    /* RESPONSIVE */
+    @media (max-width:960px){
+      .auth-shell{grid-template-columns:1fr}
+      .auth-visual{display:none}
+      .auth-form-logo-mobile{display:block}
+      .auth-form-side{padding:40px 24px;min-height:100vh}
+    }
+    @media (max-width:480px){
+      .auth-form-side{padding:32px 18px}
+      .auth-social-grid{grid-template-columns:1fr}
+      .auth-social-btn{justify-content:flex-start;padding:12px 16px}
+    }
+
+    /* GO BACK BUTTON */
+    .go-back-btn{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-muted);background:transparent;border:1px solid var(--border-subtle);padding:9px 18px;border-radius:var(--radius-full);transition:all var(--transition-fast);text-decoration:none;margin-bottom:28px}
+    .go-back-btn svg{width:14px;height:14px;transition:transform var(--transition-fast);flex-shrink:0}
+    .go-back-btn:hover{color:var(--text-white);border-color:var(--volt);background:rgba(210,253,4,0.06);transform:translateX(-2px)}
+    .go-back-btn:hover svg{transform:translateX(-3px)}
+
+    /* TOAST */
+    .toast-notice{position:fixed;bottom:26px;right:26px;background:rgba(18,19,23,0.96);backdrop-filter:blur(12px);border:1px solid var(--volt);color:#fff;padding:13px 20px;border-radius:var(--radius-md);display:flex;align-items:center;gap:10px;box-shadow:0 15px 35px rgba(0,0,0,0.7),0 0 20px var(--volt-glow);z-index:10000;transform:translateY(100px);opacity:0;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);pointer-events:none;font-size:13px;font-weight:500}
+    .toast-notice.show{transform:translateY(0);opacity:1;pointer-events:auto}
+    .toast-icon{width:22px;height:22px;border-radius:50%;background:var(--volt);color:#000;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;flex-shrink:0}
+
+    /* ENTRANCE ANIMATIONS */
+    .anim-up{opacity:0;transform:translateY(24px);animation:animUp 0.7s cubic-bezier(0.16,1,0.3,1) forwards}
+    .anim-up-d1{animation-delay:0.08s}
+    .anim-up-d2{animation-delay:0.16s}
+    .anim-up-d3{animation-delay:0.24s}
+    .anim-up-d4{animation-delay:0.32s}
+    .anim-up-d5{animation-delay:0.4s}
+    .anim-up-d6{animation-delay:0.48s}
+    .anim-up-d7{animation-delay:0.56s}
+    .anim-up-d8{animation-delay:0.64s}
+    @keyframes animUp{to{opacity:1;transform:translateY(0)}}
+    .anim-fade{opacity:0;animation:animFade 0.9s cubic-bezier(0.16,1,0.3,1) forwards}
+    @keyframes animFade{to{opacity:1}}
+
+    @media (prefers-reduced-motion:reduce){
+      .anim-up,.anim-fade{opacity:1 !important;transform:none !important;animation:none !important}
+    }
+  </style>
+</head>
+<body>
+
+  <div class="auth-shell">
+
+    <!-- ============================ LEFT VISUAL ============================ -->
+    <aside class="auth-visual">
+      <img src="Assets/photo-1534438327276-14e5300c3a48-1200x1600.webp" alt="Athlete training" class="auth-visual-bg" onerror="this.style.background='#0d0e10'">
+      <div class="auth-visual-overlay"></div>
+
+      <div class="auth-visual-content anim-fade">
+        <img src="Assets/stackly-logo-clean.webp" alt="STACKLY" class="auth-visual-logo" onerror="this.style.display='none'">
+      </div>
+
+      <div class="auth-visual-bottom">
+        <span class="auth-visual-tag anim-up anim-up-d1"><span class="auth-visual-dot"></span> Welcome back, athlete</span>
+        <h1 class="auth-visual-title anim-up anim-up-d2">NO SHORTCUTS.<br>NO <span class="text-volt">DAYS OFF</span>.</h1>
+        <p class="auth-visual-desc anim-up anim-up-d3">Sign in to track orders, manage your wishlist and redeem rewards. Your next rep starts here.</p>
+        <div class="auth-visual-stats anim-up anim-up-d4">
+          <div>
+            <div class="auth-visual-stat-value">48K+</div>
+            <div class="auth-visual-stat-label">Athletes</div>
+          </div>
+          <div>
+            <div class="auth-visual-stat-value">120+</div>
+            <div class="auth-visual-stat-label">Products</div>
+          </div>
+          <div>
+            <div class="auth-visual-stat-value">14</div>
+            <div class="auth-visual-stat-label">Countries</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ============================ RIGHT FORM ============================ -->
+    <main class="auth-form-side">
+      <div class="auth-form-wrap">
+        <a href="index.html" class="go-back-btn anim-up">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          Back to Home
+        </a>
+        <div class="auth-form-header">
+          <img src="Assets/stackly-logo-clean.webp" alt="STACKLY" class="auth-form-logo-mobile anim-up" onerror="this.style.display='none'">
+          <span class="auth-form-eyebrow anim-up anim-up-d1">Welcome back</span>
+          <h2 class="auth-form-title anim-up anim-up-d2" id="formTitle">SIGN IN</h2>
+          <p class="auth-form-subtitle anim-up anim-up-d3" id="formSubtitle">Enter your details to access your account.</p>
+        </div>
+
+        <form class="auth-form" onsubmit="event.preventDefault(); handleLogin();">
+
+          <!-- ROLE SELECTOR (above user ID) -->
+          <div class="role-selector-wrap anim-up anim-up-d4">
+            <label class="role-selector-label" for="roleSelect">Sign in as</label>
+            <div class="role-selector">
+              <svg class="role-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              <select class="role-select" id="roleSelect" onchange="updateRole(this.value)">
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+              </select>
+              <svg class="role-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <div class="role-hint" id="roleHint">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              <span>Signing in as <strong id="roleHintText">User</strong> — access your orders, wishlist and rewards.</span>
+            </div>
+          </div>
+
+          <!-- Email / User ID -->
+          <div class="auth-field anim-up anim-up-d5">
+            <label class="auth-label" id="emailLabel">User ID / Email</label>
+            <div class="auth-input-wrap">
+              <svg class="auth-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <input type="text" class="auth-input" id="emailInput" placeholder="Enter User ID or email" required autocomplete="off" value="">
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div class="auth-field anim-up anim-up-d6">
+            <div class="auth-label-row">
+              <label class="auth-label">Password</label>
+              <a href="#" class="auth-forgot" onclick="showToast('Password reset link sent'); return false;">Forgot password?</a>
+            </div>
+            <div class="auth-input-wrap">
+              <svg class="auth-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <input type="password" class="auth-input" placeholder="Enter your password" required autocomplete="current-password" id="loginPassword">
+              <button type="button" class="auth-password-toggle" onclick="togglePassword('loginPassword', this)" aria-label="Show password">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Remember -->
+          <label class="auth-checkbox-row anim-up anim-up-d6">
+            <input type="checkbox" checked>
+            <span class="auth-checkbox-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <span class="auth-checkbox-label">Keep me signed in</span>
+          </label>
+
+          <!-- Submit -->
+          <button type="submit" class="auth-submit anim-up anim-up-d7" id="submitBtn">
+            Sign in
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+
+          <!-- Divider -->
+          <div class="auth-divider anim-up anim-up-d8"><span>Or continue with</span></div>
+
+          <!-- Social -->
+          <div class="auth-social-grid anim-up anim-up-d8">
+            <button type="button" class="auth-social-btn" onclick="showToast('Continuing with Google...')">
+              <svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+              Google
+            </button>
+            <button type="button" class="auth-social-btn" onclick="showToast('Continuing with Apple...')">
+              <svg viewBox="0 0 24 24"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+              Apple
+            </button>
+            <button type="button" class="auth-social-btn" onclick="showToast('Continuing with Facebook...')">
+              <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+              Facebook
+            </button>
+          </div>
+
+          <!-- Switch -->
+          <p class="auth-switch anim-up anim-up-d8">
+            Don't have an account?
+            <a href="signup.html">Create one</a>
+          </p>
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // ============================= TOAST =============================
+    function showToast(msg){
+      let t=document.querySelector('.toast-notice');
+      if(!t){t=document.createElement('div');t.className='toast-notice';t.innerHTML='<span class="toast-icon">✓</span><span class="toast-text"></span>';document.body.appendChild(t);}
+      t.querySelector('.toast-text').textContent=msg;
+      t.classList.add('show');
+      clearTimeout(window._tt);window._tt=setTimeout(()=>t.classList.remove('show'),2600);
+    }
+
+    // ============================= PASSWORD TOGGLE =============================
+    function togglePassword(inputId, btn){
+      const input=document.getElementById(inputId);
+      const isPassword=input.type==='password';
+      input.type=isPassword?'text':'password';
+      btn.innerHTML=isPassword
+        ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>'
+        : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+      btn.setAttribute('aria-label', isPassword?'Hide password':'Show password');
+    }
+
+    // ============================= ROLE SELECTOR =============================
+    function updateRole(role){
+      const formTitle=document.getElementById('formTitle');
+      const formSubtitle=document.getElementById('formSubtitle');
+      const roleHint=document.getElementById('roleHint');
+      const roleHintText=document.getElementById('roleHintText');
+      const emailLabel=document.getElementById('emailLabel');
+      const emailInput=document.getElementById('emailInput');
+      const submitBtn=document.getElementById('submitBtn');
+
+      if(role==='admin'){
+        formTitle.textContent='ADMIN SIGN IN';
+        formSubtitle.textContent='Access the admin panel to manage store, orders and analytics.';
+        roleHintText.textContent='Admin';
+        roleHint.classList.add('admin-mode');
+        emailLabel.textContent='Admin User ID / Email';
+        emailInput.placeholder='e.g. Admin or admin@stackly.com';
+        submitBtn.innerHTML='Sign in as Admin <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
+        showToast('Switched to Admin login');
+      } else {
+        formTitle.textContent='SIGN IN';
+        formSubtitle.textContent='Enter your details to access your account.';
+        roleHintText.textContent='User';
+        roleHint.classList.remove('admin-mode');
+        emailLabel.textContent='User ID / Email';
+        emailInput.placeholder='e.g. Alex or you@example.com';
+        submitBtn.innerHTML='Sign in <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
+        showToast('Switched to User login');
+      }
+    }
+
+    // ============================= LOGIN HANDLER =============================
+    function formatDisplayName(val){
+      if(!val) return 'User';
+      let name = val.includes('@') ? val.split('@')[0] : val;
+      name = name.replace(/[._\-+]/g, ' ').trim();
+      return name.split(/\s+/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+    }
+
+    function handleLogin(){
+      const role = document.getElementById('roleSelect').value;
+      const rawId = document.getElementById('emailInput').value.trim();
+      if(!rawId){
+        showToast('Please enter your User ID or email');
+        return;
+      }
+      const displayName = formatDisplayName(rawId);
+      const email = rawId.includes('@') ? rawId : (rawId.toLowerCase().replace(/\s+/g,'') + '@stackly.com');
+
+      localStorage.setItem('stackly_user_id', rawId);
+      localStorage.setItem('stackly_profile_name', displayName);
+      localStorage.setItem('stackly_user_email', email);
+      localStorage.setItem('stackly_role', role);
+
+      if(role === 'admin'){
+        showToast('Welcome, ' + displayName + '! Redirecting to Admin panel...');
+        setTimeout(() => { window.location.href = 'admin.html'; }, 600);
+      } else {
+        showToast('Welcome, ' + displayName + '! Redirecting to Dashboard...');
+        setTimeout(() => { window.location.href = 'user.html'; }, 600);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const emailInput = document.getElementById('emailInput');
+      if (emailInput) {
+        emailInput.value = '';
+      }
+      const passwordInput = document.getElementById('loginPassword');
+      if (passwordInput) {
+        passwordInput.value = '';
+      }
+    });
+  </script>
+</body>
+</html>

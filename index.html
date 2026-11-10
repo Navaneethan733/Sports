@@ -1,0 +1,2090 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>STACKLY | Built to Push Limits</title>
+  <meta name="description" content="Running, strength and racket gear, fitted to your body and your game. Built to push limits.">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/webp" href="Assets/stackly-logo-clean.webp">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;0,900;1,700;1,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       STACKLY - PREMIUM SPORTS & FITNESS LANDING PAGE STYLES
+       ========================================================================== */
+
+    /* --- CSS Variables & Theme Tokens --- */
+    :root {
+      --bg-dark: #0a0b0d;
+      --bg-card: #131417;
+      --bg-card-surface: #18191d;
+      --bg-footer: #151618;
+      --bg-footer-card: #1c1d21;
+      --volt: #d2fd04;
+      --volt-hover: #bce402;
+      --volt-glow: rgba(210, 253, 4, 0.28);
+      --volt-dim: rgba(210, 253, 4, 0.12);
+      --cyan: #00f2fe;
+
+      --text-white: #ffffff;
+      --text-muted: #8e95a2;
+      --text-dim: #5c626e;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-medium: rgba(255, 255, 255, 0.15);
+
+      --font-heading: 'Barlow Condensed', 'Oswald', -apple-system, sans-serif;
+      --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-xl: 28px;
+      --radius-full: 9999px;
+
+      --transition-fast: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      --transition-smooth: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      --transition-spring: 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* --- Base & Reset --- */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; font-size: 16px; color-scheme: dark; }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-white);
+      font-family: var(--font-body);
+      line-height: 1.5;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img { max-width: 100%; height: auto; display: block; }
+    a { color: inherit; text-decoration: none; transition: color var(--transition-fast); }
+    button { font-family: inherit; border: none; background: none; cursor: pointer; }
+    input { font-family: inherit; }
+
+    /* --- Layout Containers --- */
+    .container {
+      width: 100%;
+      max-width: 1260px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+
+    @media (max-width: 640px) {
+      .container { padding-left: 18px; padding-right: 18px; }
+    }
+
+    .section-spacing { padding-top: 90px; padding-bottom: 90px; position: relative; }
+    @media (max-width: 768px) { .section-spacing { padding-top: 60px; padding-bottom: 60px; } }
+
+    /* --- Typography Helpers --- */
+    .font-heading { font-family: var(--font-heading); text-transform: uppercase; letter-spacing: -0.01em; }
+    .text-volt { color: var(--volt) !important; }
+
+    .section-tag {
+      color: var(--volt);
+      font-size: 13px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      margin-bottom: 12px; display: inline-block;
+    }
+
+    .section-title {
+      font-family: var(--font-heading);
+      font-size: clamp(34px, 4.5vw, 52px);
+      font-weight: 900; line-height: 1.02;
+      text-transform: uppercase; letter-spacing: -0.01em;
+    }
+
+    .section-header-row {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      margin-bottom: 36px; gap: 20px;
+    }
+
+    .view-all-link {
+      font-size: 14px; font-weight: 600; color: var(--text-white);
+      text-decoration: underline; text-underline-offset: 4px;
+      white-space: nowrap;
+      transition: color var(--transition-fast), transform var(--transition-fast);
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .view-all-link:hover { color: var(--volt); transform: translateX(4px); }
+
+    /* --- Buttons --- */
+    .btn-volt {
+      background: var(--volt); color: #000000;
+      font-family: var(--font-body);
+      font-size: 14px; font-weight: 700;
+      padding: 12px 28px; border-radius: var(--radius-full);
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      cursor: pointer; transition: all var(--transition-fast);
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+    }
+    .btn-volt:hover { background: var(--volt-hover); transform: translateY(-2px); box-shadow: 0 10px 25px -4px var(--volt-glow); }
+    .btn-volt:active { transform: translateY(0); }
+
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.03); color: var(--text-white);
+      font-family: var(--font-body);
+      font-size: 14px; font-weight: 600;
+      padding: 12px 26px; border-radius: var(--radius-full);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      display: inline-flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: all var(--transition-fast);
+    }
+    .btn-outline:hover { border-color: rgba(255, 255, 255, 0.6); background: rgba(255, 255, 255, 0.08); transform: translateY(-2px); }
+
+    /* ==========================================================================
+       NAVIGATION BAR — FIXED
+       ========================================================================== */
+    .site-header {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 999; padding: 16px 0;
+      transition: background-color 0.3s ease, padding 0.3s ease, border-color 0.3s ease, backdrop-filter 0.3s ease;
+      background-color: transparent;
+    }
+
+    .site-header.scrolled {
+      background-color: rgba(10, 11, 13, 0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border-subtle);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .nav-container {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 20px;
+    }
+
+    .nav-brand { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .brand-logo-img { height: 28px; width: auto; object-fit: contain; }
+
+    /* Desktop nav links */
+    .nav-links {
+      display: flex; align-items: center; gap: 32px;
+      list-style: none;
+      margin: 0 auto;
+    }
+
+    .nav-link {
+      font-size: 14px; font-weight: 500; color: #c9ccd4;
+      position: relative; padding: 6px 0;
+      transition: color var(--transition-fast);
+    }
+    .nav-link:hover, .nav-link.active { color: var(--text-white); }
+
+    .nav-link::after {
+      content: ''; position: absolute; bottom: 0; left: 0;
+      width: 0%; height: 2px; background-color: var(--volt);
+      transition: width var(--transition-fast);
+    }
+    .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+    /* Nav actions (search, bag, avatar, mobile toggle) */
+    .nav-actions {
+      display: flex; align-items: center; gap: 10px;
+      flex-shrink: 0;
+    }
+
+    /* --- FIXED: Icon button styles (were missing) --- */
+    .nav-icon-btn {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text-white);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      position: relative;
+      flex-shrink: 0;
+    }
+    .nav-icon-btn:hover {
+      border-color: var(--volt);
+      color: var(--volt);
+      background: rgba(30, 32, 38, 0.95);
+    }
+    .nav-icon-btn svg { width: 17px; height: 17px; }
+
+    /* --- FIXED: Nav badge (was missing) --- */
+    .nav-badge {
+      position: absolute;
+      top: -3px; right: -3px;
+      min-width: 17px; height: 17px;
+      padding: 0 4px;
+      border-radius: var(--radius-full);
+      background: var(--volt);
+      color: #000;
+      font-size: 10px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      border: 2px solid var(--bg-dark);
+      line-height: 1;
+    }
+
+    /* --- FIXED: User avatar button (was missing) --- */
+    .user-avatar-btn {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid var(--volt);
+      cursor: pointer;
+      padding: 0;
+      transition: transform var(--transition-fast);
+      flex-shrink: 0;
+    }
+    .user-avatar-btn:hover { transform: scale(1.06); }
+    .user-avatar-btn img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* --- FIXED: Mobile toggle button (was missing from HTML) --- */
+    .mobile-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 4px;
+      width: 38px; height: 38px;
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      cursor: pointer;
+      z-index: 1001;
+      transition: background var(--transition-fast), border-color var(--transition-fast);
+    }
+    .mobile-toggle:hover { border-color: var(--volt); }
+
+    .mobile-toggle span {
+      display: block;
+      width: 18px; height: 2px;
+      background-color: var(--text-white);
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    .mobile-toggle.active span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .mobile-toggle.active span:nth-child(2) { opacity: 0; }
+    .mobile-toggle.active span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+    /* --- Mobile Drawer --- */
+    .mobile-drawer {
+      position: fixed;
+      top: 0; right: -100%;
+      width: 85%; max-width: 360px;
+      height: 100vh;
+      background: #111215;
+      box-shadow: -15px 0 40px rgba(0, 0, 0, 0.85);
+      border-left: 1px solid var(--border-subtle);
+      z-index: 1001;
+      padding: 24px 24px 36px;
+      display: flex; flex-direction: column; justify-content: space-between;
+      transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow-y: auto;
+    }
+    .mobile-drawer.open { right: 0; }
+
+    .mobile-drawer-backdrop {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      z-index: 1000;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .mobile-drawer-backdrop.active { opacity: 1; pointer-events: auto; }
+
+    .mobile-drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 20px;
+      margin-bottom: 28px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .mobile-close-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1px solid var(--border-subtle);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      flex-shrink: 0;
+    }
+    .mobile-close-btn:hover {
+      border-color: var(--volt);
+      background: var(--volt);
+      color: #000;
+      transform: rotate(90deg);
+    }
+    .mobile-close-btn svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .mobile-nav-links {
+      list-style: none;
+      display: flex; flex-direction: column; gap: 20px;
+      margin: 0; padding: 0;
+    }
+    .mobile-nav-links .nav-link {
+      font-size: 20px;
+      font-family: var(--font-heading);
+      letter-spacing: 0.04em;
+      display: inline-block;
+      text-decoration: none;
+    }
+    /* --- Responsive: hide desktop nav, show mobile toggle --- */
+    @media (max-width: 840px) {
+      .nav-links { display: none; }
+      .mobile-toggle { display: flex; }
+    }
+
+    @media (max-width: 480px) {
+      /* .nav-icon-btn:first-child preserved */
+    }
+
+    /* ==========================================================================
+       HERO SECTION
+       ========================================================================== */
+    .hero-section {
+      position: relative;
+      background-color: #121315;
+      background-image: radial-gradient(circle at 76% 40%, rgba(95, 120, 40, 0.52) 0%, rgba(65, 85, 30, 0.28) 32%, rgba(30, 36, 22, 0.1) 56%, #121315 76%);
+      padding-top: 130px; padding-bottom: 70px;
+      overflow: hidden; min-height: 640px;
+      display: flex; align-items: center;
+    }
+
+    .hero-container {
+      position: relative; width: 100%;
+      display: flex; align-items: center;
+      min-height: 560px;
+    }
+
+    .hero-content { position: relative; z-index: 5; max-width: 540px; padding: 20px 0; }
+
+    .hero-tag {
+      color: var(--volt); font-size: 13.5px; font-weight: 800;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      margin-bottom: 22px; display: inline-block;
+    }
+
+    .hero-headline {
+      font-family: var(--font-heading);
+      font-size: clamp(56px, 8.4vw, 98px);
+      font-weight: 900; line-height: 0.92;
+      text-transform: uppercase; letter-spacing: -0.015em;
+      margin-bottom: 28px; color: #ffffff;
+    }
+
+    .hero-buttons { display: flex; align-items: center; gap: 16px; margin-bottom: 28px; flex-wrap: wrap; }
+
+    .btn-outline.hero-btn-outline {
+      background: transparent;
+      border: 1px solid rgba(135, 158, 60, 0.45);
+      color: #ffffff; padding: 13px 28px;
+    }
+    .btn-outline.hero-btn-outline:hover { border-color: #ffffff; background: rgba(255, 255, 255, 0.08); transform: translateY(-2px); }
+
+    .hero-desc { font-size: 14.5px; line-height: 1.65; color: #9da4b2; max-width: 440px; font-weight: 500; }
+
+    .hero-visual-wrap {
+      position: absolute; right: -2%; bottom: -15px; top: 0;
+      width: 66%; max-width: 880px; height: 100%;
+      pointer-events: none; z-index: 2;
+      display: flex; align-items: flex-end; justify-content: flex-end;
+    }
+
+    .hero-athlete-img {
+      height: 110%; width: auto; max-width: none;
+      object-fit: contain; object-position: right bottom;
+      filter: drop-shadow(0 25px 50px rgba(0, 0, 0, 0.75));
+      transform-origin: center right;
+      animation: heroFloat 6s ease-in-out infinite alternate;
+    }
+
+    @keyframes heroFloat {
+      0% { transform: translateY(0px) rotate(0deg); }
+      100% { transform: translateY(-8px) rotate(0.4deg); }
+    }
+
+    @media (max-width: 1024px) {
+      .hero-container { min-height: 500px; }
+      .hero-visual-wrap { width: 62%; right: -4%; }
+      .hero-headline { font-size: clamp(48px, 7.5vw, 80px); }
+    }
+
+    @media (max-width: 960px) {
+      .hero-section {
+        padding-top: 110px; padding-bottom: 50px; min-height: auto;
+        background-image: radial-gradient(circle at 50% 65%, rgba(95, 120, 40, 0.5) 0%, rgba(65, 85, 30, 0.25) 35%, rgba(30, 36, 22, 0.1) 60%, #121315 80%);
+      }
+      .hero-container { flex-direction: column; align-items: flex-start; min-height: auto; }
+      .hero-content { max-width: 100%; margin-bottom: 24px; z-index: 10; }
+      .hero-visual-wrap {
+        position: relative; right: auto; bottom: auto; top: auto;
+        width: 100%; max-width: 520px; height: auto;
+        margin: 0 auto; display: flex; justify-content: center;
+      }
+      .hero-athlete-img { height: auto; width: 100%; max-width: 500px; }
+    }
+
+    /* ==========================================================================
+       DISCIPLINE SECTION (CATEGORY CARDS)
+       ========================================================================== */
+    .discipline-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+
+    .category-card {
+      position: relative; height: 310px;
+      border-radius: var(--radius-lg); overflow: hidden;
+      background-color: var(--bg-card);
+      cursor: pointer; text-decoration: none; display: block;
+    }
+
+    .category-card-bg {
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
+    }
+    .category-card:hover .category-card-bg { transform: scale(1.06); }
+
+    .category-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(10, 11, 13, 0.92) 0%, rgba(10, 11, 13, 0.3) 55%, rgba(0, 0, 0, 0.1) 100%);
+      pointer-events: none;
+    }
+
+    .category-number {
+      position: absolute; top: 20px; left: 24px;
+      font-family: var(--font-heading);
+      font-size: 20px; font-weight: 800;
+      color: var(--volt); z-index: 2;
+    }
+
+    .category-info { position: absolute; bottom: 22px; left: 24px; z-index: 2; }
+
+    .category-title {
+      font-family: var(--font-heading);
+      font-size: 26px; font-weight: 900;
+      color: var(--text-white); line-height: 1; margin-bottom: 6px;
+      text-transform: uppercase; letter-spacing: 0.02em;
+      transition: color var(--transition-fast);
+    }
+    .category-card:hover .category-title { color: var(--volt); }
+
+    .category-subtitle { font-size: 13px; color: #b5bac5; font-weight: 500; }
+
+    .category-arrow-btn {
+      position: absolute; bottom: 22px; right: 24px;
+      width: 38px; height: 38px; border-radius: 50%;
+      background: var(--volt); color: #000;
+      display: flex; align-items: center; justify-content: center;
+      z-index: 2;
+      transition: transform var(--transition-spring), background-color var(--transition-fast);
+    }
+    .category-card:hover .category-arrow-btn { transform: scale(1.12) rotate(45deg); background: #ffffff; }
+
+    @media (max-width: 680px) {
+      .discipline-grid { grid-template-columns: 1fr; gap: 16px; }
+      .category-card { height: 250px; }
+    }
+
+    /* ==========================================================================
+       BESTSELLERS SECTION
+       ========================================================================== */
+    .bestsellers-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+
+    .product-card { display: flex; flex-direction: column; position: relative; background: transparent; }
+
+    .product-thumb-wrap {
+      position: relative; width: 100%; aspect-ratio: 1 / 1.16;
+      border-radius: var(--radius-lg); overflow: hidden;
+      background: var(--bg-card); margin-bottom: 14px;
+    }
+
+    .product-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+    .product-card:hover .product-img { transform: scale(1.05); }
+
+    .product-badge {
+      position: absolute; top: 14px; left: 14px;
+      background: rgba(18, 19, 23, 0.82);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      color: #ffffff; font-size: 10px; font-weight: 800;
+      letter-spacing: 0.08em; padding: 4px 10px;
+      border-radius: var(--radius-full); text-transform: uppercase;
+      border: 1px solid rgba(255, 255, 255, 0.12); z-index: 2;
+    }
+
+    .product-wishlist-btn {
+      position: absolute; top: 12px; right: 12px;
+      width: 32px; height: 32px; border-radius: 50%;
+      background: rgba(210, 253, 4, 0.92); color: #000;
+      display: flex; align-items: center; justify-content: center;
+      border: none; cursor: pointer; z-index: 2;
+      transition: all var(--transition-fast);
+    }
+    .product-wishlist-btn svg { width: 16px; height: 16px; stroke: #000; fill: none; stroke-width: 2.2; transition: all var(--transition-fast); }
+    .product-wishlist-btn:hover { transform: scale(1.12); background: #ffffff; }
+    .product-wishlist-btn.active svg { fill: #e11d48; stroke: #e11d48; }
+
+    .product-title {
+      font-family: var(--font-heading);
+      font-size: 20px; font-weight: 800;
+      color: var(--text-white); line-height: 1.15;
+      margin-bottom: 4px; letter-spacing: 0.02em; text-transform: uppercase;
+    }
+
+    .product-subtitle { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; font-weight: 500; }
+
+    .product-footer-row { display: flex; align-items: center; justify-content: space-between; margin-top: auto; }
+
+    .product-price { font-family: var(--font-heading); font-size: 22px; font-weight: 800; color: var(--text-white); letter-spacing: 0.01em; }
+
+    .product-add-btn {
+      width: 34px; height: 34px; border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      background: rgba(255, 255, 255, 0.03);
+      color: #b5bac5;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: all var(--transition-fast);
+    }
+    .product-add-btn svg { width: 16px; height: 16px; stroke-width: 2.4; transition: transform var(--transition-spring); }
+    .product-add-btn:hover { background: var(--volt); border-color: var(--volt); color: #000; transform: scale(1.12); }
+    .product-add-btn:active svg { transform: rotate(90deg); }
+
+    /* In-Bag Pill & Cart Feedback */
+    .in-bag-pill {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      background: var(--volt, #d2fd04);
+      color: #000;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 9999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 15px rgba(210, 253, 4, 0.4);
+      z-index: 5;
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .in-bag-pill svg { stroke: #000; }
+    @keyframes pillPop {
+      0% { transform: scale(0.6); opacity: 0; }
+      70% { transform: scale(1.15); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .pill-pop { animation: pillPop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+    @keyframes badgeBump {
+      0% { transform: scale(1); }
+      40% { transform: scale(1.5); }
+      100% { transform: scale(1); }
+    }
+    .badge-bump { animation: badgeBump 0.35s ease-out; }
+    .thumb-glow { box-shadow: 0 0 0 2px var(--volt, #d2fd04), 0 0 25px rgba(210, 253, 4, 0.45) !important; }
+
+    @media (max-width: 960px) { .bestsellers-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 580px) { .bestsellers-grid { grid-template-columns: 1fr; gap: 28px; } }
+
+    /* ==========================================================================
+       VOLT SERIES 2026 SECTION
+       ========================================================================== */
+    .volt-series-section {
+      position: relative;
+      background-color: #272727;
+      background-image: radial-gradient(circle at 76% 45%, rgba(98, 122, 44, 0.75) 0%, rgba(70, 88, 35, 0.48) 28%, rgba(46, 52, 40, 0.22) 52%, #272727 75%);
+      overflow: hidden; padding: 85px 0; margin: 30px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .volt-series-container { position: relative; min-height: 520px; display: flex; align-items: center; }
+
+    .volt-series-content { position: relative; z-index: 10; max-width: 530px; padding: 20px 0; }
+
+    .volt-series-tag {
+      color: var(--volt); font-size: 14px; font-weight: 700;
+      letter-spacing: 0.04em; text-transform: uppercase;
+      margin-bottom: 16px; display: inline-block;
+    }
+
+    .volt-series-title {
+      font-family: var(--font-heading);
+      font-size: clamp(48px, 6vw, 76px);
+      font-weight: 900; line-height: 0.95;
+      text-transform: uppercase; letter-spacing: -0.01em;
+      margin-bottom: 22px; color: #ffffff;
+    }
+
+    .volt-series-subtitle {
+      font-family: var(--font-heading);
+      font-size: 19px; font-weight: 800;
+      color: #ffffff; letter-spacing: 0.04em;
+      text-transform: uppercase; margin-bottom: 14px;
+    }
+
+    .volt-series-desc {
+      font-size: 14px; color: #b5bac5; line-height: 1.6;
+      max-width: 480px; margin-bottom: 36px; font-weight: 500;
+    }
+
+    .volt-series-btn { padding: 13px 32px; font-size: 14px; font-weight: 700; border-radius: var(--radius-full); }
+
+    .volt-series-visual-wrap {
+      position: absolute; right: -2%; bottom: 0; top: 0;
+      width: 68%; max-width: 860px; height: 100%;
+      pointer-events: none; z-index: 2;
+      display: flex; align-items: flex-end; justify-content: flex-end;
+    }
+
+    .volt-series-img {
+      height: 110%; width: auto; max-width: none;
+      object-fit: contain; object-position: right bottom;
+      filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.7));
+      transform-origin: right bottom;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .volt-series-section:hover .volt-series-img { transform: scale(1.02); }
+
+    @media (max-width: 1024px) {
+      .volt-series-container { min-height: 480px; }
+      .volt-series-visual-wrap { width: 62%; right: -4%; }
+      .volt-series-title { font-size: clamp(42px, 5.5vw, 64px); }
+    }
+
+    @media (max-width: 860px) {
+      .volt-series-section {
+        padding: 60px 0 0;
+        background-image: radial-gradient(circle at 50% 65%, rgba(98, 122, 44, 0.6) 0%, rgba(70, 88, 35, 0.35) 35%, rgba(46, 52, 40, 0.15) 60%, #272727 80%);
+      }
+      .volt-series-container { flex-direction: column; align-items: flex-start; min-height: auto; }
+      .volt-series-content { max-width: 100%; margin-bottom: 24px; z-index: 10; }
+      .volt-series-visual-wrap {
+        position: relative; right: auto; bottom: auto; top: auto;
+        width: 100%; max-width: 520px; height: auto;
+        margin: 0 auto; display: flex; justify-content: center;
+      }
+      .volt-series-img { height: auto; width: 100%; max-width: 480px; }
+    }
+
+    /* ==========================================================================
+       OUR STORY SECTION
+       ========================================================================== */
+    .story-header-grid {
+      display: grid; grid-template-columns: 1.1fr 1fr;
+      align-items: flex-end; gap: 32px; margin-bottom: 36px;
+    }
+
+    .story-lead-desc { font-size: 13.5px; color: #a4abb8; line-height: 1.6; max-width: 460px; }
+
+    .story-visuals-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 48px; }
+
+    .story-visual-card {
+      position: relative; aspect-ratio: 1 / 1.05;
+      border-radius: var(--radius-lg); overflow: hidden;
+      background: var(--bg-card);
+    }
+
+    .story-visual-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1); }
+    .story-visual-card:hover .story-visual-img { transform: scale(1.04); }
+
+    .story-features-row {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 28px; border-top: 1px solid rgba(210, 253, 4, 0.35);
+      padding-top: 36px;
+    }
+
+    .story-feature-col { display: flex; flex-direction: column; }
+    .story-feature-num { font-family: var(--font-heading); font-size: 18px; font-weight: 800; color: var(--volt); margin-bottom: 8px; }
+    .story-feature-title { font-family: var(--font-heading); font-size: 22px; font-weight: 800; text-transform: uppercase; color: var(--text-white); letter-spacing: 0.02em; margin-bottom: 6px; }
+    .story-feature-desc { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+
+    @media (max-width: 768px) {
+      .story-header-grid { grid-template-columns: 1fr; gap: 16px; }
+      .story-visuals-grid { grid-template-columns: 1fr; gap: 16px; }
+      .story-features-row { grid-template-columns: 1fr; gap: 24px; }
+    }
+
+    /* ==========================================================================
+       TESTIMONIALS SECTION
+       ========================================================================== */
+    .testimonials-section { padding-top: 50px; padding-bottom: 80px; }
+
+    .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+
+    .testimonial-card {
+      background: #ffffff; color: #14161a;
+      border-radius: var(--radius-lg);
+      padding: 30px 26px;
+      display: flex; flex-direction: column; justify-content: space-between;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+      transition: transform var(--transition-smooth), box-shadow var(--transition-smooth);
+    }
+    .testimonial-card:hover { transform: translateY(-6px); box-shadow: 0 25px 45px rgba(0, 0, 0, 0.6); }
+
+    .stars-rating { display: flex; align-items: center; gap: 4px; color: #f59e0b; margin-bottom: 18px; }
+    .stars-rating svg { width: 17px; height: 17px; fill: currentColor; }
+    .testimonial-quote { font-size: 14px; line-height: 1.6; color: #272a31; font-weight: 500; margin-bottom: 26px; }
+    .testimonial-user { display: flex; align-items: center; gap: 12px; }
+    .user-avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; background: #e2e8f0; }
+    .user-name { font-size: 14px; font-weight: 700; color: #0f1115; line-height: 1.2; }
+    .user-role { font-size: 11.5px; color: #64748b; font-weight: 500; }
+
+    @media (max-width: 900px) { .testimonials-grid { grid-template-columns: 1fr; gap: 18px; } }
+
+    /* ==========================================================================
+       NEWSLETTER BANNER ("JOIN THE PULSE")
+       ========================================================================== */
+    .pulse-banner-wrap { margin-top: 30px; margin-bottom: 70px; }
+
+    .pulse-card {
+      background: var(--volt); color: #000000;
+      border-radius: var(--radius-xl);
+      padding: 60px 32px; text-align: center;
+      position: relative; overflow: hidden;
+      box-shadow: 0 20px 50px rgba(210, 253, 4, 0.22);
+    }
+
+    .pulse-title {
+      font-family: var(--font-heading);
+      font-size: clamp(38px, 5.5vw, 68px);
+      font-weight: 900; text-transform: uppercase;
+      line-height: 0.95; margin-bottom: 14px; letter-spacing: -0.01em;
+    }
+
+    .pulse-subtitle { font-size: 14px; font-weight: 600; color: rgba(0, 0, 0, 0.85); max-width: 500px; margin: 0 auto 28px; line-height: 1.5; }
+
+    .pulse-form { display: flex; align-items: center; justify-content: center; gap: 8px; max-width: 420px; margin: 0 auto 14px; flex-wrap: wrap; }
+
+    .pulse-input {
+      background: #ffffff; border: 1px solid transparent;
+      color: #000000; font-size: 13.5px;
+      padding: 12px 20px; border-radius: var(--radius-full);
+      flex: 1 1 230px; outline: none; font-weight: 500;
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    }
+    .pulse-input::placeholder { color: #8c93a0; }
+    .pulse-input:focus { border-color: #000000; box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.15); }
+
+    .btn-pulse-submit {
+      background: #000000; color: #ffffff;
+      font-size: 13.5px; font-weight: 700;
+      padding: 12px 24px; border-radius: var(--radius-full);
+      cursor: pointer; transition: all var(--transition-fast); white-space: nowrap;
+    }
+    .btn-pulse-submit:hover { background: #1f2228; transform: translateY(-1px); }
+
+    .pulse-disclaimer { font-size: 11px; color: rgba(0, 0, 0, 0.65); font-weight: 500; }
+
+    @media (max-width: 540px) {
+      .pulse-card { padding: 42px 20px; border-radius: var(--radius-lg); }
+      .pulse-form { flex-direction: column; width: 100%; }
+      .pulse-input, .btn-pulse-submit { width: 100%; }
+    }
+
+    
+    /* ========== NEW MEGA FOOTER ========== */
+    .site-footer {
+      background: #0a0b0d;
+      border-top: 1px solid rgba(255,255,255,0.07);
+      position: relative; overflow: hidden;
+    }
+
+    /* Trust Strip */
+    .footer-trust-strip {
+      background: rgba(255,255,255,0.03);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 24px 0;
+    }
+    .footer-trust-row {
+      display: flex; align-items: center; justify-content: center;
+      gap: 48px; flex-wrap: wrap;
+    }
+    .trust-item {
+      display: flex; align-items: center; gap: 12px;
+      flex-shrink: 0;
+    }
+    .trust-icon-wrap {
+      width: 42px; height: 42px; border-radius: 50%;
+      background: rgba(210,253,4,0.1);
+      border: 1px solid rgba(210,253,4,0.25);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .trust-icon-wrap svg { width: 20px; height: 20px; stroke: #d2fd04; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .trust-label { font-size: 13px; font-weight: 700; color: var(--text-white, #fff); letter-spacing: 0.03em; }
+    .trust-sub { font-size: 11px; color: #6c7380; margin-top: 2px; }
+
+    /* Divider line between trust items */
+    .trust-divider { width: 1px; height: 36px; background: rgba(255,255,255,0.08); flex-shrink: 0; }
+
+    /* Newsletter Banner */
+    .footer-newsletter {
+      padding: 56px 0 52px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      display: flex; align-items: center; justify-content: space-between; gap: 40px;
+      flex-wrap: wrap;
+    }
+    .footer-nl-text h2 {
+      font-family: var(--font-heading, 'Barlow Condensed', sans-serif);
+      font-size: 32px; font-weight: 900; color: var(--text-white, #fff);
+      text-transform: uppercase; letter-spacing: 0.03em; line-height: 1.1;
+      margin-bottom: 6px;
+    }
+    .footer-nl-text h2 span { color: #d2fd04; }
+    .footer-nl-text p { font-size: 13px; color: #6c7380; }
+    .footer-nl-form { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .footer-nl-input {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #fff; font-size: 13.5px;
+      padding: 13px 20px; border-radius: 9999px;
+      outline: none; width: 300px; max-width: 100%;
+      transition: border-color 0.2s;
+    }
+    .footer-nl-input::placeholder { color: #4c5162; }
+    .footer-nl-input:focus { border-color: #d2fd04; }
+    .footer-nl-btn {
+      background: #d2fd04; color: #000;
+      font-size: 13px; font-weight: 800; letter-spacing: 0.04em;
+      padding: 13px 28px; border-radius: 9999px;
+      cursor: pointer; white-space: nowrap;
+      transition: all 0.2s; text-transform: uppercase;
+    }
+    .footer-nl-btn:hover { background: #bce402; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(210,253,4,0.35); }
+
+    /* Main Grid */
+    .footer-main-grid {
+      display: grid;
+      grid-template-columns: 1.8fr 1fr 1fr 1fr 1.2fr;
+      gap: 48px; padding: 56px 0 48px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .footer-brand-col .footer-logo { height: 28px; width: auto; margin-bottom: 18px; display: block; }
+    .footer-brand-tagline { font-size: 13px; color: #6c7380; line-height: 1.65; margin-bottom: 24px; max-width: 240px; }
+    .footer-social-row { display: flex; gap: 10px; }
+    .footer-social-btn {
+      width: 38px; height: 38px; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.03);
+      display: flex; align-items: center; justify-content: center;
+      color: #9da3af;
+      transition: all 0.2s;
+    }
+    .footer-social-btn svg { width: 16px; height: 16px; fill: currentColor; }
+    .footer-social-btn:hover { background: #d2fd04; border-color: #d2fd04; color: #000; transform: translateY(-2px); }
+
+    .footer-col-heading {
+      font-size: 11px; font-weight: 800; letter-spacing: 0.12em;
+      color: #d2fd04; text-transform: uppercase; margin-bottom: 20px;
+    }
+    .footer-col-links { list-style: none; display: flex; flex-direction: column; gap: 11px; }
+    .footer-col-links a {
+      font-size: 13.5px; color: #9da3af;
+      transition: color 0.2s, transform 0.2s;
+      display: inline-block;
+    }
+    .footer-col-links a:hover { color: #fff; transform: translateX(4px); }
+
+    .footer-contact-col .contact-line {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 12.5px; color: #9da3af; line-height: 1.6; margin-bottom: 14px;
+    }
+    .footer-contact-col .contact-line svg { width: 15px; height: 15px; stroke: #d2fd04; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; margin-top: 3px; }
+    .footer-contact-col a { color: #9da3af; transition: color 0.2s; }
+    .footer-contact-col a:hover { color: #d2fd04; }
+
+    /* Payment badges */
+    .footer-pay-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+    .pay-badge {
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 6px; padding: 4px 10px;
+      font-size: 10px; font-weight: 700; color: #9da3af; letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* Bottom bar */
+    .footer-bottom {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 0 24px; gap: 20px; flex-wrap: wrap;
+    }
+    .footer-bottom-copy { font-size: 12px; color: #4c5162; }
+    .footer-bottom-links { display: flex; gap: 24px; }
+    .footer-bottom-links a { font-size: 12px; color: #4c5162; transition: color 0.2s; }
+    .footer-bottom-links a:hover { color: #9da3af; }
+
+    @media (max-width: 1100px) {
+      .footer-main-grid { grid-template-columns: 1fr 1fr 1fr; }
+      .footer-brand-col { grid-column: 1 / -1; }
+    }
+    @media (max-width: 700px) {
+      .footer-main-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+      .footer-trust-row { gap: 20px; }
+      .trust-divider { display: none; }
+      .footer-newsletter { flex-direction: column; gap: 24px; }
+      .footer-nl-text h2 { font-size: 24px; }
+      .footer-nl-input { width: 100%; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; gap: 12px; }
+    }
+    @media (max-width: 480px) {
+      .footer-main-grid { grid-template-columns: 1fr; }
+    }
+
+
+    /* ==========================================================================
+       SCROLL REVEAL & SECTION ANIMATIONS
+       ========================================================================== */
+    .reveal {
+      opacity: 0; transform: translateY(32px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+    .reveal.active { opacity: 1; transform: translateY(0); }
+
+    .reveal-fade { opacity: 0; transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1); }
+    .reveal-fade.active { opacity: 1; }
+
+    .reveal-scale { opacity: 0; transform: scale(0.94); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+    .reveal-scale.active { opacity: 1; transform: scale(1); }
+
+    .delay-1 { transition-delay: 0.1s; }
+    .delay-2 { transition-delay: 0.2s; }
+    .delay-3 { transition-delay: 0.3s; }
+    .delay-4 { transition-delay: 0.4s; }
+    .delay-5 { transition-delay: 0.5s; }
+    .delay-6 { transition-delay: 0.6s; }
+
+    /* Toast Notification */
+    .toast-notice {
+      position: fixed; bottom: 28px; right: 28px;
+      background: rgba(18, 19, 23, 0.95);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--volt);
+      color: #ffffff; padding: 14px 22px;
+      border-radius: var(--radius-md);
+      display: flex; align-items: center; gap: 12px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), 0 0 20px var(--volt-glow);
+      z-index: 10000;
+      transform: translateY(100px); opacity: 0;
+      transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      pointer-events: none;
+    }
+    .toast-notice.show { transform: translateY(0); opacity: 1; pointer-events: auto; }
+
+    .toast-icon {
+      width: 22px; height: 22px;
+      background: var(--volt); color: #000;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 13px;
+    }
+
+    /* ==========================================================================
+       ATHLETIC SPORTS PRELOADER
+       ========================================================================== */
+    .preloader {
+      position: fixed; inset: 0;
+      width: 100vw; height: 100vh;
+      background-color: #07080a;
+      z-index: 99999;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s ease;
+    }
+    .preloader.preloader-hidden { opacity: 0; transform: scale(1.04); visibility: hidden; pointer-events: none; }
+
+    .preloader-bg-glow {
+      position: absolute;
+      width: 580px; height: 580px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(210, 253, 4, 0.16) 0%, rgba(95, 120, 40, 0.08) 42%, transparent 70%);
+      filter: blur(50px);
+      animation: preloaderPulse 2.2s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+
+    @keyframes preloaderPulse {
+      0% { transform: scale(0.9); opacity: 0.55; }
+      100% { transform: scale(1.25); opacity: 1; }
+    }
+
+    .preloader-content {
+      position: relative; z-index: 2;
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+      padding: 24px;
+    }
+
+    .preloader-brand { margin-bottom: 28px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+
+    .preloader-logo { height: 36px; width: auto; object-fit: contain; filter: drop-shadow(0 0 16px rgba(210, 253, 4, 0.35)); }
+
+    .preloader-tagline {
+      font-family: var(--font-heading);
+      font-size: 13px; font-weight: 800;
+      letter-spacing: 0.22em; color: var(--volt); text-transform: uppercase;
+    }
+
+    .preloader-dial-wrap {
+      position: relative; width: 140px; height: 140px;
+      margin-bottom: 22px;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .preloader-dial-svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+
+    .dial-track { fill: none; stroke: rgba(255, 255, 255, 0.06); stroke-width: 5; }
+
+    .dial-fill {
+      fill: none; stroke: var(--volt); stroke-width: 6; stroke-linecap: round;
+      stroke-dasharray: 364.4; stroke-dashoffset: 364.4;
+      filter: drop-shadow(0 0 10px var(--volt-glow));
+      transition: stroke-dashoffset 0.08s linear;
+    }
+
+    .preloader-dial-center { display: flex; align-items: baseline; justify-content: center; position: relative; z-index: 3; }
+
+    .preloader-percent { font-family: var(--font-heading); font-size: 46px; font-weight: 900; color: #ffffff; letter-spacing: -0.02em; line-height: 1; }
+    .preloader-percent-symbol { font-family: var(--font-heading); font-size: 20px; font-weight: 800; color: var(--volt); margin-left: 2px; }
+
+    .preloader-status {
+      font-family: var(--font-heading);
+      font-size: 14px; font-weight: 700;
+      letter-spacing: 0.14em; color: #a4abb8; text-transform: uppercase;
+      height: 20px; margin-bottom: 22px;
+    }
+
+    .preloader-bar-wrap {
+      width: 220px; height: 4px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-full);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .preloader-bar {
+      height: 100%; width: 0%;
+      background: linear-gradient(90deg, #9ec202 0%, var(--volt) 100%);
+      border-radius: var(--radius-full);
+      box-shadow: 0 0 12px var(--volt-glow);
+      transition: width 0.08s linear;
+    }
+  
+    a.nav-icon-btn { text-decoration: none; color: #c9ccd4; }
+    a.nav-icon-btn:hover { color: var(--volt, #d2fd04); }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================================================
+       ATHLETIC SPORTS PRELOADER
+       ========================================================================== -->
+  <div id="preloader" class="preloader" aria-label="Loading STACKLY Experience">
+    <div class="preloader-bg-glow"></div>
+    <div class="preloader-content">
+      <div class="preloader-brand">
+        <img src="Assets/stackly-logo-clean.webp" alt="STACKLY" class="preloader-logo">
+        <span class="preloader-tagline">BUILT TO PUSH LIMITS</span>
+      </div>
+
+      <div class="preloader-dial-wrap">
+        <svg class="preloader-dial-svg" viewBox="0 0 140 140">
+          <circle class="dial-track" cx="70" cy="70" r="58"></circle>
+          <circle class="dial-fill" cx="70" cy="70" r="58"></circle>
+        </svg>
+        <div class="preloader-dial-center">
+          <span class="preloader-percent" id="preloader-percent">0</span><span class="preloader-percent-symbol">%</span>
+        </div>
+      </div>
+
+      <div class="preloader-status" id="preloader-status">WARMING UP...</div>
+
+      <div class="preloader-bar-wrap">
+        <div class="preloader-bar" id="preloader-bar"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       SITE HEADER / NAVBAR — FIXED
+       ========================================================================== -->
+  <header class="site-header">
+    <div class="container nav-container">
+      <a href="index.html" class="nav-brand" aria-label="STACKLY Home">
+        <img src="Assets/stackly-logo-clean.webp" alt="STACKLY" class="brand-logo-img">
+      </a>
+      <nav aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link active">Home</a></li>
+          <li><a href="shop.html" class="nav-link">Shop</a></li>
+          <li><a href="blog.html" class="nav-link">Blog</a></li>
+          <li><a href="about.html" class="nav-link">About</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="nav-actions">
+        <a href="login.html" class="nav-icon-btn" aria-label="Login">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </a>
+        <a href="cart.html" class="nav-icon-btn" aria-label="Bag">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="nav-badge">2</span>
+        </a>
+        <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+    <!-- Mobile Backdrop & Drawer -->
+  <div class="mobile-drawer-backdrop"></div>
+  <aside class="mobile-drawer" aria-label="Mobile navigation">
+    <div class="mobile-drawer-top">
+      <div class="mobile-drawer-header">
+        <a href="index.html" class="nav-brand" aria-label="STACKLY Home">
+          <img src="Assets/stackly-logo-clean.webp" alt="STACKLY" class="brand-logo-img">
+        </a>
+        <button class="mobile-close-btn" aria-label="Close navigation menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <ul class="mobile-nav-links">
+        <li><a href="index.html" class="nav-link active">Home</a></li>
+        <li><a href="shop.html" class="nav-link">Shop</a></li>
+        <li><a href="blog.html" class="nav-link">Blog</a></li>
+        <li><a href="about.html" class="nav-link">About</a></li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+      </ul>
+    </div>
+    <div class="mobile-drawer-bottom">
+      <a href="shop.html" class="btn-volt" style="width: 100%; justify-content: center; text-align: center; text-decoration: none; display: flex; align-items: center; padding: 12px 20px; border-radius: 9999px; background: #d2fd04; color: #000; font-weight: 700; font-size: 14px;">
+        Explore Gear
+      </a>
+    </div>
+  </aside>
+
+  <main>
+    <!-- ==========================================================================
+         HERO SECTION
+         ========================================================================== -->
+    <section class="hero-section">
+      <div class="container hero-container">
+        <div class="hero-content reveal">
+          <span class="hero-tag">NO SHORTCUTS. NO DAYS OFF. JUST THE NEXT REP.</span>
+          <h1 class="hero-headline">
+            BUILT TO <span class="text-volt">PUSH</span><br>LIMITS
+          </h1>
+          <div class="hero-buttons">
+            <a href="404.html" class="btn-volt">Shop now</a>
+            <a href="404.html" class="btn-outline hero-btn-outline">Explore gear</a>
+          </div>
+          <p class="hero-desc">
+            Running, strength and racket gear, fitted to your body and your game. We scan your stride, check your grip and match your weights before you buy.
+          </p>
+        </div>
+        <div class="hero-visual-wrap reveal-scale delay-2">
+          <img src="Assets/Massive Tire Flip Showdown 1.webp" alt="Athlete flipping massive tire" class="hero-athlete-img">
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SHOP BY DISCIPLINE (CATEGORY GRID)
+         ========================================================================== -->
+    <section id="discipline" class="section-spacing">
+      <div class="container">
+        <div class="section-header-row reveal">
+          <div>
+            <span class="section-tag">Shop by discipline</span>
+            <h2 class="section-title">GEAR FOR EVERY <span class="text-volt">SESSION</span></h2>
+          </div>
+          <a href="shop.html" class="view-all-link">
+            <span>View all category</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        </div>
+
+        <div class="discipline-grid">
+          <a href="404.html" class="category-card reveal delay-1">
+            <img src="Assets/d0c8043a2f52927a2c51cbcfaae0629c87fbc30c.webp" alt="Sportswear" class="category-card-bg">
+            <div class="category-overlay"></div>
+            <span class="category-number">01</span>
+            <div class="category-info">
+              <h3 class="category-title text-volt">SPORTSWEAR</h3>
+              <p class="category-subtitle">Tees, shorts, layers</p>
+            </div>
+            <div class="category-arrow-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline>
+              </svg>
+            </div>
+          </a>
+
+          <a href="404.html" class="category-card reveal delay-2">
+            <img src="Assets/50b159e5ea46a5fec655c36559ab7d8c56068d63.webp" alt="Running Shoes" class="category-card-bg">
+            <div class="category-overlay"></div>
+            <span class="category-number">02</span>
+            <div class="category-info">
+              <h3 class="category-title text-volt">RUNNING SHOES</h3>
+              <p class="category-subtitle">Road, trail, track</p>
+            </div>
+            <div class="category-arrow-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline>
+              </svg>
+            </div>
+          </a>
+
+          <a href="404.html" class="category-card reveal delay-3">
+            <img src="Assets/16a6c60f71997a61a33130848c494726b02e7036.webp" alt="Gym Equipments" class="category-card-bg">
+            <div class="category-overlay"></div>
+            <span class="category-number">03</span>
+            <div class="category-info">
+              <h3 class="category-title text-volt">GYM EQUIPMENTS</h3>
+              <p class="category-subtitle">Free weights, benches, racks</p>
+            </div>
+            <div class="category-arrow-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline>
+              </svg>
+            </div>
+          </a>
+
+          <a href="404.html" class="category-card reveal delay-4">
+            <img src="Assets/c4a16fd3ae132736a5d83d66cfd416b14d671342.webp" alt="Accessories" class="category-card-bg">
+            <div class="category-overlay"></div>
+            <span class="category-number">04</span>
+            <div class="category-info">
+              <h3 class="category-title text-volt">ACCESSORIES</h3>
+              <p class="category-subtitle">Bags, bottle, straps</p>
+            </div>
+            <div class="category-arrow-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline>
+              </svg>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         BESTSELLERS (6 PRODUCT CARDS)
+         ========================================================================== -->
+    <section id="bestsellers" class="section-spacing">
+      <div class="container">
+        <div class="section-header-row reveal">
+          <div>
+            <span class="section-tag">Most-loved this month</span>
+            <h2 class="section-title">BESTSELLERS</h2>
+          </div>
+          <a href="shop.html" class="view-all-link">
+            <span>Shop all bestsellers</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        </div>
+
+        <div class="bestsellers-grid">
+          <div class="product-card reveal delay-1">
+            <div class="product-thumb-wrap">
+              <span class="product-badge">BESTSELLERS</span>
+              <button class="product-wishlist-btn" aria-label="Add to wishlist">
+                <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+              </button>
+              <img src="Assets/Frame 5080.webp" alt="Stride Pro Runner" class="product-img">
+            </div>
+            <h3 class="product-title">STRIDE PRO RUNNER</h3>
+            <p class="product-subtitle">Running shoe · Carbon plate</p>
+            <div class="product-footer-row">
+              <span class="product-price">₹169</span>
+              <button class="product-add-btn" aria-label="Add to bag">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="product-card reveal delay-2">
+            <div class="product-thumb-wrap">
+              <button class="product-wishlist-btn" aria-label="Add to wishlist">
+                <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+              </button>
+              <img src="Assets/Frame 5080 (1).webp" alt="Volt Compression Tee" class="product-img">
+            </div>
+            <h3 class="product-title">VOLT COMPRESSION TEE</h3>
+            <p class="product-subtitle">Sportswear · Sweat-mapped</p>
+            <div class="product-footer-row">
+              <span class="product-price">₹48</span>
+              <button class="product-add-btn" aria-label="Add to bag">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="product-card reveal delay-3">
+            <div class="product-thumb-wrap">
+              <button class="product-wishlist-btn" aria-label="Add to wishlist">
+                <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+              </button>
+              <img src="Assets/product-dumbbell.webp" alt="Adjustable Dumbbell" class="product-img">
+            </div>
+            <h3 class="product-title">ADJUSTABLE DUMBBELL</h3>
+            <p class="product-subtitle">Gym equipment · 5 to 50 lb</p>
+            <div class="product-footer-row">
+              <span class="product-price">₹250</span>
+              <button class="product-add-btn" aria-label="Add to bag">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="product-card reveal delay-4">
+            <div class="product-thumb-wrap">
+              <span class="product-badge">NEW</span>
+              <button class="product-wishlist-btn" aria-label="Add to wishlist">
+                <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+              </button>
+              <img src="Assets/product-tempo.webp" alt="Tempo Daily Trainer" class="product-img">
+            </div>
+            <h3 class="product-title">TEMPO DAILY TRAINER</h3>
+            <p class="product-subtitle">Running shoe · Cushioned</p>
+            <div class="product-footer-row">
+              <span class="product-price">₹129</span>
+              <button class="product-add-btn" aria-label="Add to bag">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="product-card reveal delay-5">
+            <div class="product-thumb-wrap">
+              <button class="product-wishlist-btn" aria-label="Add to wishlist">
+                <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+              </button>
+              <img src="Assets/product-straps.webp" alt="Grip Lifting Straps" class="product-img">
+            </div>
+            <h3 class="product-title">GRIP LIFTING STRAPS</h3>
+            <p class="product-subtitle">Accessories · Cotton blend</p>
+            <div class="product-footer-row">
+              <span class="product-price">₹22</span>
+              <button class="product-add-btn" aria-label="Add to bag">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="product-card reveal delay-6">
+            <div class="product-thumb-wrap">
+              <button class="product-wishlist-btn" aria-label="Add to wishlist">
+                <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+              </button>
+              <img src="Assets/product-halo.webp" alt="Halo Quarter-Zip" class="product-img">
+            </div>
+            <h3 class="product-title">HALO QUARTER-ZIP</h3>
+            <p class="product-subtitle">Sportswear · Thermal</p>
+            <div class="product-footer-row">
+              <span class="product-price">₹84</span>
+              <button class="product-add-btn" aria-label="Add to bag">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         VOLT SERIES 2026 (PERFORMANCE COLLECTION)
+         ========================================================================== -->
+    <section id="performance" class="volt-series-section">
+      <div class="container volt-series-container">
+        <div class="volt-series-content reveal">
+          <span class="volt-series-tag">The performance collection</span>
+          <h2 class="volt-series-title">VOLT SERIES <span class="text-volt">2026</span></h2>
+          <h3 class="volt-series-subtitle">ENGINEERED FOR THE LAST MILE.</h3>
+          <p class="volt-series-desc">
+            Lighter layers, faster foams and a fit that stays locked in when the pace drops.<br>
+            Built with athletes, tested to the final rep.
+          </p>
+          <a href="404.html" class="btn-volt volt-series-btn">Shop the collections</a>
+          <a href="404.html" class="btn-volt volt-series-btn">Shop the collections</a>
+        </div>
+        <div class="volt-series-visual-wrap reveal-scale delay-2">
+          <img src="Assets/Dynamic Battle Rope Workout 1.webp" alt="Volt Series Battle Rope Athlete" class="volt-series-img">
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         OUR STORY (DESIGNED FOR EVERY REP)
+         ========================================================================== -->
+    <section id="about" class="section-spacing">
+      <div class="container">
+        <div class="story-header-grid reveal">
+          <div>
+            <span class="section-tag">Our story</span>
+            <h2 class="section-title">DESIGNED FOR <span class="text-volt">EVERY REP</span></h2>
+          </div>
+          <div>
+            <p class="story-lead-desc">
+              Stackly started with one question: why does gear fail at the exact moment you need it most? Every stitch, sole and strap is built, tested and rebuilt until it keeps up with you.
+            </p>
+          </div>
+        </div>
+
+        <div class="story-visuals-grid">
+          <div class="story-visual-card reveal delay-1">
+            <img src="Assets/Rectangle 452.webp" alt="Weightlifters in motion" class="story-visual-img">
+          </div>
+          <div class="story-visual-card reveal delay-2">
+            <img src="Assets/Rectangle 453.webp" alt="Basketball player dunking" class="story-visual-img">
+          </div>
+        </div>
+
+        <div class="story-features-row">
+          <div class="story-feature-col reveal delay-1">
+            <span class="story-feature-num">01</span>
+            <h3 class="story-feature-title">FIT THAT HOLDS</h3>
+            <p class="story-feature-desc">Pattern-cut for movement, not mannequins.</p>
+          </div>
+          <div class="story-feature-col reveal delay-2">
+            <span class="story-feature-num">02</span>
+            <h3 class="story-feature-title">MADE TO BE ABUSED</h3>
+            <p class="story-feature-desc">Fabrics and frames tested well past the limit.</p>
+          </div>
+          <div class="story-feature-col reveal delay-3">
+            <span class="story-feature-num">03</span>
+            <h3 class="story-feature-title">BUILT FOR THE LONG GAME</h3>
+            <p class="story-feature-desc">Repairable, recyclable and made to last seasons, not weeks.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         TESTIMONIALS SECTION
+         ========================================================================== -->
+    <section class="testimonials-section">
+      <div class="container">
+        <div class="reveal" style="margin-bottom: 34px;">
+          <span class="section-tag">Real athletes. Real results.</span>
+          <h2 class="section-title">TRUSTED BY <span class="text-volt">THE BEST</span></h2>
+        </div>
+
+        <div class="testimonials-grid">
+          <div class="testimonial-card reveal delay-1">
+            <div>
+              <div class="stars-rating" aria-label="5 stars">
+                <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              </div>
+              <p class="testimonial-quote">"The fit does not budge, even on the last interval. Easily the best running tee I have trained in."</p>
+            </div>
+            <div class="testimonial-user">
+              <img src="Assets/Ellipse 77.webp" alt="Arjun K." class="user-avatar">
+              <div><h4 class="user-name">Arjun K.</h4><p class="user-role">Half-marathon runner</p></div>
+            </div>
+          </div>
+
+          <div class="testimonial-card reveal delay-2">
+            <div>
+              <div class="stars-rating" aria-label="5 stars">
+                <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              </div>
+              <p class="testimonial-quote">"Bought the adjustable dumbbells for a home setup. Solid, quiet and they feel premium."</p>
+            </div>
+            <div class="testimonial-user">
+              <img src="Assets/Ellipse 77.webp" alt="Maya R." class="user-avatar">
+              <div><h4 class="user-name">Maya R.</h4><p class="user-role">Strength athlete</p></div>
+            </div>
+          </div>
+
+          <div class="testimonial-card reveal delay-3">
+            <div>
+              <div class="stars-rating" aria-label="5 stars">
+                <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              </div>
+              <p class="testimonial-quote">"Delivery was fast and the Stride Pro feels light but stable. Returns were painless too."</p>
+            </div>
+            <div class="testimonial-user">
+              <img src="Assets/Ellipse 77.webp" alt="Dev S." class="user-avatar">
+              <div><h4 class="user-name">Dev S.</h4><p class="user-role">Weekend triathlete</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         NEWSLETTER BANNER ("JOIN THE PULSE")
+         ========================================================================== -->
+    <section class="pulse-banner-wrap">
+      <div class="container">
+        <div class="pulse-card reveal-scale">
+          <h2 class="pulse-title">JOIN THE PULSE</h2>
+          <p class="pulse-subtitle">
+            First access to drops, member-only pricing and training notes.<br>
+            No spam, unsubscribe any time.
+          </p>
+          <form class="pulse-form" onsubmit="window.location.href='signup.html'; return false;">
+            <input type="email" placeholder="Enter your email" class="pulse-input" required>
+            <button type="submit" class="btn-pulse-submit">Subscribe</button>
+          </form>
+          <span class="pulse-disclaimer">By subscribing you agree to receive marketing emails.</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==========================================================================
+       FOOTER SECTION
+       ========================================================================== -->
+    <footer id="contact" class="site-footer">
+
+    <!-- Trust Strip -->
+    <div class="footer-trust-strip">
+      <div class="container">
+        <div class="footer-trust-row">
+          <div class="trust-item">
+            <div class="trust-icon-wrap">
+              <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+            <div>
+              <div class="trust-label">Free Shipping</div>
+              <div class="trust-sub">On orders above ₹999</div>
+            </div>
+          </div>
+          <div class="trust-divider"></div>
+          <div class="trust-item">
+            <div class="trust-icon-wrap">
+              <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </div>
+            <div>
+              <div class="trust-label">Easy Returns</div>
+              <div class="trust-sub">30-day hassle-free returns</div>
+            </div>
+          </div>
+          <div class="trust-divider"></div>
+          <div class="trust-item">
+            <div class="trust-icon-wrap">
+              <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.63 3.47 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 6 6l.96-.96a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 15.92"/></svg>
+            </div>
+            <div>
+              <div class="trust-label">24/7 Support</div>
+              <div class="trust-sub">We're always here for you</div>
+            </div>
+          </div>
+          <div class="trust-divider"></div>
+          <div class="trust-item">
+            <div class="trust-icon-wrap">
+              <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+            <div>
+              <div class="trust-label">Secure Payments</div>
+              <div class="trust-sub">SSL encrypted checkout</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Newsletter -->
+    <div class="container">
+      <div class="footer-newsletter">
+        <div class="footer-nl-text">
+          <h2>Join the <span>VOLT</span> Club</h2>
+          <p>Exclusive drops, training notes & member-only pricing. No spam.</p>
+        </div>
+        <form class="footer-nl-form" onsubmit="return false;">
+          <input type="email" class="footer-nl-input" placeholder="Enter your email address" required>
+          <button type="submit" class="footer-nl-btn">Subscribe</button>
+        </form>
+      </div>
+
+      <!-- Main Grid -->
+      <div class="footer-main-grid">
+
+        <!-- Brand Column -->
+        <div class="footer-brand-col reveal">
+          <a href="index.html">
+            <img src="Assets/stackly-logo-clean.webp" alt="STACKLY" class="footer-logo">
+          </a>
+          <p class="footer-brand-tagline">Built for athletes who don't settle. High-performance gear, tested to the final rep.</p>
+          <div class="footer-social-row">
+            <a href="404.html" class="footer-social-btn" aria-label="Instagram">
+              <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+            <a href="404.html" class="footer-social-btn" aria-label="X (Twitter)">
+              <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+            <a href="404.html" class="footer-social-btn" aria-label="YouTube">
+              <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Shop Column -->
+        <div class="reveal delay-1">
+          <div class="footer-col-heading">Shop</div>
+          <ul class="footer-col-links">
+            <li><a href="404.html">All Products</a></li>
+            <li><a href="404.html">Running Gear</a></li>
+            <li><a href="404.html">Strength Training</a></li>
+            <li><a href="404.html">Sportswear</a></li>
+            <li><a href="404.html">Accessories</a></li>
+            <li><a href="404.html">My Bag</a></li>
+          </ul>
+        </div>
+
+        <!-- Company Column -->
+        <div class="reveal delay-2">
+          <div class="footer-col-heading">Company</div>
+          <ul class="footer-col-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="login.html">Login</a></li>
+          </ul>
+        </div>
+
+        <!-- Support Column -->
+        <div class="reveal delay-3">
+          <div class="footer-col-heading">Support</div>
+          <ul class="footer-col-links">
+            <li><a href="404.html">Help Centre</a></li>
+            <li><a href="404.html">Shipping Info</a></li>
+            <li><a href="404.html">Returns & Exchanges</a></li>
+            <li><a href="404.html">Track My Order</a></li>
+            <li><a href="404.html">Size Guide</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact Column -->
+        <div class="footer-contact-col reveal delay-4">
+          <div class="footer-col-heading">Studio</div>
+          <div class="contact-line">
+            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span>Evolve Studio, 4th Floor, Khata No 18, Begur - Koppa Rd, Bengaluru 560068</span>
+          </div>
+          <div class="contact-line">
+            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.63 3.47 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 6 6l.96-.96a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 15.92"/></svg>
+            <a href="tel:+919876543210">+91 98765 43210</a>
+          </div>
+          <div class="contact-line">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <a href="mailto:info@stackly.com">info@stackly.com</a>
+          </div>
+          <div class="footer-col-heading" style="margin-top:20px;">We Accept</div>
+          <div class="footer-pay-row">
+            <span class="pay-badge">UPI</span>
+            <span class="pay-badge">Visa</span>
+            <span class="pay-badge">Mastercard</span>
+            <span class="pay-badge">RuPay</span>
+            <span class="pay-badge">COD</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="footer-bottom">
+        <span class="footer-bottom-copy">&copy; 2026 STACKLY Inc. All rights reserved. Built for high performance athletes.</span>
+        <div class="footer-bottom-links">
+          <a href="contact.html">Privacy Policy</a>
+          <a href="contact.html">Terms of Service</a>
+          <a href="contact.html">Cookie Policy</a>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <script>
+    // ==========================================================================
+    // 0. ATHLETIC PRELOADER CONTROLLER
+    // ==========================================================================
+    (() => {
+      const preloader = document.getElementById('preloader');
+      const percentEl = document.getElementById('preloader-percent');
+      const barEl = document.getElementById('preloader-bar');
+      const statusEl = document.getElementById('preloader-status');
+      const dialFill = document.querySelector('.dial-fill');
+
+      if (!preloader || !percentEl || !barEl) return;
+
+      document.body.style.overflow = 'hidden';
+      const totalCircumference = 364.4;
+      let progress = 0;
+
+      const statuses = [
+        { min: 0, text: 'WARMING UP...' },
+        { min: 25, text: 'CALIBRATING GEAR...' },
+        { min: 55, text: 'ENGAGING CORE...' },
+        { min: 80, text: 'UNLEASH THE PULSE...' },
+        { min: 100, text: 'READY TO PUSH LIMITS.' }
+      ];
+
+      const finishPreloader = () => {
+        if (preloader.classList.contains('preloader-hidden')) return;
+        progress = 100;
+        percentEl.textContent = '100';
+        barEl.style.width = '100%';
+        if (dialFill) dialFill.style.strokeDashoffset = '0';
+        if (statusEl) statusEl.textContent = 'READY TO PUSH LIMITS.';
+
+        setTimeout(() => {
+          preloader.classList.add('preloader-hidden');
+          document.body.style.overflow = '';
+          setTimeout(() => {
+            if (preloader.parentNode) preloader.remove();
+          }, 700);
+        }, 280);
+      };
+
+      const timer = setInterval(() => {
+        progress += Math.floor(Math.random() * 6) + 3;
+        if (progress >= 100) {
+          progress = 100;
+          clearInterval(timer);
+          finishPreloader();
+          return;
+        }
+
+        percentEl.textContent = progress;
+        barEl.style.width = `${progress}%`;
+        if (dialFill) {
+          const offset = totalCircumference - (progress / 100) * totalCircumference;
+          dialFill.style.strokeDashoffset = offset.toFixed(1);
+        }
+
+        const current = [...statuses].reverse().find(s => progress >= s.min);
+        if (current && statusEl && statusEl.textContent !== current.text) {
+          statusEl.textContent = current.text;
+        }
+      }, 30);
+
+      setTimeout(finishPreloader, 2500);
+    })();
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Sticky Navigation on Scroll
+      const header = document.querySelector('.site-header');
+      const handleScroll = () => {
+        header.classList.toggle('scrolled', window.scrollY > 40);
+      };
+      window.addEventListener('scroll', handleScroll, { passive: true });
+      handleScroll();
+
+      // 2. Mobile Menu Drawer
+      const mobileToggle = document.querySelector('.mobile-toggle');
+      const mobileCloseBtn = document.querySelector('.mobile-close-btn');
+      const mobileDrawer = document.querySelector('.mobile-drawer');
+      const mobileBackdrop = document.querySelector('.mobile-drawer-backdrop');
+      const mobileLinks = document.querySelectorAll('.mobile-nav-links .nav-link');
+
+      const openMobileMenu = () => {
+        if (!mobileDrawer) return;
+        mobileDrawer.classList.add('open');
+        if (mobileBackdrop) mobileBackdrop.classList.add('active');
+        if (mobileToggle) {
+          mobileToggle.classList.add('active');
+          mobileToggle.setAttribute('aria-expanded', 'true');
+        }
+        document.body.style.overflow = 'hidden';
+      };
+
+      const closeMobileMenu = () => {
+        if (!mobileDrawer) return;
+        mobileDrawer.classList.remove('open');
+        if (mobileBackdrop) mobileBackdrop.classList.remove('active');
+        if (mobileToggle) {
+          mobileToggle.classList.remove('active');
+          mobileToggle.setAttribute('aria-expanded', 'false');
+        }
+        document.body.style.overflow = '';
+      };
+
+      const toggleMobileMenu = () => {
+        if (!mobileDrawer) return;
+        const isOpen = mobileDrawer.classList.contains('open');
+        if (isOpen) {
+          closeMobileMenu();
+        } else {
+          openMobileMenu();
+        }
+      };
+
+      if (mobileToggle) mobileToggle.addEventListener('click', toggleMobileMenu);
+      if (mobileCloseBtn) mobileCloseBtn.addEventListener('click', closeMobileMenu);
+      if (mobileBackdrop) mobileBackdrop.addEventListener('click', closeMobileMenu);
+      mobileLinks.forEach(link => link.addEventListener('click', closeMobileMenu));
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && mobileDrawer && mobileDrawer.classList.contains('open')) {
+          closeMobileMenu();
+        }
+      });
+
+      // 3. Scroll Reveal Animations
+      const revealElements = document.querySelectorAll('.reveal, .reveal-scale, .reveal-fade');
+      const revealObserver = new IntersectionObserver(
+        (entries, observer) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('active');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+      );
+      revealElements.forEach(el => revealObserver.observe(el));
+
+      // 4. Parallax Effect on Hero Athlete
+      const heroImg = document.querySelector('.hero-athlete-img');
+      window.addEventListener('scroll', () => {
+        if (heroImg && window.scrollY < 800) {
+          heroImg.style.transform = `translateY(${window.scrollY * 0.08}px)`;
+        }
+      }, { passive: true });
+
+      // 5. Toast Notification System & Cart Integration for Best Sellers
+      const showToast = (message) => {
+        let toast = document.querySelector('.toast-notice');
+        if (!toast) {
+          toast = document.createElement('div');
+          toast.className = 'toast-notice';
+          toast.innerHTML = `<span class="toast-icon">✓</span><span class="toast-text">${message}</span>`;
+          document.body.appendChild(toast);
+        } else {
+          toast.querySelector('.toast-text').textContent = message;
+        }
+        toast.classList.add('show');
+        clearTimeout(window._homeToastTimer);
+        window._homeToastTimer = setTimeout(() => toast.classList.remove('show'), 2800);
+      };
+
+      const STORAGE_KEY = 'stackly_cart_v1';
+      const DEFAULT_CART = [
+        { id: 'p1', name: 'Stride Pro Runner', price: 169, qty: 1, cat: 'Running', img: 'Assets/Frame 5080.webp', variant: 'Size 10 · Carbon plate' },
+        { id: 'p2', name: 'Volt Compression Tee', price: 48, qty: 2, cat: 'Sportswear', img: 'Assets/Frame 5080 (1).webp', variant: 'Size M · Sweat-mapped' },
+        { id: 'p3', name: 'Grip Lifting Straps', price: 22, qty: 1, cat: 'Accessories', img: 'Assets/product-straps.webp', variant: 'Cotton blend' }
+      ];
+
+      function getHomeCart() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_CART));
+            return DEFAULT_CART;
+          }
+          return JSON.parse(raw);
+        } catch(e) {
+          return DEFAULT_CART;
+        }
+      }
+
+      function saveHomeCart(cart) {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
+        } catch(e) {}
+      }
+
+      function updateHomeBadges(cart) {
+        const c = cart || getHomeCart();
+        const total = c.reduce((s, it) => s + (it.qty || 1), 0);
+        document.querySelectorAll('.nav-badge, #navBadge, #drawerBadge').forEach(b => {
+          b.textContent = total;
+          b.classList.remove('badge-bump');
+          void b.offsetWidth;
+          b.classList.add('badge-bump');
+        });
+      }
+
+      function formatTitle(str) {
+        if (!str) return 'Item';
+        return str.toLowerCase().split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+      }
+
+      function addBestsellerToBag(card, e) {
+        if (e) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+        if (!card) return;
+
+        const titleEl = card.querySelector('.product-title');
+        const priceEl = card.querySelector('.product-price');
+        const imgEl = card.querySelector('.product-img');
+        const subEl = card.querySelector('.product-subtitle');
+        const badgeEl = card.querySelector('.product-badge');
+
+        const rawTitle = titleEl ? titleEl.textContent.trim() : 'Item';
+        const name = formatTitle(rawTitle);
+        const priceText = priceEl ? priceEl.textContent.replace(/[^0-9.]/g, '') : '0';
+        const price = parseFloat(priceText) || 0;
+        const img = imgEl ? (imgEl.getAttribute('src') || 'Assets/Frame 5080.webp') : 'Assets/Frame 5080.webp';
+        const variant = subEl ? subEl.textContent.trim() : (badgeEl ? badgeEl.textContent.trim() : 'Bestseller');
+        const cat = variant.includes('·') ? variant.split('·')[0].trim() : (variant || 'Gear');
+        const id = 'prod_' + name.toLowerCase().replace(/[^a-z0-9]+/g, '_');
+
+        const cart = getHomeCart();
+        const existing = cart.find(it => it.name.toLowerCase() === name.toLowerCase() || it.id === id);
+        let currentQty = 1;
+
+        if (existing) {
+          existing.qty = (existing.qty || 1) + 1;
+          currentQty = existing.qty;
+        } else {
+          cart.push({ id, name, price, qty: 1, cat, img, variant });
+        }
+
+        saveHomeCart(cart);
+        updateHomeBadges(cart);
+
+        // Visual feedback on card
+        const thumbWrap = card.querySelector('.product-thumb-wrap');
+        if (thumbWrap) {
+          thumbWrap.classList.add('thumb-glow');
+          setTimeout(() => thumbWrap.classList.remove('thumb-glow'), 1200);
+
+          let pill = thumbWrap.querySelector('.in-bag-pill');
+          if (!pill) {
+            pill = document.createElement('span');
+            pill.className = 'in-bag-pill';
+            thumbWrap.appendChild(pill);
+          }
+          pill.innerHTML = `<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> In Bag (${currentQty})`;
+          pill.classList.remove('pill-pop');
+          void pill.offsetWidth;
+          pill.classList.add('pill-pop');
+        }
+
+        showToast(`${name} added to your bag!`);
+      }
+
+      function syncHomeCartState() {
+        const cart = getHomeCart();
+        updateHomeBadges(cart);
+
+        document.querySelectorAll('#bestsellers .product-card').forEach(card => {
+          const titleEl = card.querySelector('.product-title');
+          if (!titleEl) return;
+          const name = formatTitle(titleEl.textContent.trim()).toLowerCase();
+          const found = cart.find(it => it.name.toLowerCase() === name);
+          const thumbWrap = card.querySelector('.product-thumb-wrap');
+          if (found && thumbWrap && !thumbWrap.querySelector('.in-bag-pill')) {
+            const pill = document.createElement('span');
+            pill.className = 'in-bag-pill';
+            pill.innerHTML = `<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> In Bag (${found.qty})`;
+            thumbWrap.appendChild(pill);
+          }
+
+          // Make the card clickable to add to bag
+          card.style.cursor = 'pointer';
+          card.addEventListener('click', (e) => {
+            if (e.target.closest('.product-wishlist-btn')) return;
+            if (e.target.closest('.product-add-btn')) return;
+            addBestsellerToBag(card, e);
+          });
+
+          // Add button
+          const addBtn = card.querySelector('.product-add-btn');
+          if (addBtn) {
+            addBtn.addEventListener('click', (e) => {
+              addBestsellerToBag(card, e);
+            });
+          }
+        });
+      }
+
+      syncHomeCartState();
+
+      // 6. Wishlist Heart Toggle
+      document.querySelectorAll('.product-wishlist-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          btn.classList.toggle('active');
+          const card = btn.closest('.product-card');
+          const title = card ? card.querySelector('.product-title').textContent : 'Item';
+          btn.style.transform = 'scale(1.3)';
+          setTimeout(() => { btn.style.transform = 'scale(1);'; }, 200);
+          showToast(btn.classList.contains('active') ? `${title} saved to wishlist!` : 'Removed from wishlist');
+        });
+      });
+    });
+  </script>
+
+  <script>
+    // Global Cart Badge Sync
+    (function() {
+      function syncBadge() {
+        try {
+          const raw = localStorage.getItem('stackly_cart_v1');
+          if (raw) {
+            const cart = JSON.parse(raw);
+            const total = cart.reduce((s, it) => s + (it.qty || 1), 0);
+            document.querySelectorAll('.nav-badge, #navBadge, #drawerBadge').forEach(b => {
+              b.textContent = total;
+            });
+          }
+        } catch(e) {}
+      }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', syncBadge);
+      } else {
+        syncBadge();
+      }
+    })();
+  </script>
+
+</body>
+</html>
