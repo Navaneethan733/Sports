@@ -23,8 +23,8 @@
       --transition-fast:0.2s cubic-bezier(0.16,1,0.3,1);--transition-smooth:0.4s cubic-bezier(0.16,1,0.3,1);
     }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    html{scroll-behavior:smooth;font-size:16px;color-scheme:dark}
-    body{background:var(--bg-dark);color:var(--text-white);font-family:var(--font-body);line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh}
+    html{scroll-behavior:smooth;font-size:16px;color-scheme:dark;overflow-x:hidden;max-width:100vw;width:100%}
+    body{background:var(--bg-dark);color:var(--text-white);font-family:var(--font-body);line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh;overflow-x:hidden;max-width:100vw;width:100%;position:relative}
     img{max-width:100%;height:auto;display:block}
     a{color:inherit;text-decoration:none}
     button{font-family:inherit;border:none;background:none;cursor:pointer}
@@ -237,19 +237,274 @@
     .toast-icon{width:22px;height:22px;border-radius:50%;background:var(--volt);color:#000;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;flex-shrink:0}
 
     /* RESPONSIVE */
-    @media (max-width:1200px){.kpi-grid{grid-template-columns:repeat(2,1fr)}.user-grid-2{grid-template-columns:1fr}.wishlist-grid{grid-template-columns:repeat(3,1fr)}}
-    @media (max-width:900px){
-      .user-sidebar{position:fixed;left:0;top:64px;bottom:0;z-index:900;transform:translateX(-100%);height:calc(100vh - 64px)}
-      .user-sidebar.open{transform:translateX(0)}
-      .user-main{padding:20px 16px 50px}
+    /* ==========================================================================
+       RESPONSIVE & OVERLAP PREVENTION STYLES
+       ========================================================================== */
+    .sidebar-toggle-btn {
+      display: none;
+      width: 38px;
+      height: 38px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-subtle);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-white);
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all var(--transition-fast);
     }
-    @media (max-width:560px){
-      .kpi-grid{grid-template-columns:1fr}
-      .user-topbar{padding:0 16px}
-      .page-actions{width:100%}
-      .page-actions .btn-volt,.page-actions .btn-ghost{flex:1;justify-content:center}
-      .form-grid{grid-template-columns:1fr}
-      .wishlist-grid{grid-template-columns:repeat(2,1fr)}
+    .sidebar-toggle-btn:hover {
+      border-color: var(--volt);
+      color: var(--volt);
+    }
+    .sidebar-toggle-btn svg { width: 18px; height: 18px; }
+
+    .sidebar-mobile-header {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      padding: 4px 6px 16px;
+      margin-bottom: 14px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .sidebar-close-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--border-subtle);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all var(--transition-fast);
+    }
+    .sidebar-close-btn:hover {
+      border-color: var(--volt);
+      background: var(--volt);
+      color: #000;
+      transform: rotate(90deg);
+    }
+    .sidebar-close-btn svg { width: 17px; height: 17px; }
+
+    .sidebar-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .sidebar-backdrop.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    @media (max-width: 1200px) {
+      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+      .user-grid-2 { grid-template-columns: 1fr; }
+      .wishlist-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    /* Prevent search bar overlap before breaking */
+    @media (max-width: 1024px) {
+      .topbar-search { display: none !important; }
+    }
+
+    /* Mobile Sidebar Drawer & Responsive Layout */
+    @media (max-width: 900px) {
+      .sidebar-toggle-btn { display: flex !important; }
+      .sidebar-mobile-header { display: flex !important; }
+
+      /* Contain Topbar & Prevent ALL Overlap */
+      .user-topbar {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        max-width: 100vw !important;
+        box-sizing: border-box !important;
+        padding: 0 16px !important;
+        overflow: hidden !important;
+        justify-content: space-between !important;
+        z-index: 999 !important;
+      }
+      .topbar-left {
+        display: flex !important;
+        align-items: center !important;
+        gap: 12px !important;
+        flex-shrink: 0 !important;
+        min-width: 0 !important;
+      }
+      .topbar-right {
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        flex-shrink: 0 !important;
+        min-width: 0 !important;
+        margin-left: auto !important;
+      }
+      .topbar-search {
+        display: none !important;
+      }
+      /* Hide user chip & profile text in topbar on tablet/mobile: visible in sidebar drawer instead */
+      .user-chip {
+        display: none !important;
+      }
+      .user-topbar .user-profile-name {
+        display: none !important;
+      }
+      .user-profile-pill {
+        padding: 0 !important;
+        border: none !important;
+        background: transparent !important;
+        gap: 0 !important;
+      }
+      .user-profile-pill img {
+        width: 34px !important;
+        height: 34px !important;
+      }
+
+      /* Off-Canvas Sidebar Drawer: hidden when closed so it never causes scroll */
+      .user-sidebar {
+        position: fixed !important;
+        left: 0 !important;
+        top: 0 !important;
+        bottom: 0 !important;
+        width: 280px !important;
+        max-width: 84vw !important;
+        height: 100vh !important;
+        background: #111215 !important;
+        box-shadow: 15px 0 40px rgba(0, 0, 0, 0.85) !important;
+        border-right: 1px solid var(--border-subtle) !important;
+        transform: translateX(-100%) !important;
+        visibility: hidden !important;
+        transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.35s !important;
+        z-index: 1001 !important;
+        padding: 18px 16px 36px !important;
+        overflow-y: auto !important;
+      }
+      .user-sidebar.open {
+        visibility: visible !important;
+        transform: translateX(0) !important;
+      }
+
+      /* Strict horizontal bounds on mobile containers */
+      .user-shell {
+        display: block !important;
+        padding-top: 64px !important;
+        min-height: 100vh !important;
+        width: 100% !important;
+        max-width: 100vw !important;
+        overflow-x: hidden !important;
+        box-sizing: border-box !important;
+      }
+      .user-main {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        padding: 20px 16px 60px !important;
+        overflow-x: hidden !important;
+        box-sizing: border-box !important;
+      }
+      .user-view {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+      }
+      .panel {
+        min-width: 0 !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+      }
+      .table-wrap {
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        min-width: 0 !important;
+        display: block !important;
+      }
+      .user-grid-2 {
+        grid-template-columns: 1fr !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+      }
+      .wishlist-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* Small Mobile: <= 520px */
+    @media (max-width: 520px) {
+      .user-topbar {
+        padding: 0 12px !important;
+        gap: 8px !important;
+      }
+      .topbar-brand img {
+        height: 22px !important;
+      }
+      .topbar-left {
+        gap: 8px !important;
+      }
+      .topbar-right {
+        gap: 6px !important;
+      }
+      /* Hide topbar wishlist & bag buttons on phone - full nav is inside the sidebar drawer */
+      .user-topbar .icon-btn[aria-label="Wishlist"],
+      .user-topbar .icon-btn[aria-label="Bag"] {
+        display: none !important;
+      }
+      .sidebar-toggle-btn {
+        width: 34px !important;
+        height: 34px !important;
+      }
+      .sidebar-toggle-btn svg {
+        width: 15px !important;
+        height: 15px !important;
+      }
+      .user-profile-pill img {
+        width: 30px !important;
+        height: 30px !important;
+      }
+      .user-main {
+        padding: 16px 12px 60px !important;
+      }
+      .panel {
+        padding: 16px 12px !important;
+      }
+      .kpi-grid {
+        grid-template-columns: 1fr !important;
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+      .kpi-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+      }
+      .page-head { flex-direction: column !important; align-items: flex-start !important; gap: 14px !important; }
+      .page-title { word-break: break-word !important; overflow-wrap: break-word !important; }
+      .page-actions { width: 100% !important; display: flex !important; gap: 8px !important; flex-wrap: wrap !important; }
+      .page-actions .btn-volt, .page-actions .btn-ghost { flex: 1 1 140px !important; justify-content: center !important; text-align: center !important; }
+      .form-grid { grid-template-columns: 1fr; }
+      .wishlist-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Extra Small Mobile: <= 380px */
+    @media (max-width: 380px) {
+      .user-topbar { padding: 0 8px !important; }
+      .topbar-brand img { height: 19px !important; }
+      .sidebar-toggle-btn { width: 32px !important; height: 32px !important; }
+      .user-profile-pill img { width: 28px !important; height: 28px !important; }
     }
   </style>
 </head>
@@ -258,7 +513,7 @@
   <!-- ============================ TOPBAR ============================ -->
   <header class="user-topbar">
     <div class="topbar-left">
-      <button class="icon-btn" id="sidebarToggle" aria-label="Toggle sidebar" style="display:none;">
+      <button class="sidebar-toggle-btn" id="sidebarToggle" aria-label="Toggle navigation menu">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
       </button>
       <a href="#" class="topbar-brand" aria-label="STACKLY"><img src="Assets/stackly-logo-clean.webp" alt="STACKLY"></a>
@@ -277,9 +532,9 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
         <span class="dot">2</span>
       </button>
-      <div class="user-profile-pill" style="display:flex;align-items:center;gap:10px;padding:3px 10px 3px 12px;background:rgba(255,255,255,0.04);border:1px solid var(--border-subtle);border-radius:9999px;cursor:pointer;" onclick="switchView('profile')" title="View profile">
-        <span class="user-profile-name" style="font-size:13px;font-weight:700;color:var(--text-white);">Alex Morgan</span>
-        <img src="Assets/Ellipse 77.webp" alt="Alex Morgan" class="user-avatar" style="width:32px;height:32px;border-radius:50%;border:2px solid var(--volt);" onerror="this.src='Assets/avatar-alex-p.webp'">
+      <div class="user-profile-pill" style="display:flex;align-items:center;gap:10px;padding:3px 10px 3px 12px;background:rgba(255,255,255,0.04);border:1px solid var(--border-subtle);border-radius:9999px;cursor:pointer;flex-shrink:0;min-width:0;" onclick="switchView('profile')" title="View profile">
+        <span class="user-profile-name" style="font-size:13px;font-weight:700;color:var(--text-white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:140px;">Alex Morgan</span>
+        <img src="Assets/Ellipse 77.webp" alt="Alex Morgan" class="user-avatar" style="width:32px;height:32px;border-radius:50%;border:2px solid var(--volt);flex-shrink:0;" onerror="this.src='Assets/avatar-alex-p.webp'">
       </div>
     </div>
   </header>
@@ -287,8 +542,21 @@
   <!-- ============================ SHELL ============================ -->
   <div class="user-shell">
 
+    <!-- Mobile Sidebar Backdrop -->
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
     <!-- SIDEBAR -->
     <aside class="user-sidebar" id="userSidebar">
+      <!-- Mobile Drawer Header -->
+      <div class="sidebar-mobile-header">
+        <a href="index.html" class="topbar-brand"><img src="Assets/stackly-logo-clean.webp" alt="STACKLY"></a>
+        <button class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="Close menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
       <div class="sidebar-profile">
         <img src="Assets/Ellipse 77.webp" alt="Alex Morgan" class="sidebar-avatar" onerror="this.src='Assets/avatar-alex-p.webp'">
         <div>
@@ -682,7 +950,7 @@
       const link=document.querySelector(`.side-link[data-view="${name}"]`);
       if(link) link.classList.add('active');
       if(window.matchMedia('(max-width:900px)').matches){
-        document.getElementById('userSidebar').classList.remove('open');
+        closeSidebar();
       }
       window.scrollTo({top:0,behavior:'smooth'});
     }
@@ -691,16 +959,57 @@
       btn.addEventListener('click',()=>switchView(btn.dataset.view));
     });
 
-    // Mobile sidebar
-    const sidebarToggle=document.getElementById('sidebarToggle');
-    const userSidebar=document.getElementById('userSidebar');
-    const mq=window.matchMedia('(max-width:900px)');
-    function handleMq(){sidebarToggle.style.display=mq.matches?'flex':'none';if(!mq.matches)userSidebar.classList.remove('open');}
-    mq.addEventListener('change',handleMq);handleMq();
-    sidebarToggle.addEventListener('click',()=>userSidebar.classList.toggle('open'));
-    document.addEventListener('click',(e)=>{
-      if(mq.matches&&userSidebar.classList.contains('open')&&!userSidebar.contains(e.target)&&!sidebarToggle.contains(e.target)){
-        userSidebar.classList.remove('open');
+    // ============================= MOBILE DRAWER & SIDEBAR =============================
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebarCloseBtn = document.getElementById('sidebarCloseBtn');
+    const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+    const userSidebar = document.getElementById('userSidebar');
+
+    function openSidebar() {
+      if (!userSidebar) return;
+      userSidebar.classList.add('open');
+      if (sidebarBackdrop) sidebarBackdrop.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeSidebar() {
+      if (!userSidebar) return;
+      userSidebar.classList.remove('open');
+      if (sidebarBackdrop) sidebarBackdrop.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    if (sidebarToggle) {
+      sidebarToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (userSidebar && userSidebar.classList.contains('open')) {
+          closeSidebar();
+        } else {
+          openSidebar();
+        }
+      });
+    }
+
+    if (sidebarCloseBtn) sidebarCloseBtn.addEventListener('click', closeSidebar);
+    if (sidebarBackdrop) sidebarBackdrop.addEventListener('click', closeSidebar);
+
+    document.querySelectorAll('.side-link').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (window.innerWidth <= 900) {
+          closeSidebar();
+        }
+      });
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && userSidebar && userSidebar.classList.contains('open')) {
+        closeSidebar();
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 900 && userSidebar && userSidebar.classList.contains('open')) {
+        closeSidebar();
       }
     });
 
