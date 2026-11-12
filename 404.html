@@ -150,6 +150,7 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      gap: 8px;
       cursor: pointer;
       transition: all var(--transition-fast);
       white-space: nowrap;
@@ -188,6 +189,11 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      transition: opacity var(--transition-fast);
+    }
+
+    .nav-brand:hover {
+      opacity: 0.85;
     }
 
     .brand-logo-img {
@@ -288,7 +294,7 @@
       justify-content: center;
       position: relative;
       overflow: hidden;
-      padding: 150px 0 90px;
+      padding: 80px 0 90px;
       background-color: #0d0e10;
       background-image:
         radial-gradient(circle at 72% 45%, rgba(95, 120, 40, 0.35) 0%, rgba(65, 85, 30, 0.18) 34%, rgba(30, 36, 22, 0.06) 58%, #0d0e10 78%),
@@ -533,7 +539,7 @@
 
     @media (max-width: 600px) {
       .error-section {
-        padding: 130px 0 70px;
+        padding: 60px 0 70px;
       }
       .error-actions {
         flex-direction: column;
@@ -774,74 +780,6 @@
 <body>
 
   <!-- ==========================================================================
-       SITE HEADER (simplified)
-       ========================================================================== -->
-  <header class="site-header">
-    <div class="container nav-container">
-      <a href="index.html" class="nav-brand" aria-label="STACKLY Home">
-        <img src="Assets/stackly-logo-clean.webp" alt="STACKLY" class="brand-logo-img">
-      </a>
-      <nav aria-label="Main Navigation">
-        <ul class="nav-links">
-          <li><a href="index.html" class="nav-link">Home</a></li>
-          <li><a href="shop.html" class="nav-link">Shop</a></li>
-          <li><a href="blog.html" class="nav-link active">Blog</a></li>
-          <li><a href="about.html" class="nav-link">About</a></li>
-          <li><a href="contact.html" class="nav-link">Contact</a></li>
-        </ul>
-      </nav>
-      <div class="nav-actions">
-        <a href="login.html" class="nav-icon-btn" aria-label="Login">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-            <circle cx="12" cy="7" r="4"></circle>
-          </svg>
-        </a>
-        <button class="nav-icon-btn" aria-label="Bag">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-          <span class="nav-badge">2</span>
-        </button>
-        <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <!-- Mobile Backdrop & Drawer -->
-  <div class="mobile-drawer-backdrop"></div>
-  <aside class="mobile-drawer" aria-label="Mobile navigation">
-    <div class="mobile-drawer-top">
-      <div class="mobile-drawer-header">
-        <a href="index.html" class="nav-brand" aria-label="STACKLY Home">
-          <img src="Assets/stackly-logo-clean.webp" alt="STACKLY" class="brand-logo-img">
-        </a>
-        <button class="mobile-close-btn" aria-label="Close navigation menu">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
-        </button>
-      </div>
-
-      <ul class="mobile-nav-links">
-        <li><a href="index.html" class="nav-link">Home</a></li>
-        <li><a href="shop.html" class="nav-link">Shop</a></li>
-        <li><a href="blog.html" class="nav-link active">Blog</a></li>
-        <li><a href="about.html" class="nav-link">About</a></li>
-        <li><a href="contact.html" class="nav-link">Contact</a></li>
-      </ul>
-    </div>
-    <div class="mobile-drawer-bottom">
-      <a href="shop.html" class="btn-volt" style="width: 100%; justify-content: center; text-align: center; text-decoration: none; display: flex; align-items: center; padding: 12px 20px; border-radius: 9999px; background: #d2fd04; color: #000; font-weight: 700; font-size: 14px;">
-        Explore Gear
-      </a>
-    </div>
-  </aside>
-
-  <!-- ==========================================================================
        404 MAIN CONTENT
        ========================================================================== -->
   <main class="error-section">
@@ -869,9 +807,15 @@
       </p>
 
       <div class="error-actions reveal delay-3">
-        <!-- Go Back button: uses browser history to return to the previous page/section -->
-        <button onclick="window.history.back()" class="btn-volt">
+        <a href="index.html" class="btn-volt">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+          Go to Home Page
+        </a>
+        <button onclick="window.history.back()" class="btn-outline">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="19" y1="12" x2="5" y2="12"></line>
             <polyline points="12 19 5 12 12 5"></polyline>
           </svg>
@@ -918,61 +862,7 @@
       }, { passive: true });
     });
   </script>
-<script>
 
-    // Mobile Navigation Drawer Toggle & Close
-    (function() {
-      const mobileToggle = document.querySelector('.mobile-toggle');
-      const mobileCloseBtn = document.querySelector('.mobile-close-btn');
-      const mobileDrawer = document.querySelector('.mobile-drawer');
-      const mobileBackdrop = document.querySelector('.mobile-drawer-backdrop');
-      const mobileLinks = document.querySelectorAll('.mobile-nav-links .nav-link');
-
-      const openMobileMenu = () => {
-        if (!mobileDrawer) return;
-        mobileDrawer.classList.add('open');
-        if (mobileBackdrop) mobileBackdrop.classList.add('active');
-        if (mobileToggle) {
-          mobileToggle.classList.add('active');
-          mobileToggle.setAttribute('aria-expanded', 'true');
-        }
-        document.body.style.overflow = 'hidden';
-      };
-
-      const closeMobileMenu = () => {
-        if (!mobileDrawer) return;
-        mobileDrawer.classList.remove('open');
-        if (mobileBackdrop) mobileBackdrop.classList.remove('active');
-        if (mobileToggle) {
-          mobileToggle.classList.remove('active');
-          mobileToggle.setAttribute('aria-expanded', 'false');
-        }
-        document.body.style.overflow = '';
-      };
-
-      const toggleMobileMenu = () => {
-        if (!mobileDrawer) return;
-        const isOpen = mobileDrawer.classList.contains('open');
-        if (isOpen) {
-          closeMobileMenu();
-        } else {
-          openMobileMenu();
-        }
-      };
-
-      if (mobileToggle) mobileToggle.addEventListener('click', toggleMobileMenu);
-      if (mobileCloseBtn) mobileCloseBtn.addEventListener('click', closeMobileMenu);
-      if (mobileBackdrop) mobileBackdrop.addEventListener('click', closeMobileMenu);
-      mobileLinks.forEach(link => link.addEventListener('click', closeMobileMenu));
-
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && mobileDrawer && mobileDrawer.classList.contains('open')) {
-          closeMobileMenu();
-        }
-      });
-    })();
-
-  </script>
 
   <script>
     // Global Cart Badge Sync

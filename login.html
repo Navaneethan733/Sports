@@ -39,7 +39,9 @@
     .auth-visual-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(10,11,13,0.85) 0%,rgba(10,11,13,0.3) 50%,rgba(10,11,13,0.9) 100%)}
     .auth-visual::after{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);background-size:56px 56px;mask-image:radial-gradient(circle at 50% 50%,black 0%,transparent 70%);-webkit-mask-image:radial-gradient(circle at 50% 50%,black 0%,transparent 70%);pointer-events:none}
     .auth-visual-content{position:relative;z-index:2}
-    .auth-visual-logo{height:32px;width:auto;margin-bottom:auto}
+    .auth-visual-logo-link{display:inline-block;margin-bottom:auto;transition:opacity var(--transition-fast)}
+    .auth-visual-logo-link:hover{opacity:0.85}
+    .auth-visual-logo{height:32px;width:auto;display:block}
     .auth-visual-bottom{position:relative;z-index:2;margin-top:auto}
     .auth-visual-tag{display:inline-flex;align-items:center;gap:10px;padding:7px 16px;border-radius:var(--radius-full);background:var(--volt-dim);border:1px solid rgba(210,253,4,0.25);color:var(--volt);font-size:11.5px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:22px}
     .auth-visual-dot{width:6px;height:6px;border-radius:50%;background:var(--volt);box-shadow:0 0 8px var(--volt-glow);animation:pulseDot 1.8s ease-in-out infinite}
@@ -55,7 +57,8 @@
     .auth-form-side{display:flex;align-items:center;justify-content:center;padding:44px 40px;position:relative;background:var(--bg-dark)}
     .auth-form-wrap{width:100%;max-width:420px}
     .auth-form-header{margin-bottom:30px}
-    .auth-form-logo-mobile{display:none;height:28px;width:auto;margin-bottom:28px}
+    .auth-form-logo-link{display:none}
+    .auth-form-logo-mobile{height:28px;width:auto;display:block}
     .auth-form-eyebrow{font-size:11.5px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--volt);margin-bottom:10px;display:block}
     .auth-form-title{font-family:var(--font-heading);font-size:clamp(32px,4vw,44px);font-weight:900;text-transform:uppercase;line-height:1;letter-spacing:-0.01em;margin-bottom:10px}
     .auth-form-subtitle{font-size:13.5px;color:var(--text-muted);font-weight:500}
@@ -132,6 +135,7 @@
     @media (max-width:960px){
       .auth-shell{grid-template-columns:1fr}
       .auth-visual{display:none}
+      .auth-form-logo-link{display:inline-block;margin-bottom:28px}
       .auth-form-logo-mobile{display:block}
       .auth-form-side{padding:40px 24px;min-height:100vh}
     }
@@ -181,7 +185,9 @@
       <div class="auth-visual-overlay"></div>
 
       <div class="auth-visual-content anim-fade">
-        <img src="Assets/stackly-logo-clean.webp" alt="STACKLY" class="auth-visual-logo" onerror="this.style.display='none'">
+        <a href="index.html" class="auth-visual-logo-link" aria-label="STACKLY Home">
+          <img src="Assets/stackly-logo-clean.webp" alt="STACKLY" class="auth-visual-logo" onerror="this.style.display='none'">
+        </a>
       </div>
 
       <div class="auth-visual-bottom">
@@ -216,7 +222,9 @@
           Back to Home
         </a>
         <div class="auth-form-header">
-          <img src="Assets/stackly-logo-clean.webp" alt="STACKLY" class="auth-form-logo-mobile anim-up" onerror="this.style.display='none'">
+          <a href="index.html" class="auth-form-logo-link" aria-label="STACKLY Home">
+            <img src="Assets/stackly-logo-clean.webp" alt="STACKLY" class="auth-form-logo-mobile anim-up" onerror="this.style.display='none'">
+          </a>
           <span class="auth-form-eyebrow anim-up anim-up-d1">Welcome back</span>
           <h2 class="auth-form-title anim-up anim-up-d2" id="formTitle">SIGN IN</h2>
           <p class="auth-form-subtitle anim-up anim-up-d3" id="formSubtitle">Enter your details to access your account.</p>

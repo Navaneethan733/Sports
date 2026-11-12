@@ -419,6 +419,9 @@
         max-width: 100% !important;
         min-width: 0 !important;
       }
+      .kpi-grid { grid-template-columns: repeat(2, 1fr) !important; width: 100% !important; max-width: 100% !important; }
+      .table-product { min-width: 0 !important; }
+      .order-id, .table-product-name { word-break: break-word !important; }
     }
 
     /* Small Mobile: <= 520px */
@@ -477,6 +480,8 @@
       .page-actions { width: 100% !important; display: flex !important; gap: 8px !important; flex-wrap: wrap !important; }
       .page-actions .btn-volt, .page-actions .btn-ghost { flex: 1 1 140px !important; justify-content: center !important; text-align: center !important; }
       .form-grid { grid-template-columns: 1fr; }
+      .kpi-grid { grid-template-columns: 1fr !important; }
+      .table-product { min-width: 0 !important; flex-wrap: wrap !important; }
     }
 
     /* Extra Small Mobile: <= 380px */
@@ -597,11 +602,11 @@
             <p class="page-subtitle">Store performance, orders and inventory at a glance.</p>
           </div>
           <div class="page-actions">
-            <button class="btn-ghost" onclick="showToast('Exporting report...')">
+            <button class="btn-ghost" onclick="window.location.href='404.html'">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
               Export
             </button>
-            <button class="btn-volt" onclick="showToast('Opening new product form...')">
+            <button class="btn-volt" onclick="window.location.href='404.html'">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
               New product
             </button>
@@ -711,8 +716,8 @@
             <p class="page-subtitle">Manage, track and update every order in one place.</p>
           </div>
           <div class="page-actions">
-            <button class="btn-ghost" onclick="showToast('Exporting orders CSV...')">Export CSV</button>
-            <button class="btn-volt" onclick="showToast('Opening manual order form...')">Create order</button>
+            <button class="btn-ghost" onclick="window.location.href='404.html'">Export CSV</button>
+            <button class="btn-volt" onclick="window.location.href='404.html'">Create order</button>
           </div>
         </div>
 
@@ -750,8 +755,8 @@
             <p class="page-subtitle">Add, edit and organize your product catalog.</p>
           </div>
           <div class="page-actions">
-            <button class="btn-ghost" onclick="showToast('Importing products...')">Import</button>
-            <button class="btn-volt" onclick="showToast('Opening new product form...')">
+            <button class="btn-ghost" onclick="window.location.href='404.html'">Import</button>
+            <button class="btn-volt" onclick="window.location.href='404.html'">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
               New product
             </button>
@@ -783,7 +788,7 @@
             <p class="page-subtitle">View customer profiles, spend and order history.</p>
           </div>
           <div class="page-actions">
-            <button class="btn-ghost" onclick="showToast('Exporting customer list...')">Export</button>
+            <button class="btn-ghost" onclick="window.location.href='404.html'">Export</button>
           </div>
         </div>
 
@@ -837,8 +842,8 @@
             <p class="page-subtitle">Revenue trends, conversion and channel performance.</p>
           </div>
           <div class="page-actions">
-            <button class="btn-ghost" onclick="showToast('Date range: Last 30 days')">Last 30 days</button>
-            <button class="btn-volt" onclick="showToast('Exporting analytics report...')">Export report</button>
+            <button class="btn-ghost" onclick="window.location.href='404.html'">Last 30 days</button>
+            <button class="btn-volt" onclick="window.location.href='404.html'">Export report</button>
           </div>
         </div>
 
@@ -896,8 +901,8 @@
             <p class="page-subtitle">Track stock levels and restock alerts.</p>
           </div>
           <div class="page-actions">
-            <button class="btn-ghost" onclick="showToast('Syncing inventory...')">Sync</button>
-            <button class="btn-volt" onclick="showToast('Opening restock form...')">Restock</button>
+            <button class="btn-ghost" onclick="window.location.href='404.html'">Sync</button>
+            <button class="btn-volt" onclick="window.location.href='404.html'">Restock</button>
           </div>
         </div>
 
@@ -928,7 +933,7 @@
             <p class="page-subtitle">Campaigns, discounts and email performance.</p>
           </div>
           <div class="page-actions">
-            <button class="btn-volt" onclick="showToast('Opening campaign builder...')">
+            <button class="btn-volt" onclick="window.location.href='404.html'">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
               New campaign
             </button>
@@ -945,7 +950,7 @@
           </section>
 
           <section class="panel">
-            <div class="panel-head"><h2 class="panel-title">Discount Codes</h2><button class="btn-volt" style="padding:8px 16px;font-size:12px" onclick="showToast('Opening discount form...')">Create</button></div>
+            <div class="panel-head"><h2 class="panel-title">Discount Codes</h2><button class="btn-volt" style="padding:8px 16px;font-size:12px" onclick="window.location.href='404.html'">Create</button></div>
             <div class="list-row"><div class="list-info"><div class="list-name" style="font-family:var(--font-heading);letter-spacing:0.05em;">VOLT20</div><div class="list-sub">20% off · 340 uses</div></div><span class="badge badge-instock">Active</span></div>
             <div class="list-row"><div class="list-info"><div class="list-name" style="font-family:var(--font-heading);letter-spacing:0.05em;">PULSE10</div><div class="list-sub">10% off · 128 uses</div></div><span class="badge badge-instock">Active</span></div>
             <div class="list-row"><div class="list-info"><div class="list-name" style="font-family:var(--font-heading);letter-spacing:0.05em;">STRIDE15</div><div class="list-sub">15% off · 89 uses</div></div><span class="badge badge-low">Ending soon</span></div>

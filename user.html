@@ -440,7 +440,10 @@
         max-width: 100% !important;
         min-width: 0 !important;
       }
-      .wishlist-grid { grid-template-columns: repeat(2, 1fr); }
+      .wishlist-grid { grid-template-columns: repeat(2, 1fr) !important; width: 100% !important; max-width: 100% !important; }
+      .kpi-grid { grid-template-columns: repeat(2, 1fr) !important; width: 100% !important; max-width: 100% !important; }
+      .table-product { min-width: 0 !important; }
+      .order-id, .table-product-name { word-break: break-word !important; }
     }
 
     /* Small Mobile: <= 520px */
@@ -496,7 +499,9 @@
       .page-actions { width: 100% !important; display: flex !important; gap: 8px !important; flex-wrap: wrap !important; }
       .page-actions .btn-volt, .page-actions .btn-ghost { flex: 1 1 140px !important; justify-content: center !important; text-align: center !important; }
       .form-grid { grid-template-columns: 1fr; }
-      .wishlist-grid { grid-template-columns: 1fr; }
+      .wishlist-grid { grid-template-columns: 1fr !important; }
+      .kpi-grid { grid-template-columns: 1fr !important; }
+      .table-product { min-width: 0 !important; flex-wrap: wrap !important; }
     }
 
     /* Extra Small Mobile: <= 380px */
@@ -614,11 +619,11 @@
             <p class="page-subtitle">Here's what's happening with your training gear and rewards.</p>
           </div>
           <div class="page-actions">
-            <button class="btn-ghost" onclick="showToast('Opening support chat...')">
+            <button class="btn-ghost" onclick="window.location.href='404.html'">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
               Support
             </button>
-            <button class="btn-volt" onclick="showToast('Redirecting to shop...')">
+            <button class="btn-volt" onclick="window.location.href='404.html'">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
               Shop new arrivals
             </button>
@@ -693,8 +698,8 @@
             <p class="page-subtitle">Track deliveries and reorder your favourite gear.</p>
           </div>
           <div class="page-actions">
-            <button class="btn-ghost" onclick="showToast('Exporting order history...')">Export</button>
-            <button class="btn-volt" onclick="showToast('Opening shop...')">Shop again</button>
+            <button class="btn-ghost" onclick="window.location.href='404.html'">Export</button>
+            <button class="btn-volt" onclick="window.location.href='404.html'">Shop again</button>
           </div>
         </div>
 
@@ -762,7 +767,7 @@
             <p class="page-subtitle">Gear you're eyeing — ready when you are.</p>
           </div>
           <div class="page-actions">
-            <button class="btn-volt" onclick="showToast('Moved all items to bag')">Add all to bag</button>
+            <button class="btn-volt" onclick="window.location.href='404.html'">Add all to bag</button>
           </div>
         </div>
 
@@ -827,17 +832,17 @@
           <div class="list-row">
             <div class="kpi-icon volt" style="margin:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
             <div class="list-info"><div class="list-name">₹10 Off Next Order</div><div class="list-sub">500 points</div></div>
-            <button class="btn-volt" style="padding:8px 18px;font-size:12px" onclick="showToast('Redeemed ₹10 off coupon!')">Redeem</button>
+            <button class="btn-volt" style="padding:8px 18px;font-size:12px" onclick="window.location.href='404.html'">Redeem</button>
           </div>
           <div class="list-row">
             <div class="kpi-icon cyan" style="margin:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7h-9M14 17H5M19 13v6M5 3v6"/><circle cx="17" cy="5" r="2"/><circle cx="7" cy="19" r="2"/></svg></div>
             <div class="list-info"><div class="list-name">Free Next-Day Shipping</div><div class="list-sub">260 points</div></div>
-            <button class="btn-volt" style="padding:8px 18px;font-size:12px" onclick="showToast('Shipping perk unlocked!')">Redeem</button>
+            <button class="btn-volt" style="padding:8px 18px;font-size:12px" onclick="window.location.href='404.html'">Redeem</button>
           </div>
           <div class="list-row">
             <div class="kpi-icon success" style="margin:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg></div>
             <div class="list-info"><div class="list-name">Early Volt 2026 Drop Access</div><div class="list-sub">1,000 points</div></div>
-            <button class="btn-volt" style="padding:8px 18px;font-size:12px" onclick="showToast('Early access unlocked!')">Redeem</button>
+            <button class="btn-volt" style="padding:8px 18px;font-size:12px" onclick="window.location.href='404.html'">Redeem</button>
           </div>
         </section>
       </div>
